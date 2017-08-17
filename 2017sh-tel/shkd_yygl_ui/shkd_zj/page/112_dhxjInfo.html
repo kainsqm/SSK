@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>客调项目管理系统</title>
+	<link href="../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+	<link href="../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script> 
+    <script src="../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px; background-image:url(../img/login/title_bg.jpg);border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		
+		table#search_table td{ height:30px; line-height:30px;}
+		table#search_table td.td_lable{ text-align:right;}
+		table#search_table td.td_value{ text-align:left;}
+	</style>
+	<script type="text/javascript"> 
+		$(function () {
+            var maingrid_gd= $("#record_list").ligerGrid({
+                columns: [                
+				{ display: '操作', isSort: false, minWidth : 180, render: function (rowdata, rowindex, value)
+	                {
+	                    var h = "";
+						h += "<a href='dhxj_qc.html' target='_blank'>评分</a> ";
+	                    return h;
+	                }
+                },
+				{ display: '业务类型', name: 'BUSINESS_TYPE', align: 'left', width :130,isSort:false},
+                { display: '小结类型', name: 'TELSUM_TYPE', align: 'left', width :120,isSort:false},
+				{ display: '故障来源', name: 'ERROR_SOURCE', align: 'left', minWidth :80,isSort:false},		
+				{ display: '申告号码', name: 'DECLARATION_REMARK', align: 'left', minWidth :80,isSort:false},
+				{ display: '逻辑号码', name: 'dir_num', align: 'left', minWidth :100,isSort:false},
+				{ display: '112流水', name: 'serial_cdma', align: 'left', minWidth :100,isSort:false},
+				{ display: '电话小结流水', name: 'CustomerID', align: 'left', minWidth :100,isSort:false},
+				{ display: '电话小结时间', name: 'City', align: 'left', minWidth :100,isSort:false},
+				{ display: '电话小结工号', name: 'sl_workid', align: 'left', minWidth :100,isSort:false},
+				{ display: '备注', name: 'DECLARATION_REMARK', align: 'left', minWidth :80,isSort:false}
+                ], data:CustomersData, sortName: 'CustomerID',height:'100%', width:"auto", pageSize:10 ,rownumbers :true
+            });
+            $("#pageloading").hide(); 
+        });
+    </script> 
+</head>
+<!-- 
+<body style="margin:0 auto; background-color:#FFFFFF; padding:5px;">
+ -->
+<body > 
+	<div style="">
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table id="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td class="td_lable">112流水：</td><td class="td_value"><input  type="text"/></td>
+					<td class="td_lable">申告号码：</td><td class="td_value"><input type="text"/></td>
+					<td class="td_lable">业务类型：</td><td class="td_value"><input type="text"/></td>
+					<td class="td_lable">小结类型：</td><td class="td_value"><input type="text"/></td>
+						
+				</tr>
+				<tr><td class="td_lable">逻辑号码：</td><td class="td_value"><input type="text"/></td>	</tr>
+				<tr>
+					<td colspan="8" align="center">
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" />
+					</td>
+				</tr>
+			</table>			
+		</div>
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

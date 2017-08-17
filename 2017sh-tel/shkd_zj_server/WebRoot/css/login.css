@@ -1,0 +1,48 @@
+
+*{font-family: "微软雅黑";}
+.login{
+	position: absolute;
+	border-radius:5px ;
+	background: #0B71B1;
+	width: 320px;
+	height: 210px;
+	left: 49%;
+	top:20%
+	/*border: 3px solid #ffffff;*/
+}
+.bg_login{
+	position: absolute;
+	background: #494B8A;
+}
+.login table{margin-top: 20px;}
+.login table tr td label{color: #FFFFFF;font-size: 10pt;}
+.login table tr th{
+	font-size: 20pt;
+	color: #E0ECEC;;
+	font-family: "华文行楷";
+}
+.s_input{
+	box-shadow:inset 0px 1px 4px #d9d9d9;
+     -webkit-box-shadow: inset 0px 1px 4px #d9d9d9;
+     -moz-box-shadow: inset 0px 1px 4px #d9d9d9;
+     height: 22px;
+     border-radius: 5px;
+     border: 1px solid #CFCFCF;
+     outline:none;
+     line-height:22px;
+     width:180px !important;
+}
+.sub{
+	outline:none;
+	width:188px;
+    height: 30px;
+    border-radius: 5px;
+    border:1px solid #03609F;
+    color: #ffffff;
+    background: -ms-linear-gradient(top, #59BFFF, #03609f);
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#59BFFF,endColorStr=#03609f); /*IE*/
+    background:-moz-linear-gradient(top,#59BFFF,#03609f);/*火狐*/
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#59BFFF), to(#03609f));/*谷歌*/
+    background-image: -webkit-gradient(linear,left bottom,left top,color-start(0, #59BFFF),color-stop(1, #03609f));/* Safari & Chrome*/
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#59BFFF', endColorstr='#03609f'); /*IE6 & IE7*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#59BFFF', endColorstr='#03609f')"; /* IE8 */ 

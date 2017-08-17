@@ -1,0 +1,85 @@
+﻿<HTML>
+<HEAD>
+	<TITLE> ZTREE DEMO - radio</TITLE>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="../../js/ztree/css/demo.css" type="text/css">
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="../../js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="../../js/ztree/js/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="../../js/ztree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="../../js/ztree/js/jquery.ztree.excheck.js"></script>
+	<!--
+	<script type="text/javascript" src="../../../js/jquery.ztree.exedit.js"></script>
+	-->
+	<SCRIPT type="text/javascript">
+		<!--
+		var setting = {
+			check: {
+				enable: true,
+				chkStyle: "radio",
+				radioType: "level"
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+
+		};
+
+		var zNodes =[
+			{ id:2, pId:0, name:"系统管理", open:true,nocheck:true},
+			{ id:21, pId:2, name:"超级管理员", open:true},
+			{ id:22, pId:2, name:"系统管理员", open:true},
+			{ id:23, pId:2, name:"人员管理", open:true},
+			{ id:24, pId:2, name:"登陆管理员", open:true},
+
+			{ id:3, pId:0, name:"考试管理", open:true,nocheck:true},
+			{ id:31, pId:3, name:"考试管理员", open:true},
+			{ id:32, pId:3, name:"阅卷管理员", open:true},
+			{ id:33, pId:3, name:"考题管理员", open:true},
+
+
+			{ id:4, pId:0, name:"客调管理", open:true,nocheck:true},
+			{ id:41, pId:4, name:"c网管理", open:true},
+			{ id:42, pId:4, name:"工单管理", open:true},
+			{ id:43, pId:4, name:"话务管理", open:true},
+		
+		];
+		
+		var code;		
+		function setCheck() {
+			var type = $("#level").attr("checked")? "level":"all";
+			setting.check.radioType = 'level';
+			showCode('setting.check.radioType = "' + type + '";');
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		}
+		function showCode(str) {
+			if (!code) code = $("#code");
+			code.empty();
+			code.append("<li>"+str+"</li>");
+		}
+		
+		$(document).ready(function(){
+			setCheck();			
+			$("#level").bind("change", setCheck);
+			$("#all").bind("change", setCheck);
+		});
+		//-->
+	</SCRIPT>
+</HEAD>
+
+<BODY>
+<body> 
+	<div style="">
+		<div style="border:#CCCCCC 1px solid; width:200px; height:300px; overflow:auto;">
+			<ul id="treeDemo" class="ztree">
+			</ul>
+		</div>
+		<div style=" margin-top:10px; margin-left:60px;">
+			<input type="button" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value="取消" onclick="frameElement.dialog.close();" />&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+	</div>
+</BODY>
+</HTML>

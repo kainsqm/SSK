@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItExampaperDao">
+	<resultMap id="examPaperResult" type="cn.sh.ideal.model.tExampaper">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="EXAM_PAPER_NAME" jdbcType="VARCHAR" property="examPaperName" />
+		<result column="EXAM_PAPER_SCORE" jdbcType="INTEGER" property="examPaperScore" />
+		<result column="EXAM_PAPER_REMARK" jdbcType="VARCHAR" property="examPaperRemark" />
+		<result column="EXAM_PAPER_STATUS" jdbcType="VARCHAR" property="examPaperStatus" />
+		<result column="EXAM_PAPER_PASS_RATE" jdbcType="VARCHAR"
+			property="examPaperPassRate" />
+		<result column="EXAM_PAPER_AVG_SCORE" jdbcType="VARCHAR"
+			property="examPaperAvgScore" />
+		<result column="ISINDEX" jdbcType="VARCHAR" property="isindex" />
+		<result column="EXAM_PAPER_FLAG" jdbcType="VARCHAR" property="examPaperFlag" />
+		<result column="EXAM_PAPER_TYPE" jdbcType="VARCHAR" property="examPaperType" />
+		<result column="FK_INSERT_USER_ID" jdbcType="INTEGER" property="fkInsertUserId" />
+		<result column="INSERT_TIME" jdbcType="VARCHAR" property="insertTime" />
+		<result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+	</resultMap>
+
+	<resultMap id="ScoreResultMap" type="cn.sh.ideal.model.ExamManualScore">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="WORK_ID" jdbcType="VARCHAR" property="workId" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+		<result column="EXAM_PAPER_NAME" jdbcType="VARCHAR" property="examPaperName" />
+		<result column="EXAMPAPER_ID" jdbcType="INTEGER" property="exampaperId" />
+		<result column="EXAM_ID" jdbcType="INTEGER" property="examId" />
+		<result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+		<result column="EXAMINEE_STATUS" jdbcType="VARCHAR" property="examineeStatus" />
+		<result column="EXAMPAPER_SCORE" jdbcType="INTEGER" property="exampaperScore" />
+		<result column="EXAM_TIME_LENGTH" jdbcType="INTEGER" property="examTimeLength" />
+		<result column="EXAM_QUERY" jdbcType="INTEGER" property="examQuery" />
+		<result column="EXAMINEE_STATUS_DESC" jdbcType="VARCHAR" property="examineeStatusDesc" />
+		<result column="BEGIN_TIME" jdbcType="VARCHAR" property="beginTime" />
+		<result column="SUBMIT_TIME" jdbcType="VARCHAR" property="submitTime" />
+		<result column="EXAM_BEGIN_TIME" jdbcType="VARCHAR" property="examBeginTime" />
+		<result column="EXAM_END_TIME" jdbcType="VARCHAR" property="examEndTime" />
+		<result column="FK_SCOREUSER_ID" jdbcType="INTEGER" property="fkScoreuserId" />
+		<result column="IS_INDEX" jdbcType="VARCHAR" property="isIndex" />
+		<result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+		<result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+		<result column="QUE_TYPE" jdbcType="VARCHAR" property="quesType" />
+		<result column="QUE_COUNT" jdbcType="INTEGER" property="queScore" />
+		<result column="INSERT_TIME" jdbcType="VARCHAR" property="insertTime" />
+		<result column="EXAM_PAPER_REMARK" jdbcType="VARCHAR" property="examPaperRemark" />
+		<result column="EXAM_PAPER_STATUS" jdbcType="VARCHAR" property="examPaperStatus" />
+		<result column="EXAM_PAPER_TYPE" jdbcType="VARCHAR" property="examPaperType" />
+		<result column="EXAM_PAPER_FLAG" jdbcType="VARCHAR" property="examPaperFlag" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		PK_AUTO_ID, EXAM_PAPER_NAME, EXAM_PAPER_SCORE,
+		EXAM_PAPER_REMARK,
+		EXAM_PAPER_STATUS,
+		EXAM_PAPER_PASS_RATE,
+		EXAM_PAPER_AVG_SCORE, ISINDEX, EXAM_PAPER_FLAG, EXAM_PAPER_TYPE,
+		FK_INSERT_USER_ID, INSERT_TIME, ZUHU_ID
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="examPaperResult">
+		select
+		<include refid="Base_Column_List" />
+		from t_exampaper
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		"t_exampaper"
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.sh.ideal.model.tExampaper"
+		useGeneratedKeys="true" keyProperty="pkAutoId">
+		insert into t_exampaper
+		(EXAM_PAPER_NAME, EXAM_PAPER_SCORE,
+		EXAM_PAPER_REMARK,
+		EXAM_PAPER_STATUS, EXAM_PAPER_PASS_RATE,
+		EXAM_PAPER_AVG_SCORE, ISINDEX,
+		EXAM_PAPER_FLAG,
+		EXAM_PAPER_TYPE, FK_INSERT_USER_ID, INSERT_TIME,
+		ZUHU_ID)
+		values ( #{examPaperName,jdbcType=VARCHAR},
+		#{examPaperScore,jdbcType=INTEGER},
+		#{examPaperRemark,jdbcType=VARCHAR},
+		#{examPaperStatus,jdbcType=VARCHAR},
+		#{examPaperPassRate,jdbcType=VARCHAR},
+		#{examPaperAvgScore,jdbcType=VARCHAR}, #{isindex,jdbcType=VARCHAR},
+		#{examPaperFlag,jdbcType=VARCHAR},
+		#{examPaperType,jdbcType=VARCHAR},
+		#{fkInsertUserId,jdbcType=INTEGER}, #{insertTime,jdbcType=TIMESTAMP},
+		#{zuhuId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.sh.ideal.model.tExampaper" useGeneratedKeys="true" keyProperty="pkAutoId" >
+		insert into t_exampaper
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="examPaperName != null">
+				EXAM_PAPER_NAME,
+			</if>
+			<if test="examPaperScore != null">
+				EXAM_PAPER_SCORE,
+			</if>
+			<if test="examPaperRemark != null">
+				EXAM_PAPER_REMARK,
+			</if>
+			<if test="examPaperStatus != null">
+				EXAM_PAPER_STATUS,
+			</if>
+			<if test="examPaperPassRate != null">
+				EXAM_PAPER_PASS_RATE,
+			</if>
+			<if test="examPaperAvgScore != null">
+				EXAM_PAPER_AVG_SCORE,
+			</if>
+			<if test="isindex != null">
+				ISINDEX,
+			</if>
+			<if test="examPaperFlag != null">
+				EXAM_PAPER_FLAG,
+			</if>
+			<if test="examPaperType != null">
+				EXAM_PAPER_TYPE,
+			</if>
+			<if test="fkInsertUserId != null">
+				FK_INSERT_USER_ID,
+			</if>
+			<if test="insertTime != null">
+				INSERT_TIME,
+			</if>
+			<if test="zuhuId != null">
+				ZUHU_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="examPaperName != null">
+				#{examPaperName,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperScore != null">
+				#{examPaperScore,jdbcType=INTEGER},
+			</if>
+			<if test="examPaperRemark != null">
+				#{examPaperRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperStatus != null">
+				#{examPaperStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperPassRate != null">
+				#{examPaperPassRate,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperAvgScore != null">
+				#{examPaperAvgScore,jdbcType=VARCHAR},
+			</if>
+			<if test="isindex != null">
+				#{isindex,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperFlag != null">
+				#{examPaperFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperType != null">
+				#{examPaperType,jdbcType=VARCHAR},
+			</if>
+			<if test="fkInsertUserId != null">
+				#{fkInsertUserId,jdbcType=INTEGER},
+			</if>
+			<if test="insertTime != null">
+				#{insertTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="zuhuId != null">
+				#{zuhuId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tExampaper">
+		update t_exampaper
+		<set>
+			<if test="examPaperName != null">
+				EXAM_PAPER_NAME = #{examPaperName,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperScore != null">
+				EXAM_PAPER_SCORE = #{examPaperScore,jdbcType=INTEGER},
+			</if>
+			<if test="examPaperRemark != null">
+				EXAM_PAPER_REMARK = #{examPaperRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperStatus != null">
+				EXAM_PAPER_STATUS = #{examPaperStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperPassRate != null">
+				EXAM_PAPER_PASS_RATE =
+				#{examPaperPassRate,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperAvgScore != null">
+				EXAM_PAPER_AVG_SCORE =
+				#{examPaperAvgScore,jdbcType=VARCHAR},
+			</if>
+			<if test="isindex != null">
+				ISINDEX = #{isindex,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperFlag != null">
+				EXAM_PAPER_FLAG = #{examPaperFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="examPaperType != null">
+				EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR},
+			</if>
+			<if test="fkInsertUserId != null">
+				FK_INSERT_USER_ID = #{fkInsertUserId,jdbcType=INTEGER},
+			</if>
+			<if test="insertTime != null">
+				INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="zuhuId != null">
+				ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tExampaper">
+		update
+		"t_exampaper"
+		set EXAM_PAPER_NAME = #{examPaperName,jdbcType=VARCHAR},
+		EXAM_PAPER_SCORE = #{examPaperScore,jdbcType=INTEGER},
+		EXAM_PAPER_REMARK = #{examPaperRemark,jdbcType=VARCHAR},
+		EXAM_PAPER_STATUS = #{examPaperStatus,jdbcType=VARCHAR},
+		EXAM_PAPER_PASS_RATE = #{examPaperPassRate,jdbcType=VARCHAR},
+		EXAM_PAPER_AVG_SCORE = #{examPaperAvgScore,jdbcType=VARCHAR},
+		ISINDEX =
+		#{isindex,jdbcType=VARCHAR},
+		EXAM_PAPER_FLAG =
+		#{examPaperFlag,jdbcType=VARCHAR},
+		EXAM_PAPER_TYPE =
+		#{examPaperType,jdbcType=VARCHAR},
+		FK_INSERT_USER_ID =
+		#{fkInsertUserId,jdbcType=INTEGER},
+		INSERT_TIME =
+		#{insertTime,jdbcType=TIMESTAMP},
+		ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="getPaperByExamId" parameterType="java.lang.String"
+		resultMap="examPaperResult">
+		select e.FK_EXAMPAPER_ID as PK_AUTO_ID , t.EXAM_PAPER_NAME
+		as
+		EXAM_PAPER_NAME
+		from t_exampaper t , t_exam_exampaper e
+		where
+		t.PK_AUTO_ID =
+		e.FK_EXAMPAPER_ID
+		and e.FK_EXAM_ID =
+		#{pkAutoId,jdbcType=INTEGER}
+	</select>
+
+
+	<select id="getExampapers" parameterType="cn.sh.ideal.model.tExampaper"
+		resultMap="examPaperResult">
+		SELECT
+		PK_AUTO_ID,
+		EXAM_PAPER_NAME,
+		EXAM_PAPER_SCORE,
+		EXAM_PAPER_REMARK,
+		if(EXAM_PAPER_STATUS=1,'有效','无效') as EXAM_PAPER_STATUS,
+		EXAM_PAPER_PASS_RATE,
+		EXAM_PAPER_AVG_SCORE,
+		ISINDEX,
+		EXAM_PAPER_FLAG,
+		(select name from t_sys_code where PK_AUTO_ID=EXAM_PAPER_TYPE) as
+		EXAM_PAPER_TYPE,
+		FK_INSERT_USER_ID,
+		INSERT_TIME,
+		ZUHU_ID
+		<include refid="Base_Column_List" />
+		from t_exampaper
+		where 1=1
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperName != null and examPaperName !=''">
+			and EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="getExampaperRandomList" parameterType="cn.sh.ideal.model.tExampaper"
+		resultMap="ScoreResultMap">
+		SELECT  DISTINCT 
+		e.PK_AUTO_ID,
+		e.EXAM_PAPER_NAME,
+		e.EXAM_PAPER_REMARK,
+		e.FK_INSERT_USER_ID,
+		e.EXAM_PAPER_TYPE,
+		e.EXAM_PAPER_STATUS,
+		DATE_FORMAT(e.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		v.USER_NAME
+		FROM
+		t_exampaper e
+		LEFT JOIN t_exampaper_random r
+		ON e.`PK_AUTO_ID` =r.`FK_EXAMPAPER_ID`
+		LEFT JOIN sh_kd_zj_test1.v_sysuser v ON v.user_id = e.`FK_INSERT_USER_ID`
+		WHERE 1 = 1
+		AND e.EXAM_PAPER_STATUS = '1'
+		AND e.EXAM_PAPER_FLAG = '2'
+		AND r.ENABLED = '1'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="getExampaperRandomCount" parameterType="cn.sh.ideal.model.tExampaper"
+		resultType="java.lang.Integer">
+		SELECT  DISTINCT 
+		count(1)
+		FROM
+		t_exampaper e
+		LEFT JOIN t_exampaper_random r
+		ON
+		e.`PK_AUTO_ID` =r.`FK_EXAMPAPER_ID`
+		LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id = e.`FK_INSERT_USER_ID`
+		WHERE 1 = 1
+		AND e.EXAM_PAPER_STATUS = '1'
+		AND r.ENABLED = '1'
+		AND e.EXAM_PAPER_FLAG = '2'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+
+
+
+	<select id="getExampaperList" parameterType="cn.sh.ideal.model.tExampaper"
+		resultMap="ScoreResultMap">
+		SELECT
+		e.PK_AUTO_ID,
+		e.EXAM_PAPER_NAME,
+		e.EXAM_PAPER_REMARK,
+		e.FK_INSERT_USER_ID,
+		e.EXAM_PAPER_TYPE,
+		e.EXAM_PAPER_STATUS,
+		DATE_FORMAT(e.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		v.USER_NAME
+		FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID`
+		where 1=1 and e.EXAM_PAPER_STATUS='1'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+
+	<select id="getExampaperCount" parameterType="cn.sh.ideal.model.tExampaper"
+		resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID`
+		where 1=1 and e.EXAM_PAPER_STATUS='1'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="selectByCodeId" parameterType="java.lang.Integer"
+		resultMap="examPaperResult">
+		select
+		<include refid="Base_Column_List" />
+		from t_exampaper
+		where EXAM_PAPER_TYPE = #{pkAutoId,jdbcType=INTEGER}
+	</select>
+	
+	
+	
+	<select id="queryExampapersList" parameterType="cn.sh.ideal.model.tExampaper"
+		resultMap="ScoreResultMap">
+		SELECT
+		e.PK_AUTO_ID,
+		e.EXAM_PAPER_NAME,
+		e.EXAM_PAPER_REMARK,
+		e.FK_INSERT_USER_ID,
+		e.EXAM_PAPER_FLAG,
+		e.EXAM_PAPER_TYPE,
+		e.EXAM_PAPER_STATUS,
+		DATE_FORMAT(e.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		v.USER_NAME
+		FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID`
+		where 1=1 and e.EXAM_PAPER_STATUS='1'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+		order by e.PK_AUTO_ID desc
+	</select>
+
+
+	<select id="queryExampapersCount" parameterType="cn.sh.ideal.model.tExampaper"
+		resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID`
+		where 1=1 and e.EXAM_PAPER_STATUS='1'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="checkExampaperExaminee" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select 
+		  count(1) 
+		from
+		  t_exampaper 
+		where pk_auto_id in 
+		  (select 
+		    pk_auto_id 
+		  from
+		    t_exampaper 
+		  where pk_auto_id in 
+		    (select 
+		      FK_EXAMPAPER_ID 
+		    from
+		      t_exam_exampaper 
+		    where pk_auto_id in 
+		      (select 
+		        FK_EXAM_EXAMPAPER_ID 
+		      from
+		        t_exam_exampaper_examine 
+		      where ENABLED = 1 
+		        AND examinee_status &lt;&gt; '-1'))) 
+		  and pk_auto_id = #{pkAutoId,jdbcType=INTEGER}
+	</select>
+	
+	
+	<select id="checkExampaperName" parameterType="java.lang.String" resultType="java.lang.Integer" >
+		select count(1) from t_exampaper t where t.EXAM_PAPER_NAME =#{examPaperName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectExampapersList" parameterType="cn.sh.ideal.model.tExampaper" resultMap="ScoreResultMap">
+		SELECT
+		e.PK_AUTO_ID,
+		e.EXAM_PAPER_NAME,
+		e.EXAM_PAPER_REMARK,
+		e.FK_INSERT_USER_ID,
+		e.EXAM_PAPER_FLAG,
+		e.EXAM_PAPER_TYPE,
+		e.EXAM_PAPER_STATUS,
+		DATE_FORMAT(e.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		v.USER_NAME
+		FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID`
+		where 1=1 and e.EXAM_PAPER_STATUS='1' and e.EXAM_PAPER_FLAG !='2'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="selectExampapersCount" parameterType="cn.sh.ideal.model.tExampaper" resultType="java.lang.Integer">
+		SELECT count(1) FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID` 
+		where 1=1 and e.EXAM_PAPER_STATUS='1' and e.EXAM_PAPER_FLAG !='2'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="selectRandomExampapersList" parameterType="cn.sh.ideal.model.tExampaper" resultMap="ScoreResultMap">
+		SELECT
+		e.PK_AUTO_ID,
+		e.EXAM_PAPER_NAME,
+		e.EXAM_PAPER_REMARK,
+		e.FK_INSERT_USER_ID,
+		e.EXAM_PAPER_FLAG,
+		e.EXAM_PAPER_TYPE,
+		e.EXAM_PAPER_STATUS,
+		DATE_FORMAT(e.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		v.USER_NAME
+		FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID`
+		where 1=1 and e.EXAM_PAPER_STATUS='1' and e.EXAM_PAPER_FLAG!='2'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="selectRandomExampapersCount" parameterType="cn.sh.ideal.model.tExampaper" resultType="java.lang.Integer">
+		SELECT count(1) FROM t_exampaper e LEFT JOIN sh_kd_zj_test1.v_sysuser v ON
+		v.user_id =
+		e.`FK_INSERT_USER_ID` 
+		where 1=1 and e.EXAM_PAPER_STATUS='1'  and e.EXAM_PAPER_FLAG!='2'
+		<if test="examPaperName != null and examPaperName !=''">
+			and e.EXAM_PAPER_NAME like'%${examPaperName}%'
+		</if>
+		<if test="pkAutoId != null and pkAutoId !=''">
+			and e.PK_AUTO_ID like'%${pkAutoId}%'
+		</if>
+		<if test="examPaperStatus != null and examPaperStatus !=''">
+			and e.EXAM_PAPER_STATUS =
+			#{examPaperStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperType != null and examPaperType !=''">
+			and e.EXAM_PAPER_TYPE = #{examPaperType,jdbcType=VARCHAR}
+		</if>
+		<if test="examPaperRemark != null and examPaperRemark !=''">
+			and e.EXAM_PAPER_REMARK =
+			#{examPaperRemark,jdbcType=VARCHAR}
+		</if>
+		<if test="fkInsertUserId != null and fkInsertUserId !=''">
+			and e.FK_INSERT_USER_ID =
+			#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="zuhuId != null and zuhuId !=''">
+			and e.ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		</if>
+	</select>
+</mapper>

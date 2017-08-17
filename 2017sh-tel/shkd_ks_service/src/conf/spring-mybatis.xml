@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+ 	<!-- 引入配置文件 -->
+    <context:property-placeholder location="classpath:conf/jdbc.properties" />
+	<bean id="DataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc_driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc_url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc_username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc_password}</value>
+		</property>
+		<!-- 连接池最大使用连接数 -->
+		<property name="maxActive">
+			<value>3</value>
+		</property>
+		<!-- 初始化连接大小 -->
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait">
+			<value>60000</value>
+		</property>
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle">
+			<value>20</value>
+		</property>
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle">
+			<value>3</value>
+		</property>
+		<!-- 自动清除无用连接 -->
+		<property name="removeAbandoned">
+			<value>true</value>
+		</property>
+		<!-- 清除无用连接的等待时间 -->
+		<property name="removeAbandonedTimeout">
+			<value>180</value>
+		</property>
+		<!-- 连接属性 -->
+		<property name="connectionProperties">
+			<value>clientEncoding=UTF-8</value>
+		</property>
+	</bean>
+	
+
+	<!-- 1.SqlSessionFactory 有一个单独的必须属性,就是 JDBC 的 DataSource
+	2.一个通用的属性是 configLocation,它是用来指定 MyBatis 的 XML 配置文件路径的 ; SqlSessionFactory对象一个必要的属性是Configuration对象
+	3. mapperLocations 所有配置的mapper文件 --> 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath:cn/sh/ideal/dao/mapper/*.xml" />
+		<property name="plugins">
+		    <array>
+		      <bean class="com.github.pagehelper.PageHelper">
+		        <property name="properties">
+		          <value>
+		             dialect=mysql
+		          </value>
+		        </property>
+		      </bean>
+		    </array>
+  </property>
+		<!-- <property name="configLocation" value="classpath:conf/mybatis-config.xml" /> -->
+	</bean>
+
+	<!-- 1.basePackage 属性指定映射器接口，用于实现此接口并生成映射器对象
+	2.MapperScannerConfigurer 去扫描所有的mapper 接口-->
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.sh.ideal.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	
+	
+	<!-- 对数据源进行事务管理 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="DataSource" />
+
+    <!-- 拦截器方式配置事物 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+     <!--    propagation="REQUIRED"代表支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择 -->
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="edit*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="release*" propagation="REQUIRED" />
+            <tx:method name="upd*" propagation="REQUIRED" />
+            <tx:method name="remove*" propagation="REQUIRED" />
+            <tx:method name="batchDelete*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="*Delete" propagation="REQUIRED" />
+            <tx:method name="batchAdd*" propagation="REQUIRED" />
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="query*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="*" propagation="REQUIRED" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    <!--  配置参与事务的类 -->
+    <aop:config> 
+  <!--    其中第一个*代表返回值，第二*代表service下子包，第三个*代表方法名，“（..）”代表方法参数。 -->
+        <aop:pointcut id="executeService" expression="execution(* cn.sh.ideal.service.impl.*mpl.*(..))"/> 
+       <!--   aop:advisor标签就是把上面我们所配置的事务管理两部分属性整合起来作为整个事务管理 -->
+        <aop:advisor pointcut-ref="executeService" advice-ref="transactionAdvice"/> 
+    </aop:config> 
+    	
+	<!-- <bean id="functionService" class="cn.sh.ideal.service.impl.FunctionServiceImpl"></bean> -->
+
+	 <import resource="spring-task.xml"/> 
+</beans>

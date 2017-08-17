@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.CnetVerdictDao">
+
+	<resultMap type="cn.sh.ideal.model.CnetVerdict" id="BaseResultMap">
+		<result column="TASK_ID" javaType="INTEGER" property="taskId" />
+		<result column="TASK_NAME" jdbcType="VARCHAR" property="taskName" />
+		<result column="QC_USER" jdbcType="VARCHAR" property="qcUser" />
+		<result column="QC_USER_NAME" jdbcType="VARCHAR" property="qcUserName" />
+		<result column="TEL_USER" jdbcType="VARCHAR" property="telUser" />
+		<result column="TEL_USER_NAME" jdbcType="VARCHAR" property="telUserName" />
+		<result column="TASK_STATUS" jdbcType="VARCHAR" property="taskStatus" />
+		<result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+		<result column="IS_PUBLISH" jdbcType="VARCHAR" property="isPublish" />
+		<result column="TASK_START_TIME" property="taskStartTime"
+			jdbcType="VARCHAR" />
+		<result column="TASK_END_TIME" property="taskEndTime" jdbcType="VARCHAR" />
+		<result column="CSR_TOP_D_COUNT" property="csrTopDCount"
+			jdbcType="VARCHAR" />
+		<result column="CHECK_COUNT" property="checkCount" jdbcType="VARCHAR" />
+		<result column="BUSSNIESS_TYPE" property="bussniessType"
+			jdbcType="VARCHAR" />
+		<result column="TELSUM_TYPE" property="telsumType" jdbcType="VARCHAR" />
+		<result column="GZLY_TYPE" property="gzlyType" jdbcType="VARCHAR" />
+		<result column="CREATE_USER_ID" property="createUserId"
+			jdbcType="INTEGER" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="UPDATE_USER_ID" property="updateUserId"
+			jdbcType="INTEGER" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+		<result column="creatStartTime" property="creatStartTime" />
+		<result column="creatEndTime" property="creatEndTime" />
+		<result column="qcworkid" property="qcworkid" />
+	</resultMap>
+
+	<resultMap id="queryListForQcResultMap" type="cn.sh.ideal.model.CdmaTaskComplete">
+		<result column="TASK_ID" javaType="INTEGER" property="taskId" />
+		<result column="TASKUSER_ID" property="taskuserId" jdbcType="VARCHAR" />
+		<result column="TASK_NAME" property="taskName" jdbcType="VARCHAR" />
+		<result column="TASK_START_TIME" property="taskStartTime"
+			jdbcType="VARCHAR" />
+		<result column="TASK_END_TIME" property="taskEndTime" jdbcType="VARCHAR" />
+		<result column="EACH_QCUSER_STATUS" property="eachQcuserStatus"
+			jdbcType="VARCHAR" />
+		<result column="QC_USER" property="qcUserWorkId" jdbcType="VARCHAR" />
+		<result column="CREATE_USER_WORKID" property="createUserWorkId"
+			jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="qcUserName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap type="cn.sh.ideal.model.UserInfo" id="userWorkResultMap">
+		<result column="Smail_workid" jdbcType="VARCHAR" property="smailWorkid" />
+	</resultMap>
+
+  
+    <resultMap type="cn.sh.ideal.model.CdmaTaskComplete" id="taskCompleteInfo">
+		<result column="taskuser_id" property="taskuserId" jdbcType="INTEGER" />
+		<result column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="QC_NAME" property="qcUserName" jdbcType="INTEGER" />
+		<result column="USERID" property="qcUser" jdbcType="VARCHAR" />
+		<result column="get_record_count" property="getRecordCount"
+			jdbcType="VARCHAR" />
+		<result column="complete_count" property="completeCount"
+			jdbcType="VARCHAR" />
+		<result column="each_qcuser_status" property="eachQcuserStatus"
+			jdbcType="VARCHAR" />
+		<result column="TASK_TYPE" property="tasktype"
+			jdbcType="VARCHAR" />	
+	</resultMap>
+  
+  
+  <resultMap type="cn.sh.ideal.model.CdmaTaskComplete" id="getTaskInfoByCdma">
+		<result column="TASK_ID" property="taskId" jdbcType="INTEGER" />
+		<result column="TASKUSER_ID" property="taskuserId" jdbcType="VARCHAR" />
+		<result column="WHICHDATEFORTASK" property="cDate" jdbcType="VARCHAR" />
+        <result column="CSR_TOP_D_COUNT" property="qcDCount" jdbcType="VARCHAR" />
+	    <result column="TASK_START_TIME" property="taskStartTime" jdbcType="VARCHAR" />
+	    <result column="TASK_END_TIME" property="taskEndTime" jdbcType="VARCHAR" />
+	</resultMap>
+  
+  
+    <resultMap type="cn.sh.ideal.model.CdmaTaskComplete" id="taskCompleteInforc">
+		<result column="complete_id" property="completeID" jdbcType="VARCHAR" />
+		<result column="taskuser_id" property="taskuserId" jdbcType="VARCHAR" />
+		<result column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="cDate" property="cDate" jdbcType="VARCHAR" />
+		<result column="get_record_count" property="getRecordCount"
+			jdbcType="VARCHAR" />
+		<result column="complete_count" property="completeCount"
+			jdbcType="VARCHAR" />
+		<result column="each_date_status" property="eachDateStatus" 
+			jdbcType="VARCHAR" />
+		<result column="qc_d_count" property="qcDCount" jdbcType="VARCHAR" />
+	</resultMap>
+ 
+
+	<resultMap type="cn.sh.ideal.model.WorkOrderCdmaSum" id="queryCnetVerdictMap">
+		<result column="cdma_autoid" jdbcType="INTEGER" property="cdmaAutoid" />
+		<result column="serial_cdma" jdbcType="INTEGER" property="serialCdma" />
+		<result column="service_type" jdbcType="VARCHAR" property="serviceType" />
+		<result column="result_type" jdbcType="VARCHAR" property="resultType" />
+		<result column="complaint_source" jdbcType="VARCHAR" property="complaintSource" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="Dir_num" jdbcType="VARCHAR" property="dirNum" />
+		<result column="result_serial" jdbcType="VARCHAR" property="resultSerial" />
+		<result column="result_time" jdbcType="VARCHAR" property="resultTime" />
+		<result column="op_id" jdbcType="VARCHAR" property="opId" />
+		<result column="ISQC" jdbcType="VARCHAR" property="isQC" />
+	</resultMap>
+
+
+	<resultMap type="cn.sh.ideal.model.CnetVerdict" id="queryTaskGetResultMap">
+		<result column="tel_user" property="telUser" jdbcType="VARCHAR" />
+		<result column="CHECK_COUNT" property="checkCount" jdbcType="VARCHAR" />
+		<result column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="QC_USER_ID" property="qcUser" jdbcType="VARCHAR" />
+		<result column="CSR_TOP_D_COUNT" property="csrTopDCount"
+			jdbcType="VARCHAR" />
+		<result column="get_record_count" property="getRecordCount"
+			jdbcType="VARCHAR" />
+		<result column="BUSSNIESS_TYPE" property="bussniessType"
+			jdbcType="VARCHAR" />
+		<result column="TELSUM_TYPE" property="telsumType"
+			jdbcType="VARCHAR" />
+		<result column="GZLY_TYPE" property="gzlyType"
+			jdbcType="VARCHAR" />
+		<result column="COMPLETE_COUNT" property="completeCount"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<select id="getcNetVerdictList" parameterType="cn.sh.ideal.model.CnetVerdict"
+		resultMap="BaseResultMap">
+		select TASK_ID,
+		TASK_NAME,
+		QC_USER,
+		TASK_STATUS,
+		DATE_FORMAT(qc.CREATE_TIME,'%Y-%m-%d') CREATE_TIME,
+		IS_PUBLISH,
+		TASK_START_TIME,
+		TASK_END_TIME,
+		BUSSNIESS_TYPE,
+		TELSUM_TYPE,
+		GZLY_TYPE,
+		(select work_id from t_sys_user where
+		user_id=qc.CREATE_USER_ID) as qcworkid
+		from t_qc_cwxjtask qc
+		where 1=1 and qc.ENABLED='1'
+		<if test="taskId != null and taskId !='' ">
+			and qc.TASK_ID=#{taskId,jdbcType=INTEGER}
+		</if>
+		<if test="taskName != null and taskName !=''">
+			and qc.TASK_NAME like '%${taskName}%'
+		</if>
+		<if test="qcUser != null and qcUser !=''">
+			and qc.QC_USER like '%${qcUser}%'
+		</if>
+		<if test="taskStatus != null and taskStatus !=''">
+			and qc.TASK_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="creatStartTime != null and creatStartTime !=''">
+			and DATE_FORMAT(qc.CREATE_TIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{creatStartTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="creatEndTime != null and creatEndTime !=''">
+			and DATE_FORMAT(qc.CREATE_TIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{creatEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		order by qc.TASK_ID desc
+	</select>
+ 
+
+	<select id="getcNetVerdictListCount" parameterType="cn.sh.ideal.model.CnetVerdict"
+		resultType="java.lang.Integer">
+		select count(1)
+		from t_qc_cwxjtask qc
+		where 1=1 and qc.ENABLED='1'
+		<if test="taskId != null and taskId !='' ">
+			and qc.TASK_ID=#{taskId,jdbcType=INTEGER}
+		</if>
+		<if test="taskName != null and taskName !=''">
+			and qc.TASK_NAME like '%${taskName}%'
+		</if>
+		<if test="qcUser != null and qcUser !=''">
+			and qc.QC_USER like '%${qcUser}%'
+		</if>
+		<if test="taskStatus != null and taskStatus !=''">
+			and qc.TASK_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="creatStartTime != null and creatStartTime !=''">
+			and DATE_FORMAT(qc.CREATE_TIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{creatStartTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="creatEndTime != null and creatEndTime !=''">
+			and DATE_FORMAT(qc.CREATE_TIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{creatEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+	</select>
+
+
+	<select id="getServiceType" resultType="cn.sh.ideal.model.Modeltype">
+		select distinct
+		service_type text,service_type id
+		from t_workorder_cdma_sum where
+		service_type !=''
+	</select>
+
+	<select id="getResultType" resultType="cn.sh.ideal.model.Modeltype">
+		select distinct
+		result_type text,result_type id
+		from t_workorder_cdma_sum where
+		result_type !=''
+	</select>
+
+	<select id="getComplaintSource" resultType="cn.sh.ideal.model.Modeltype">
+		select distinct
+		complaint_source text,complaint_source id
+		from t_workorder_cdma_sum
+		where complaint_source !=''
+	</select>
+
+	<select id="checkCnetTaskName" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(*) from t_qc_ordercwtask where
+		TASK_NAME=#{taskName,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="addCnetorderTask" parameterType="cn.sh.ideal.model.CnetVerdict"
+		useGeneratedKeys="true" keyProperty="taskId">
+		insert into t_qc_cwxjtask (
+		TASK_NAME,
+		QC_USER,
+		QC_USER_NAME,
+		TEL_USER,
+		TEL_USER_NAME,
+		TASK_STATUS,
+		IS_PUBLISH,
+		TASK_START_TIME,
+		TASK_END_TIME,
+		CSR_TOP_D_COUNT,
+		CHECK_COUNT,
+		BUSSNIESS_TYPE,
+		TELSUM_TYPE,
+		GZLY_TYPE,
+		CREATE_USER_ID,
+		CREATE_TIME
+		)
+		values
+		(#{taskName,jdbcType=VARCHAR},
+		#{qcUserWorkId,jdbcType=VARCHAR},#{qcUserName,jdbcType=VARCHAR},#{telUser,jdbcType=VARCHAR},
+		#{telUserName,jdbcType=VARCHAR},#{taskStatus,jdbcType=VARCHAR},#{isPublish,jdbcType=VARCHAR},
+		#{taskStartTime,jdbcType=DATE},#{taskEndTime,jdbcType=DATE},#{csrTopDCount,jdbcType=VARCHAR},
+		#{checkCount,jdbcType=VARCHAR},#{bussniessType,jdbcType=VARCHAR},#{telsumType,jdbcType=VARCHAR},
+		#{gzlyType,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},now())
+	</insert>
+
+	<insert id="insertCnetordertaskUser" useGeneratedKeys="true"
+		keyProperty="taskuserId" parameterType="cn.sh.ideal.model.CnetVerdict">
+		insert into
+		T_QC_TASK_QCUSER(QC_USER_ID,TASK_ID,GET_RECORD_COUNT,COMPLETE_COUNT,
+		EACH_QCUSER_STATUS,TASK_TYPE)
+		values(
+		#{qcUser,jdbcType=VARCHAR},#{taskId,jdbcType=VARCHAR},#{getRecordCount,jdbcType=VARCHAR},#{completeCount,jdbcType=VARCHAR},
+		#{eachQcuserStatus,jdbcType=VARCHAR},#{tasktype,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertToTaskCnetorderuserComplete" parameterType="cn.sh.ideal.model.CnetVerdict">
+		insert into
+		T_QC_TASKQCUSER_COMPLETE(TASKUSER_ID,TASK_ID,GET_RECORD_COUNT,COMPLETE_COUNT,EACH_DATE_STATUS,CDATE,TASK_TYPE)
+		values(
+		#{taskuserId,jdbcType=VARCHAR},#{taskId,jdbcType=VARCHAR},#{getRecordCount,jdbcType=VARCHAR},#{completeCount,jdbcType=VARCHAR},'2',#{cDate,jdbcType=DATE},#{tasktype,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="getCnetorderTaskbyid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select TASK_ID,
+		TASK_NAME,
+		QC_USER,
+		QC_USER_NAME,
+		TEL_USER,
+		TEL_USER_NAME,
+		ENABLED,
+		TASK_STATUS,
+		DATE_FORMAT(CREATE_TIME,'%Y-%m-%d') CREATE_TIME,
+		IS_PUBLISH,
+		TASK_START_TIME,
+		TASK_END_TIME,
+		CSR_TOP_D_COUNT,
+		CHECK_COUNT,
+		BUSSNIESS_TYPE,
+		TELSUM_TYPE,
+		GZLY_TYPE,
+		CREATE_USER_ID
+		from t_qc_cwxjtask where TASK_ID=#{taskId,jdbcType=INTEGER}
+
+	</select>
+	<update id="updCnetOrderTask" parameterType="cn.sh.ideal.model.CnetVerdict">
+		update t_qc_cwxjtask set
+		TASK_NAME=#{taskName,jdbcType=VARCHAR},
+		QC_USER=#{qcUserWorkId,jdbcType=VARCHAR},
+		QC_USER_NAME=#{qcUserName,jdbcType=VARCHAR},
+		TEL_USER=#{telUser,jdbcType=VARCHAR},
+		TEL_USER_NAME=#{telUserName,jdbcType=VARCHAR},
+		TASK_STATUS=#{taskStatus,jdbcType=VARCHAR},
+		IS_PUBLISH=#{taskStatus,jdbcType=VARCHAR},
+		TASK_START_TIME=#{taskStartTime,jdbcType=DATE},
+		TASK_END_TIME=#{taskEndTime,jdbcType=DATE},
+		CSR_TOP_D_COUNT=#{csrTopDCount,jdbcType=VARCHAR},
+		CHECK_COUNT=#{checkCount,jdbcType=VARCHAR},
+		BUSSNIESS_TYPE=#{bussniessType,jdbcType=VARCHAR},
+		TELSUM_TYPE=#{telsumType,jdbcType=VARCHAR},
+		GZLY_TYPE=#{gzlyType,jdbcType=VARCHAR},
+		UPDATE_USER_ID=#{createUserId,jdbcType=VARCHAR},
+		UPDATE_TIME=now() where TASK_ID=#{taskId,jdbcType=INTEGER}
+	</update>
+
+
+	<update id="releaseCnetver" parameterType="java.util.Map">
+		UPDATE t_workorder_cdma_sum r
+		SET r.ISTASK = '0'
+		WHERE r.cdma_autoid IN
+		(SELECT T.TELNUM_ID
+		FROM T_QC_TASKRECORD T INNER JOIN
+		T_QC_TASK_QCUSER
+		TQ
+		ON T.TASKUSER_ID=TQ.TASKUSER_ID
+		WHERE 1=1 and t.ORDER_TYPE='4'
+		and tq.TASK_TYPE='4'
+		<if test="taskId != null and taskId!=''">
+			and T.TASK_ID = #{taskId,jdbcType=VARCHAR}
+		</if>
+		<if test="qcUser != null and qcUser!=''">
+			and TQ.QC_USER_ID = #{qcUser,jdbcType=VARCHAR}
+		</if>
+		<if test="cDate != null and cDate!=''">
+			and T.WHICHDATEFORTASK =
+			DATE_FORMAT(#{cDate,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="isqc != null and isqc!=''">
+			and T.ISQC = #{isqc,jdbcType=VARCHAR}
+		</if>
+		)
+	</update>
+
+
+	<delete id="releaseRecordByCnetver" parameterType="java.util.Map">
+		DELETE FROM T_QC_TASKRECORD
+		WHERE 1=1 and ORDER_TYPE='4' and
+		TASKUSER_ID=(SELECT
+		TASKUSER_ID FROM T_QC_TASK_QCUSER TQ WHERE
+		TASKUSER_ID=TQ.TASKUSER_ID and TASK_TYPE='4'
+		AND TQ.QC_USER_ID =
+		#{qcUser,jdbcType=VARCHAR} and tq.TASK_ID =
+		#{taskId,jdbcType=VARCHAR})
+		<if test="taskId != null and taskId!=''">
+			and TASK_ID = #{taskId,jdbcType=VARCHAR}
+		</if>
+		<if test="cDate != null and cDate!=''">
+			and WHICHDATEFORTASK =
+			DATE_FORMAT(#{cDate,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="isqc != null and isqc!=''">
+			and ISQC = #{isqc,jdbcType=VARCHAR}
+		</if>
+	</delete>
+
+	<update id="deleteCnetverdict">
+		update t_qc_cwxjtask set ENABLED='0',UPDATE_TIME=now() where TASK_ID=#{taskId} 
+	</update>
+
+	<delete id="delTaskQcuser" parameterType="java.util.Map">
+		DELETE FROM
+		T_QC_TASK_QCUSER WHERE TASK_ID = #{taskId,jdbcType=VARCHAR} and
+		TASK_TYPE=4
+	</delete>
+
+	<delete id="delTaskQcuserComplete" parameterType="java.util.Map">
+		DELETE FROM
+		T_QC_TASKQCUSER_COMPLETE WHERE TASK_ID =#{taskId,jdbcType=VARCHAR} and
+		TASK_TYPE=4
+	</delete>
+
+
+	<select id="queryListForQc" resultMap="queryListForQcResultMap"
+		parameterType="java.util.Map">
+		select TQT.TASK_ID,
+		(select u.WORK_ID from t_sys_user u where
+		u.USER_ID=TQT.CREATE_USER_ID) CREATE_USER_WORKID,
+		(select u.USER_NAME
+		from
+		t_sys_user u where
+		u.USER_ID =
+		TQT.CREATE_USER_ID) USER_NAME,
+		TQT.TASK_STATUS,
+		TQT.TASK_NAME,
+		TQT.TASK_START_TIME,
+		TQT.TASK_END_TIME,
+		TAQ.TASKUSER_ID,
+		TQT.QC_USER,
+		TAQ.TASK_ID,
+		TAQ.EACH_QCUSER_STATUS
+		from
+		T_QC_TASK_QCUSER TAQ
+		LEFT JOIN t_qc_cwxjtask TQT ON TAQ.TASK_ID
+		=TQT.TASK_ID
+		where
+		TQT.ENABLED = '1'
+		AND TQT.TASK_STATUS != '0'
+		AND
+		TAQ.TASK_TYPE='4'
+		<if test="taskId != null and taskId!=''">
+			and TQT.TASK_ID=#{taskId,jdbcType=INTEGER}
+		</if>
+		<if test="taskName != null and taskName!=''">
+			and TQT.TASK_NAME like '%${taskName}%'
+		</if>
+		<if test="qcUserId != null and qcUserId!=''">
+			and TAQ.QC_USER_ID =#{qcUserId,jdbcType=VARCHAR}
+		</if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and TAQ.EACH_QCUSER_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="taskStartTime != null and taskStartTime!=''">
+			and DATE_FORMAT(TQT.TASK_START_TIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{taskStartTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="taskSEndTime != null and taskSEndTime!=''">
+			and DATE_FORMAT(TQT.TASK_END_TIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{taskSEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		ORDER BY TQT.TASK_ID DESC
+	</select>
+
+	<select id="queryListForQcCount" parameterType="java.util.Map"
+		resultType="Integer">
+		select count(*)
+		from
+		T_QC_TASK_QCUSER TAQ
+		LEFT JOIN t_qc_cwxjtask TQT ON
+		TAQ.TASK_ID =TQT.TASK_ID
+		where
+		TQT.ENABLED = '1'
+		AND TQT.TASK_STATUS !=
+		'0'
+		AND TAQ.TASK_TYPE='4'
+		<if test="taskId != null and taskId!=''">
+			and TQT.TASK_ID=#{taskId,jdbcType=INTEGER}
+		</if>
+		<if test="taskName != null and taskName!=''">
+			and TQT.TASK_NAME like '%${taskName}%'
+		</if>
+		<if test="qcUserId != null and qcUserId!=''">
+			and TAQ.QC_USER_ID =#{qcUserId,jdbcType=VARCHAR}
+		</if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and TAQ.EACH_QCUSER_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="taskStartTime != null and taskStartTime!=''">
+			and DATE_FORMAT(TQT.TASK_START_TIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{taskStartTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="taskSEndTime != null and taskSEndTime!=''">
+			and DATE_FORMAT(TQT.TASK_END_TIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{taskSEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+	</select>
+
+
+
+	<select id="queryTaskGetCondition" resultMap="queryTaskGetResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		tqt.TEL_USER,
+		tqt.CHECK_COUNT,
+		tqt.CSR_TOP_D_COUNT,
+		tqt.BUSSNIESS_TYPE,
+		tqt.TELSUM_TYPE,
+		tqt.GZLY_TYPE,
+		ut.task_id,
+		ut.QC_USER_ID,
+		ut.get_record_count,
+		ut.COMPLETE_COUNT
+		FROM
+		t_qc_cwxjtask tqt, t_qc_task_qcuser ut
+		WHERE
+		tqt.task_id = ut.task_id
+		and ut.TASK_TYPE='4'
+		AND ut.taskuser_id =
+		#{taskUserId,jdbcType=VARCHAR}
+	</select>
+
+
+	<select id="quertSmainWorkIdByUserid" resultMap="userWorkResultMap">
+		SELECT t.Smail_workid FROM t_sys_user t WHERE t.ENABLED='1'
+		AND t.Pid IN (${userId})
+	</select>
+
+	<!-- 直接执行SQL -->
+	<select id="getResultHWCount" parameterType="java.util.Map"
+		resultType="Integer">
+		${sql}
+	</select>
+
+	<!-- 直接执行SQL 获取C网电话小结工单 -->
+	<select id="getLingQuCnetVerdict" parameterType="java.util.Map"
+		resultMap="queryCnetVerdictMap">
+		${sqlmore}
+	</select>
+
+	<!-- 直接执行SQL -->
+	<select id="getResultCdmaSumCount" parameterType="java.util.Map"
+		resultType="Integer">
+		${sqlresult}
+	</select>
+
+	<!-- 直接执行SQL 每人获取一条 -->
+	<select id="getCdmaSumEveryOne" parameterType="java.util.Map"
+		resultMap="queryCnetVerdictMap">
+		${everyonesql}
+	</select>
+
+	<!-- 直接执行SQL 随机抽取剩下的电话小结 -->
+	<select id="randomGetCdmaSum" parameterType="java.util.Map"
+		resultMap="queryCnetVerdictMap">
+		${randomGetCdmasql}
+	</select>
+
+
+	<select id="searchCdmaSumToGet" parameterType="java.util.Map"
+		resultMap="queryCnetVerdictMap">
+		SELECT
+		tcs.cdma_autoid,
+		tcs.serial_cdma,
+		DATE_FORMAT(tcs.result_time,'%Y-%m-%d %H:%i:%s')
+		result_time,
+		tcs.service_type,
+		tcs.result_type,
+		tcs.complaint_source,
+		tcs.remark,
+		tcs.Dir_num,
+		tcs.result_serial,
+		tcs.op_id
+		from
+		t_workorder_cdma_sum tcs
+		where tcs.serial_cdma != ' '
+		and
+		tcs.cdma_autoid in
+		(${searchCdma})
+		limit 0,10
+	</select>
+
+
+	<select id="searchCdmaSumToGetCount" parameterType="java.util.Map"
+		resultType="Integer">
+		SELECT count(*)
+		from t_workorder_cdma_sum tcs
+		where
+		tcs.serial_cdma != ' '
+		and tcs.cdma_autoid in
+		(${searchCdma})
+		limit 0,10
+	</select>
+
+
+	<select id="cdmaGetCount" parameterType="java.util.Map"
+		resultType="String">
+		select t.get_record_count
+		from t_qc_taskqcuser_complete t
+		where t.taskuser_id = #{taskUserId,jdbcType=VARCHAR}
+		and t.cdate
+		=DATE_FORMAT(#{taskTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+		and
+		t.TASK_TYPE='4'
+	</select>
+	
+	
+	<select id="getCdmaSumVerification" parameterType="java.util.Map"
+		resultType="Integer">
+		select count(*)
+		from t_qc_taskrecord TR inner join T_QC_TASK_QCUSER tq
+		on tr.TASKUSER_ID=tq.TASKUSER_ID
+		where 1=1
+		and TR.ORDER_TYPE=4
+		and tq.TASK_TYPE='4'
+		<if test="taskId != null and taskId!=''">
+			and TR.TASK_ID=#{taskId,jdbcType=INTEGER}  
+		</if>
+		<if test="telUser != null and telUser!=''">
+			and TR.TEL_USER =#{telUser,jdbcType=VARCHAR}  
+  		</if>
+		<if test="taskTime != null and taskTime!=''">
+			and TR.whichdatefortask =
+			DATE_FORMAT(#{taskTime,jdbcType=VARCHAR},'%Y-%m-%d')
+  		</if>
+		<if test="userID != null and userID!=''">
+			and Tq.QC_USER_ID = #{userID,jdbcType=VARCHAR}  
+  		</if>
+		<if test="taskTimeWBegin != null and taskTimeWBegin!=''">
+			and TR.whichdatefortask between
+			DATE_FORMAT(#{taskTimeWBegin,jdbcType=VARCHAR},'%Y-%m-%d')
+			and
+			DATE_FORMAT(#{taskTimeWEnd,jdbcType=VARCHAR},'%Y-%m-%d')
+  		</if>
+	</select>
+	
+	
+	<select id="getBigWorkIdBySmail" resultType="java.lang.String">
+	    SELECT t.WORK_ID FROM t_sys_user t WHERE t.USER_ID=(SELECT r.Pid FROM t_sys_user r WHERE r.Smail_workid=SUBSTRING(#{smailWorkId},3))
+	</select>
+	
+	
+	<select id="earlierByGet" parameterType="java.lang.String"
+		resultType="Integer">
+		select count(0) from t_workorder_cdma_sum r where r.cdma_autoid=${pkAutoId} and r.ISTASK='1'
+	</select>
+
+	<select id="earlierByQc" parameterType="java.lang.String"
+		resultType="Integer">
+		select count(*) from t_qc q where q.TELSUM_ID=${pkAutoId} and q.QC_TYPE=5
+   </select>
+   
+   <insert id="insertTaskRecordByCdma" parameterType="java.util.Map">
+      insert into  t_qc_taskrecord(TASKUSER_ID,ISQC,WHICHDATEFORTASK,TEL_USER,CREATE_DATE,TASK_ID,TELNUM_ID,ORDER_TYPE)
+      values(#{taskUserId},'0',#{cDate,jdbcType=TIMESTAMP},#{telUser},now(),#{taskId},#{pkAutoId},4)
+   </insert>
+   
+   
+   <update id="updateCdmaIsTask"  parameterType="java.util.Map">
+      update t_workorder_cdma_sum set ISTASK='1' where cdma_autoid=${pkAutoId}
+   </update>
+
+
+   <select id="getCdmaComplete" parameterType="java.util.Map" resultType="java.lang.Integer">
+       select GET_RECORD_COUNT from t_qc_taskqcuser_complete t where t.TASKUSER_ID=#{taskQcUserId} and t.CDATE=date_format(#{startTime,jdbcType=VARCHAR},'%Y-%m-%d') and t.TASK_TYPE='4'
+   </select>
+   
+   
+   <update id="updateTaskRecordComplete" parameterType="java.util.Map">
+		update t_qc_taskqcuser_complete TC
+		set TC.COMPLETE_ID=TC.COMPLETE_ID
+		<if test="taskStatus != null and taskStatus!=''">
+			,TC.each_date_status = #{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="getRecordCount != null and getRecordCount!=''">
+			,TC.Get_Record_Count = #{getRecordCount,jdbcType=VARCHAR}
+		</if>
+		<if test="completeCount != null and completeCount!=''">
+			,TC.COMPLETE_COUNT = #{completeCount,jdbcType=VARCHAR}
+		</if>
+		where 1=1
+		<if test="taskQcUserId != null and taskQcUserId!=''">
+			and TC.TASKUSER_ID = #{taskQcUserId,jdbcType=INTEGER}
+		</if>
+		<if test="taskTime != null and taskTime!=''">
+			and TC.Cdate =
+			DATE_FORMAT(#{taskTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		and TC.TASK_TYPE='4'
+	</update>
+	
+	<update id="updateTaskQcUser" parameterType="java.util.Map">
+	    UPDATE t_qc_task_qcuser TAQ SET
+		TAQ.TASKUSER_ID=TAQ.TASKUSER_ID
+		<if test="eachQcuserStatus != null and eachQcuserStatus!=''">
+			,TAQ.EACH_QCUSER_STATUS =
+			#{eachQcuserStatus,jdbcType=VARCHAR} 
+  		</if>
+		<if test="getRecordCount != null and getRecordCount!=''">
+			,TAQ.GET_RECORD_COUNT = #{getRecordCount,jdbcType=VARCHAR}
+		</if>
+		<if test="completeCount != null and completeCount!=''">
+			,TAQ.COMPLETE_COUNT = #{completeCount,jdbcType=VARCHAR}
+		</if>
+		WHERE
+		1 = 1  and TAQ.TASK_TYPE='4'
+		<if test="qcUser != null and qcUser!=''">
+			and TAQ.QC_USER_ID = #{qcUser,jdbcType=VARCHAR}
+  		</if>
+		<if test="taskId != null and taskId!=''">
+			and TAQ.TASK_ID = #{taskId,jdbcType=INTEGER}
+  		</if>
+  		<if test="taskuserId !=null and taskuserId !='' ">
+		    and TAQ.TASKUSER_ID=#{taskuserId,jdbcType=VARCHAR}
+		</if>
+	</update>
+	
+	
+	<update id="updateTaskStatus" parameterType="java.util.Map">
+	    update t_qc_cwxjtask set TASK_STATUS=#{taskStatus} where TASK_ID=${taskId}
+	</update>
+	
+	<select id="getWorkIDByCdmaPkId" resultType="java.lang.String">
+	   SELECT SUBSTRING(s.op_id,3) FROM t_workorder_cdma_sum s WHERE s.cdma_autoid=#{cdmaPkId}
+	</select>
+	
+	
+	<select id="getCdmaedTaskByUser" parameterType="java.util.Map"
+		resultMap="queryCnetVerdictMap">
+		SELECT
+		tcs.cdma_autoid,
+		tcs.serial_cdma,
+		DATE_FORMAT(tcs.result_time,'%Y-%m-%d %H:%i:%s')
+		result_time,
+		tcs.service_type,
+		tcs.result_type,
+		tcs.complaint_source,
+		tcs.remark,
+		tcs.Dir_num,
+		tcs.result_serial,
+		tcs.op_id,
+		ti.ISQC
+		from
+		T_QC_TASKRECORD ti inner join t_workorder_cdma_sum tcs on
+		tcs.cdma_autoid=ti.TELNUM_ID  and ti.ORDER_TYPE=4
+		<if test="taskId != null and taskId!=''">
+			and Ti.TASK_ID = #{taskId,jdbcType=VARCHAR}  
+  		</if>
+		<if test="qcUser != null and qcUser!=''">
+			and Ti.TASKUSER_ID = #{ qcUser,jdbcType=VARCHAR}  
+  		</if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and Ti.ISQC = #{taskStatus,jdbcType=VARCHAR}  
+  		</if>
+  		order by ti.WHICHDATEFORTASK desc
+	</select>
+	
+	
+	
+	<select id="getCdmaedTaskByUserCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		SELECT
+		Count(0)
+		from
+		T_QC_TASKRECORD ti inner join t_workorder_cdma_sum tcs on
+		tcs.cdma_autoid=ti.TELNUM_ID  and ti.ORDER_TYPE=4
+		<if test="taskId != null and taskId!=''">
+			and Ti.TASK_ID = #{taskId,jdbcType=VARCHAR}  
+  		</if>
+		<if test="qcUser != null and qcUser!=''">
+			and Ti.TASKUSER_ID = #{ qcUser,jdbcType=VARCHAR}  
+  		</if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and Ti.ISQC = #{taskStatus,jdbcType=VARCHAR}  
+  		</if>
+	</select>
+	
+	
+	<select id="queryTaskCompleteInforc" parameterType="java.util.Map"
+		resultMap="taskCompleteInforc">
+		select c.complete_id,
+		date_format(c.cdate,'%Y-%m-%d') cDate,
+		c.taskuser_id,
+		c.task_id,
+		c.get_record_count,
+		c.complete_count,
+		c.each_date_status,
+		(select t.qc_d_count from t_qc_task t where
+		t.task_id=c.task_id) qc_d_count
+		from T_QC_TASKQCUSER_COMPLETE c
+		where
+		1=1
+		and c.cdate &lt;= curdate()
+		and c.TASK_TYPE=4
+		<if test="taskQcUserId != null and taskQcUserId!=''">
+			and c.TASKUSER_ID =#{taskQcUserId,jdbcType=INTEGER}
+  		</if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and c.EACH_DATE_STATUS = #{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime != null and startTime!=''">
+  			and c.cdate= date_format(#{startTime,jdbcType=VARCHAR},'%Y-%m-%d')
+  		</if>
+  		
+		order by c.cdate
+	</select>
+	
+	
+	<select id="queryTaskCompleteInforcCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		select count(0)
+		from T_QC_TASKQCUSER_COMPLETE c
+		where
+		1=1
+		and c.cdate &lt;= curdate()
+		and c.TASK_TYPE=4
+		<if test="taskQcUserId != null and taskQcUserId!=''">
+			and c.TASKUSER_ID =#{taskQcUserId,jdbcType=INTEGER}
+  		</if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and c.EACH_DATE_STATUS = #{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime != null and startTime!=''">
+  			and c.cdate &gt;= date_format(#{startTime,jdbcType=VARCHAR},'%Y-%m-%d')
+  		</if>
+  		<if test="ednTime != null and ednTime!=''">
+  			and c.cdate &lt;= date_format(#{ednTime,jdbcType=VARCHAR},'%Y-%m-%d')
+  		</if>
+		order by c.cdate
+	</select>
+	
+	
+	
+	<select id="queryTaskCompleteInfo" parameterType="java.util.Map"
+		resultMap="taskCompleteInfo">
+		select
+		(select user_name from t_sys_user where USER_ID= tqu.QC_USER_ID)
+		QC_NAME,
+		tqu.taskuser_id,
+		tqu.QC_USER_ID USERID,
+		tqu.task_id,
+		tqu.get_record_count,
+		tqu.complete_count,
+		tqu.each_qcuser_status
+		from
+		t_qc_task_qcuser tqu
+		where 1=1 and tqu.TASK_TYPE='4'
+		<if test="taskId != null and taskId!=''">
+			and tqu.TASK_ID =#{taskId,jdbcType=VARCHAR}
+	     </if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and tqu.EACH_QCUSER_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="qcUser != null and qcUser!=''">
+  			and tqu.QC_USER_ID =#{qcUser,jdbcType=VARCHAR}
+         </if>
+	</select>
+	
+	
+	
+	<select id="queryTaskCompleteInfoCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		select
+		count(0)
+		from
+		t_qc_task_qcuser tqu
+		where 1=1 and tqu.TASK_TYPE='4'
+		<if test="taskId != null and taskId!=''">
+			and tqu.TASK_ID =#{taskId,jdbcType=VARCHAR}
+	     </if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and tqu.EACH_QCUSER_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="qcUser != null and qcUser!=''">
+  			and tqu.QC_USER_ID =#{qcUser,jdbcType=VARCHAR}
+         </if>
+	</select>
+	
+	
+	<update id="updateTaskCdmaComplete1" parameterType="java.util.Map">
+		update
+		t_qc_taskqcuser_complete TC
+		set TC.Get_Record_Count=TC.complete_count
+		where TC.TASKUSER_ID = (select q.taskuser_id from t_qc_task_qcuser q
+		where
+		q.task_id=#{taskId,jdbcType=VARCHAR} and q.QC_USER_ID=
+		#{qcUser,jdbcType=VARCHAR} and q.TASK_TYPE='4'
+		)  
+		and TC.TASK_TYPE='4'			  		
+  </update>
+  
+  
+  <update id="updateTaskCdmaQcUserInfo1" parameterType="java.util.Map">
+		UPDATE t_qc_task_qcuser TAQ SET
+		TAQ.GET_RECORD_COUNT=TAQ.COMPLETE_COUNT
+		WHERE
+		1 = 1 and TAQ.TASK_TYPE='4'
+		<if test="qcUser != null and qcUser!=''">
+			and TAQ.QC_USER_ID = #{qcUser,jdbcType=INTEGER}
+  		</if>
+		<if test="taskId != null and taskId!=''">
+			and TAQ.TASK_ID =#{taskId,jdbcType=INTEGER}
+  		</if>
+	</update>
+  
+  
+   <!-- 根据c网电话小结ID查询在任务表该电话小结任务信息 -->
+    <select id="getTaskInfoByCdmaAutoId" resultMap="getTaskInfoByCdma">
+	   SELECT t.TASK_ID, t.TASKUSER_ID, t.WHICHDATEFORTASK,tq.CSR_TOP_D_COUNT,tq.TASK_START_TIME,tq.TASK_END_TIME FROM  t_qc_cwxjtask tq
+	    LEFT JOIN t_qc_taskrecord t ON  tq.TASK_ID=t.TASK_ID 
+	    WHERE 1=1 AND t.ORDER_TYPE=4  AND tq.ENABLED='1'
+	      AND t.TELNUM_ID=${cdmaPkId}
+    </select>
+    
+    
+     
+    <!-- 修改任务工单表 -->
+     <update id="updateTaskRecordByCdma" >
+	  	UPDATE T_QC_TASKRECORD T  set T.ISQC ='1', T.QC_DATE=now() WHERE t.ORDER_TYPE=4 and T.TELNUM_ID = ${cdmaPkId}  
+  </update>
+  
+  
+    <update id="updateCwxjTask" parameterType="java.util.Map" >
+        update t_qc_order112task t set t.TASK_STATUS =#{taskStatus} where t.TASK_ID=${taskId}
+    </update>
+    
+    
+    <select id="getCompleteByDay" parameterType="java.util.Map" resultType="java.lang.String">
+        select COMPLETE_COUNT from t_qc_taskqcuser_complete where 1=1
+		and TASKUSER_ID=#{taskuserId,jdbcType=VARCHAR}
+		and CDATE=#{cDate,jdbcType=VARCHAR}
+		and TASK_TYPE='4'
+    </select>
+    
+    
+    <select id="getuserIdByWorkId" resultType="java.lang.String">
+        SELECT t.USER_ID FROM t_sys_user t WHERE t.WORK_ID=#{workId}
+    </select>
+</mapper>

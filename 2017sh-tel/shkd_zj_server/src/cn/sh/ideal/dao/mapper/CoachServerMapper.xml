@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ICoachServerDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.CoachServer">
+    <id column="SID" jdbcType="INTEGER" property="sid" />
+    <result column="COACHMAINID" jdbcType="INTEGER" property="coachmainid" />
+    <result column="SPECIFICATIONLANGUAGE" jdbcType="VARCHAR" property="specificationlanguage" />
+    <result column="POLITETONEOOFVOICE" jdbcType="VARCHAR" property="politetoneoofvoice" />
+    <result column="ABILITYTOCOMMUNICATE" jdbcType="VARCHAR" property="abilitytocommunicate" />
+    <result column="OBJECTIONHANDLING" jdbcType="VARCHAR" property="objectionhandling" />
+    <result column="FLOWSTANDARD" jdbcType="VARCHAR" property="flowstandard" />
+    <result column="DEADLYERROR" jdbcType="VARCHAR" property="deadlyerror" />
+    <result column="MARKETINGSKILLS" jdbcType="VARCHAR" property="marketingskills" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SID, COACHMAINID, SPECIFICATIONLANGUAGE, POLITETONEOOFVOICE, ABILITYTOCOMMUNICATE, 
+    OBJECTIONHANDLING, FLOWSTANDARD, DEADLYERROR, MARKETINGSKILLS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_coach_server
+    where COACHMAINID = #{coachmainid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_coach_server
+    where SID = #{sid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertcoachserver" parameterType="cn.sh.ideal.model.CoachServer" useGeneratedKeys="true" keyProperty="sid">
+    insert into t_coach_server (SID, COACHMAINID, SPECIFICATIONLANGUAGE, 
+      POLITETONEOOFVOICE, ABILITYTOCOMMUNICATE, 
+      OBJECTIONHANDLING, FLOWSTANDARD, DEADLYERROR, 
+      MARKETINGSKILLS)
+    values (#{sid,jdbcType=INTEGER}, #{coachmainid,jdbcType=INTEGER}, #{specificationlanguage,jdbcType=VARCHAR}, 
+      #{politetoneoofvoice,jdbcType=VARCHAR}, #{abilitytocommunicate,jdbcType=VARCHAR}, 
+      #{objectionhandling,jdbcType=VARCHAR}, #{flowstandard,jdbcType=VARCHAR}, #{deadlyerror,jdbcType=VARCHAR}, 
+      #{marketingskills,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.CoachServer">
+    insert into t_coach_server
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        SID,
+      </if>
+      <if test="coachmainid != null">
+        COACHMAINID,
+      </if>
+      <if test="specificationlanguage != null">
+        SPECIFICATIONLANGUAGE,
+      </if>
+      <if test="politetoneoofvoice != null">
+        POLITETONEOOFVOICE,
+      </if>
+      <if test="abilitytocommunicate != null">
+        ABILITYTOCOMMUNICATE,
+      </if>
+      <if test="objectionhandling != null">
+        OBJECTIONHANDLING,
+      </if>
+      <if test="flowstandard != null">
+        FLOWSTANDARD,
+      </if>
+      <if test="deadlyerror != null">
+        DEADLYERROR,
+      </if>
+      <if test="marketingskills != null">
+        MARKETINGSKILLS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="coachmainid != null">
+        #{coachmainid,jdbcType=INTEGER},
+      </if>
+      <if test="specificationlanguage != null">
+        #{specificationlanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="politetoneoofvoice != null">
+        #{politetoneoofvoice,jdbcType=VARCHAR},
+      </if>
+      <if test="abilitytocommunicate != null">
+        #{abilitytocommunicate,jdbcType=VARCHAR},
+      </if>
+      <if test="objectionhandling != null">
+        #{objectionhandling,jdbcType=VARCHAR},
+      </if>
+      <if test="flowstandard != null">
+        #{flowstandard,jdbcType=VARCHAR},
+      </if>
+      <if test="deadlyerror != null">
+        #{deadlyerror,jdbcType=VARCHAR},
+      </if>
+      <if test="marketingskills != null">
+        #{marketingskills,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.CoachServer">
+    update t_coach_server
+    <set>
+      <if test="specificationlanguage != null">
+        SPECIFICATIONLANGUAGE = #{specificationlanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="politetoneoofvoice != null">
+        POLITETONEOOFVOICE = #{politetoneoofvoice,jdbcType=VARCHAR},
+      </if>
+      <if test="abilitytocommunicate != null">
+        ABILITYTOCOMMUNICATE = #{abilitytocommunicate,jdbcType=VARCHAR},
+      </if>
+      <if test="objectionhandling != null">
+        OBJECTIONHANDLING = #{objectionhandling,jdbcType=VARCHAR},
+      </if>
+      <if test="flowstandard != null">
+        FLOWSTANDARD = #{flowstandard,jdbcType=VARCHAR},
+      </if>
+      <if test="deadlyerror != null">
+        DEADLYERROR = #{deadlyerror,jdbcType=VARCHAR},
+      </if>
+      <if test="marketingskills != null">
+        MARKETINGSKILLS = #{marketingskills,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where COACHMAINID = #{coachmainid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.CoachServer">
+    update t_coach_server
+    set COACHMAINID = #{coachmainid,jdbcType=INTEGER},
+      SPECIFICATIONLANGUAGE = #{specificationlanguage,jdbcType=VARCHAR},
+      POLITETONEOOFVOICE = #{politetoneoofvoice,jdbcType=VARCHAR},
+      ABILITYTOCOMMUNICATE = #{abilitytocommunicate,jdbcType=VARCHAR},
+      OBJECTIONHANDLING = #{objectionhandling,jdbcType=VARCHAR},
+      FLOWSTANDARD = #{flowstandard,jdbcType=VARCHAR},
+      DEADLYERROR = #{deadlyerror,jdbcType=VARCHAR},
+      MARKETINGSKILLS = #{marketingskills,jdbcType=VARCHAR}
+    where SID = #{sid,jdbcType=INTEGER}
+  </update>
+  
+   <delete id="deleteCoachService" parameterType="java.lang.Integer">
+       delete from T_COACH_SERVER  where COACHMAINID=#{coachMainId,jdbcType=INTEGER}
+   </delete>
+</mapper>

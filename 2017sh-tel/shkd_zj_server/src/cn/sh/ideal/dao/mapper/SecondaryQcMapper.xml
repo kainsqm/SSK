@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ISecondaryQcDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.SecondaryQc">
+    <id column="S_ID" jdbcType="INTEGER" property="sId" />
+    <result column="S_WORKID" jdbcType="VARCHAR" property="sWorkid" />
+    <result column="S_QC_USERID" jdbcType="INTEGER" property="sQcUserid" />
+    <result column="S_QC_WORKID" jdbcType="VARCHAR" property="sQcWorkid" />
+    <result column="S_QC_NAME" jdbcType="VARCHAR" property="sQcName" />
+    <result column="S_ISPASS" jdbcType="VARCHAR" property="sIspass" />
+    <result column="S_REMARK" jdbcType="VARCHAR" property="sRemark" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+    <result column="CREATE_USER_ID" jdbcType="INTEGER" property="createUserId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_USER_ID" jdbcType="INTEGER" property="updateUserId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="QC_ID" jdbcType="INTEGER" property="qc_id" />
+    <result column="qc_type" jdbcType="INTEGER" property="qc_type" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    S_ID, S_WORKID, S_QC_USERID, S_QC_WORKID, S_QC_NAME, S_ISPASS, S_REMARK, 
+     CREATE_USER_ID,  date_format(CREATE_TIME,'%Y-%m-%d %H:%i:%s') CREATE_TIME, UPDATE_USER_ID, UPDATE_TIME
+  </sql>
+  <select id="selectByParam" parameterType="cn.sh.ideal.model.SecondaryQc" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,t.QC_TYPE,T.QC_ID
+    from t_secondary_qc ts
+    left join t_qc t on t.QC_ID=ts.QC_ID
+    where 1=1 and ts.ENABLED='1'
+    
+     <if test="sWorkid != null and sWorkid!=''">
+      and   S_WORKID = #{sWorkid,jdbcType=VARCHAR}
+      </if>
+      <if test="sQcWorkid != null and sQcWorkid!=''">
+        and S_QC_WORKID = #{sQcWorkid,jdbcType=VARCHAR}
+      </if>
+      <if test="sIspass != null and sIspass!=''">
+       and  S_ISPASS = #{sIspass,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeStart != null and createTimeStart!=''">
+       and CREATE_TIME > #{createTimeStart,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeEnd != null and createTimeEnd!=''">
+       and CREATE_TIME &lt;= #{createTimeEnd,jdbcType=VARCHAR}
+      </if>
+      <if test="qc_id != null and qc_id !=''">
+       and  t.QC_ID = #{qc_id,jdbcType=VARCHAR}
+      </if>
+      <if test="qc_type != null and qc_type !=''">
+       and  t.QC_TYPE = #{qc_type,jdbcType=VARCHAR}
+      </if>
+      order by CREATE_TIME desc 
+  </select>
+  
+  <select id="selectCountByParam" parameterType="cn.sh.ideal.model.SecondaryQc" resultType="java.lang.Integer">
+    select  count(1)
+    from t_secondary_qc ts
+    left join t_qc t on t.QC_ID=ts.QC_ID
+    where 1=1 and ts.ENABLED='1'
+    
+     <if test="sWorkid != null and sWorkid!=''">
+      and   S_WORKID = #{sWorkid,jdbcType=VARCHAR}
+      </if>
+      <if test="sQcWorkid != null and sQcWorkid!=''">
+        and S_QC_WORKID = #{sQcWorkid,jdbcType=VARCHAR}
+      </if>
+      <if test="sIspass != null and sIspass!=''">
+       and  S_ISPASS = #{sIspass,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeStart != null and createTimeStart!=''">
+       and CREATE_TIME > #{createTimeStart,jdbcType=VARCHAR}
+      </if>
+      <if test="createTimeEnd != null and createTimeEnd!=''">
+       and CREATE_TIME &lt;= #{createTimeEnd,jdbcType=VARCHAR}
+      </if>
+       <if test="qc_id != null and qc_id !=''">
+       and  t.QC_ID = #{qc_id,jdbcType=VARCHAR}
+      </if>
+       <if test="qc_type != null and qc_type !=''">
+       and  t.QC_TYPE = #{qc_type,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  <!-- 查询是否已存在二级质检 -->
+  <select id="seccountbyqcId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  select  count(1)
+    from t_secondary_qc
+    where 1=1 and ENABLED='1'
+    and QC_ID=#{qc_id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <insert id="insert" parameterType="cn.sh.ideal.model.SecondaryQc">
+    insert into t_secondary_qc (S_WORKID, S_QC_USERID,
+      S_QC_WORKID, S_QC_NAME, 
+      S_ISPASS, S_REMARK, ENABLED, 
+      CREATE_USER_ID, CREATE_TIME,QC_ID)
+    values ( #{sWorkid,jdbcType=VARCHAR}, #{sQcUserid,jdbcType=INTEGER},
+      #{sQcWorkid,jdbcType=VARCHAR}, #{sQcName,jdbcType=VARCHAR}, 
+      #{sIspass,jdbcType=VARCHAR}, #{sRemark,jdbcType=VARCHAR}, '1', 
+      #{createUserId,jdbcType=INTEGER}, now(), #{qc_id,jdbcType=INTEGER})
+  </insert>
+ 
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.SecondaryQc">
+    update t_secondary_qc
+    set 
+      ENABLED = '0',
+      UPDATE_USER_ID = #{updateUserId,jdbcType=INTEGER},
+      UPDATE_TIME = now()
+    where 1=1 
+      <if test="sId != null and sId!=''">
+      and  S_ID = #{sId,jdbcType=INTEGER}
+      </if>
+  </update>
+ 
+</mapper>

@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IQCHistoryDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.QCHistory">
+    <id column="QC_ID" jdbcType="INTEGER" property="qcId" />
+    <result column="RECORD_ID" jdbcType="INTEGER" property="recordId" />
+    <result column="WORKORDER_ID" jdbcType="INTEGER" property="workorderId" />
+    <result column="RESERVED_THREE" jdbcType="VARCHAR" property="reservedThree" />
+    <result column="QC_USER_WORKID" jdbcType="VARCHAR" property="qcUserWorkid" />
+    <result column="QC_TIME" jdbcType="TIMESTAMP" property="qcTime" />
+    
+    <result column="QUALITY_LEVEL" jdbcType="INTEGER" property="qualityLevel" />
+    <result column="SMALL_WORKID" jdbcType="VARCHAR" property="smallWorkid" />
+    <result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
+    <result column="DECLARATION_TIME" jdbcType="DATE" property="declarationTime" />
+    <result column="DECLARATION_BIG_TYPE" jdbcType="VARCHAR" property="declarationBigType" />
+    <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+    <result column="BUSINESS_TYPE" jdbcType="VARCHAR" property="businessType" />
+    <result column="CHECKCONTENT" jdbcType="VARCHAR" property="checkcontent" />
+    <result column="telsumId" jdbcType="VARCHAR" property="telsumId" />
+    <result column="telsumType" jdbcType="VARCHAR" property="telsumType" />
+    
+    
+    
+  </resultMap>
+   <resultMap id="BaseResultMap2" type="cn.sh.ideal.model.QCHistory">
+    <id column="QC_ID" jdbcType="INTEGER" property="qcId" />
+    <result column="RECORD_ID" jdbcType="INTEGER" property="recordId" />
+    <result column="WORKORDER_ID" jdbcType="INTEGER" property="workorderId" />
+    <result column="RESERVED_THREE" jdbcType="VARCHAR" property="reservedThree" />
+    <result column="QC_USER_WORKID" jdbcType="VARCHAR" property="qcUserWorkid" />
+    <result column="QC_TIME" jdbcType="TIMESTAMP" property="qcTime" />
+    
+    <result column="QUALITY_LEVEL" jdbcType="INTEGER" property="qualityLevel" />
+    <result column="AGENTWORKID" jdbcType="VARCHAR" property="smallWorkid" />
+    <result column="agentName" jdbcType="VARCHAR" property="agentName" />
+    <result column="DECLARATION_TIME" jdbcType="DATE" property="declarationTime" />
+    <result column="DECLARATION_BIG_TYPE" jdbcType="VARCHAR" property="declarationBigType" />
+    <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+    <result column="BUSINESS_TYPE" jdbcType="VARCHAR" property="businessType" />
+    <result column="CHECKCONTENT" jdbcType="VARCHAR" property="checkcontent" />
+    <result column="IS_COMPLAIN" jdbcType="VARCHAR" property="isComplain" />
+    
+     <result column="DEVICE_ID" jdbcType="VARCHAR" property="deviceId" />
+    <result column="IS_TL9000" jdbcType="VARCHAR" property="isTl9000" />
+    <result column="DEAL_DIS" jdbcType="VARCHAR" property="dealDis" />
+    <result column="DEAL_RES" jdbcType="VARCHAR" property="dealRes" />
+    <result column="SATISFIED" jdbcType="VARCHAR" property="satisfied" />
+    <result column="AGENT_TRANSFER" jdbcType="VARCHAR" property="agentTransfer" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="agentName" jdbcType="VARCHAR" property="agentName" />
+    <result column="QC_TYPE" jdbcType="VARCHAR" property="qctype" />
+    
+  </resultMap>
+  
+  
+  <select id="selectQcHisByParam" parameterType="cn.sh.ideal.model.QCHistory" resultMap="BaseResultMap">
+		   SELECT
+			t.QC_ID,
+			t.RECORD_ID,
+			t.WORKORDER_ID,
+			t1.RESERVED_THREE,
+			t.QC_USER_WORKID,
+			date_format(t.QC_TIME,'%Y-%m-%d %H:%i:%s') QC_TIME,
+			t3.QUALITY_LEVEL,
+			t1.SMALL_WORKID,
+			t1.AGENT_NAME,
+			t4.GROUP_NAME,
+			t3.BUSINESS_TYPE,
+			(select name from t_sys_code where pid= 
+			(
+			case when t3.BUSINESS_TYPE='10' then 124  
+			 when t3.BUSINESS_TYPE='32' then 96
+			 when t3.BUSINESS_TYPE='54' then 124  
+			 when t3.BUSINESS_TYPE='76' then 172 
+			 when t3.BUSINESS_TYPE='178' then 124
+			 when t3.BUSINESS_TYPE='200' then 96
+			 end )  	
+			and VALUEES=t3.CHECKCONTENT ) checkcontent
+		FROM
+			t_qc t,
+			t_record_info t1,
+			t_qc_detail t3,
+			t_sys_user t4
+		WHERE
+		t1.RECORD_ID = t.RECORD_ID
+		AND t3.QC_ID = t.QC_ID
+		AND t.QC_SUM = t3.QC_NUM
+		and t4.Smail_workid=t1.SMALL_WORKID
+		and t.ENABLED='1'
+   		and t.QC_TYPE in(1,7,8,9,10) 
+    <if test="reservedThree != null and reservedThree != ''">
+      	and t1.RESERVED_THREE LIKE CONCAT ('%', #{reservedThree,jdbcType=VARCHAR},'%')
+     </if>
+   	 <if test="workorderId != null and workorderId != ''">
+		and t.WORKORDER_ID LIKE CONCAT ('%', #{workorderId,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="smallWorkid != null and smallWorkid != ''">
+		and  t1.SMALL_WORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=VARCHAR},'%')
+	</if>
+
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME > #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t3.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+  
+  <select id="selectQcHisCountByParam" parameterType="cn.sh.ideal.model.QCHistory" resultType="java.lang.Integer">
+		   SELECT
+			count(1)
+		FROM
+			t_qc t,
+			t_record_info t1,
+			t_workorder_info_112 t2,
+			t_qc_detail t3,
+			t_sys_user t4
+		WHERE
+			t1.RECORD_ID = t.RECORD_ID
+		AND t2.WORKORDER_ID = t.WORKORDER_ID
+		AND t3.QC_ID = t.QC_ID
+		AND t.QC_SUM = t3.QC_NUM
+		and t4.Smail_workid=t1.SMALL_WORKID
+		and t.ENABLED='1'
+    	and t.QC_TYPE in(1,7,8,9,10) 
+     <if test="reservedThree != null and reservedThree != ''">
+      	and t1.RESERVED_THREE LIKE CONCAT ('%', #{reservedThree,jdbcType=VARCHAR},'%')
+     </if>
+   	 <if test="workorderId != null and workorderId != ''">
+		and t.WORKORDER_ID LIKE CONCAT ('%', #{workorderId,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="smallWorkid != null and smallWorkid != ''">
+		and  t1.SMALL_WORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=VARCHAR},'%')
+	</if>
+
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME > #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+    <if test="declarationBigType != null and declarationBigType != ''">
+		and t2.DECLARATION_BIG_TYPE = #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+    <if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t3.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+  </select>
+  
+  <select id="noneQclist" parameterType="cn.sh.ideal.model.QCHistory" resultMap="BaseResultMap2">
+  	select 
+  	t.QC_ID,
+  	t.QC_USER_WORKID,
+  	date_format(t.QC_TIME,'%Y-%m-%d %H:%i:%s') QC_TIME,
+  	t.AGENTWORKID,
+  	(select 	t2.USER_NAME from t_sys_user t2 where  t2.USER_ID=
+	(SELECT  t1.pid  FROM  t_sys_user t1 WHERE
+		 t1.ENABLED='1' and t1.Smail_workid=t.AGENTWORKID) )as agentName,
+	tq.DEVICE_ID,
+		(
+		case when tq.BUSINESS_TYPE='10' then '112'  
+		 when tq.BUSINESS_TYPE='32' then 'c网'
+		 when tq.BUSINESS_TYPE='54' then '其他'  
+		 when tq.BUSINESS_TYPE='76' then '管控' 
+		 when tq.BUSINESS_TYPE='178' then '客调112'
+		 when tq.BUSINESS_TYPE='200' then '客调C网'
+		 end ) BUSINESS_TYPE,
+	(select name from t_sys_code where pid= 
+			(
+			case when tq.BUSINESS_TYPE='10' then 124  
+			 when tq.BUSINESS_TYPE='32' then 96
+			 when tq.BUSINESS_TYPE='54' then 124  
+			 when tq.BUSINESS_TYPE='76' then 172 
+			 when tq.BUSINESS_TYPE='178' then 124
+			 when tq.BUSINESS_TYPE='200' then 96
+			 end )  
+			
+			and VALUEES=tq.CHECKCONTENT ) checkcontent,
+	(case tq.IS_TL9000 when '1' then '是' else '否' end) isTl9000,
+	(SELECT cg.name FROM t_sys_code cg WHERE cg.valuees=tq.DEAL_DIS AND cg.pid= (SELECT co.auto_id FROM t_sys_code co WHERE co.auto_id= tq.BUSINESS_TYPE )) DEAL_DIS,
+	tq.DEAL_RES,
+	tq.QUALITY_LEVEL,
+	(case tq.IS_COMPLAIN when '1' then '是' else '否' end) isComplain,
+	(case tq.SATISFIED when '1' then '有' else '无' end) satisfied,
+	(case tq.AGENT_TRANSFER when '1' then '需转接' else '无需转接' end) agentTransfer,
+	tq.REMARK	 
+  	from t_qc t 
+  	inner join  t_qc_detail tq on t.QC_ID=tq.QC_ID AND t.QC_SUM = tq.QC_NUM
+  	inner join  t_sys_user ts on t.AGENTWORKID=ts.Smail_workid
+  	where 1=1 and t.ENABLED='1'
+   <if test="qcUserWorkid != null and qcUserWorkid != ''">
+      	and t.QC_USER_WORKID =#{qcUserWorkid,jdbcType=VARCHAR}
+     </if>
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID =#{smallWorkid,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME > #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+    <if test="isComplain != null and isComplain != ''">
+      	and tq.IS_COMPLAIN =#{isComplain,jdbcType=VARCHAR}
+     </if>
+   	 <if test="satisfied != null and satisfied != ''">
+		and tq.SATISFIED =#{satisfied,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+      	and tq.QUALITY_LEVEL =#{qualityLevel,jdbcType=VARCHAR}
+     </if>
+   	  <if test="groupName != null and groupName != ''">
+		and  ts.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="qctype != null and qctype != ''">
+		and  t.QC_TYPE = #{qctype,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+	ORDER BY t.`QC_TIME` DESC
+  </select>
+    <select id="noneQclistsum" parameterType="cn.sh.ideal.model.QCHistory" resultType="java.lang.Integer">
+  	select 
+	count(1)
+  	from t_qc t 
+  	inner join  t_qc_detail tq on t.QC_ID=tq.QC_ID AND t.QC_SUM = tq.QC_NUM
+  	inner join  t_sys_user ts on t.AGENTWORKID=ts.Smail_workid
+  	where 1=1 and t.ENABLED='1'
+   <if test="qcUserWorkid != null and qcUserWorkid != ''">
+      	and t.QC_USER_WORKID =#{qcUserWorkid,jdbcType=VARCHAR}
+     </if>
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID =#{smallWorkid,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME > #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+    <if test="isComplain != null and isComplain != ''">
+      	and tq.IS_COMPLAIN =#{isComplain,jdbcType=VARCHAR}
+     </if>
+   	 <if test="satisfied != null and satisfied != ''">
+		and tq.SATISFIED =#{satisfied,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+      	and tq.QUALITY_LEVEL =#{qualityLevel,jdbcType=VARCHAR}
+     </if>
+   	  <if test="groupName != null and groupName != ''">
+		and  ts.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="qctype != null and qctype != ''">
+		and  t.QC_TYPE = #{qctype,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+  </select>
+  
+  
+   <select id="getQcHisByorder" parameterType="cn.sh.ideal.model.QCHistory" resultMap="BaseResultMap">
+		   SELECT
+			t.QC_ID,
+			t.RECORD_ID,
+			t.WORKORDER_ID,
+			t.QC_USER_WORKID,
+			t1.RESERVED_THREE,
+			t.AGENTWORKID smallWorkid,
+			t2.DECLARATION_BIG_TYPE,
+			date_format(t.QC_TIME,'%Y-%m-%d %H:%i:%s') QC_TIME,
+			t3.QUALITY_LEVEL,
+			(select ts.USER_NAME from  t_sys_user ts where ts.USER_ID=t4.Pid) agentName,
+			t4.GROUP_NAME,
+			t3.BUSINESS_TYPE,
+			(select name from t_sys_code where pid= 
+			(
+			case when t3.BUSINESS_TYPE='10' then 124  
+			 when t3.BUSINESS_TYPE='32' then 96
+			 when t3.BUSINESS_TYPE='54' then 124  
+			 when t3.BUSINESS_TYPE='76' then 172 
+			 when t3.BUSINESS_TYPE='178' then 124
+			 when t3.BUSINESS_TYPE='200' then 96
+			 end )  	
+			and VALUEES=t3.CHECKCONTENT ) checkcontent
+		FROM
+			t_qc t		
+	LEFT JOIN t_record_info t1 ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_workorder_info_112 t2 ON  t.WORKORDER_ID = t2.WORKORDER_ID
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID
+		WHERE
+		 t.ENABLED='1'
+   		and t.QC_TYPE in(2,7) 
+    
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME > #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="declarationBigType != null and declarationBigType != ''">
+		and t2.DECLARATION_BIG_TYPE= #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+  
+  <select id="getQcHisByordersum" parameterType="cn.sh.ideal.model.QCHistory" resultType="java.lang.Integer">
+		   SELECT
+		count(1)
+		FROM
+			t_qc t		
+	LEFT JOIN t_record_info t1 ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_workorder_info_112 t2 ON  t.WORKORDER_ID = t2.WORKORDER_ID
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID
+		WHERE
+		 t.ENABLED='1'
+   		and t.QC_TYPE in(2,7) 
+    
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME > #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="declarationBigType != null and declarationBigType != ''">
+		and t2.DECLARATION_BIG_TYPE= #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+   <select id="getcwQcHisByorder" parameterType="cn.sh.ideal.model.QCHistory" resultMap="BaseResultMap">
+		   SELECT
+			t.QC_ID,
+			t.RECORD_ID,
+			t.WORKORDER_ID,
+			t.QC_USER_WORKID,
+			t1.RESERVED_THREE,
+			t.AGENTWORKID smallWorkid,
+			t2.complaint_type as declarationBigType,
+			date_format(t.QC_TIME,'%Y-%m-%d %H:%i:%s') QC_TIME,
+			t3.QUALITY_LEVEL,
+			(select ts.USER_NAME from  t_sys_user ts where ts.USER_ID=t4.Pid) agentName,
+			t4.GROUP_NAME,
+			t3.BUSINESS_TYPE,
+			(select name from t_sys_code where pid= 
+			(
+			case when t3.BUSINESS_TYPE='10' then 124  
+			 when t3.BUSINESS_TYPE='32' then 96
+			 when t3.BUSINESS_TYPE='54' then 124  
+			 when t3.BUSINESS_TYPE='76' then 172 
+			 when t3.BUSINESS_TYPE='178' then 124
+			 when t3.BUSINESS_TYPE='200' then 96
+			 end )  	
+			and VALUEES=t3.CHECKCONTENT ) checkcontent
+		FROM
+			t_qc t
+	LEFT JOIN t_record_info t1 ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_workorder_cdma t2 ON  t.WORKORDER_ID = t2.serial_cdma
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID	
+			
+		WHERE
+		t.ENABLED='1'
+   		and t.QC_TYPE in(3,8) 
+    
+   	<if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != '' ">
+		and t.QC_TIME &gt; #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="declarationBigType != null and declarationBigType != ''">
+		and t2.complaint_type= #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+  
+  <select id="getcwQcHisByordersum" parameterType="cn.sh.ideal.model.QCHistory" resultType="java.lang.Integer">
+		   SELECT
+		count(1)
+		FROM
+		t_qc t
+	LEFT JOIN t_record_info t1 ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_workorder_cdma t2 ON  t.WORKORDER_ID = t2.serial_cdma
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID			
+		WHERE
+		 t.ENABLED='1'
+   		and t.QC_TYPE in(3,8) 
+    
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME &gt; #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="declarationBigType != null and declarationBigType != ''">
+		and t2.complaint_type= #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+  <!-- c网电话小结质检记录 -->
+   <select id="get112xjQcHisByorder" parameterType="cn.sh.ideal.model.QCHistory" resultMap="BaseResultMap">
+		   SELECT
+			t.QC_ID,
+			t.RECORD_ID,
+			t2.WORKORDER_ID  workorderId,
+			t2.AUTO_ID telsumId,
+			t2.TELSUM_TYPE telsumType,
+			t.QC_USER_WORKID,
+			t1.RESERVED_THREE,
+			t.AGENTWORKID smallWorkid,
+			date_format(t.QC_TIME,'%Y-%m-%d %H:%i:%s') QC_TIME,
+			t3.QUALITY_LEVEL,
+			(select ts.USER_NAME from  t_sys_user ts where ts.USER_ID=t4.Pid) agentName,
+			t4.GROUP_NAME,
+			t3.BUSINESS_TYPE,
+			(select name from t_sys_code where pid= 
+			(
+			case when t3.BUSINESS_TYPE='10' then 124  
+			 when t3.BUSINESS_TYPE='32' then 96
+			 when t3.BUSINESS_TYPE='54' then 124  
+			 when t3.BUSINESS_TYPE='76' then 172 
+			 when t3.BUSINESS_TYPE='178' then 124
+			 when t3.BUSINESS_TYPE='200' then 96
+			 end )  	
+			and VALUEES=t3.CHECKCONTENT ) checkcontent
+		FROM
+			t_qc t		
+	LEFT JOIN t_record_info t1 
+    ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_work_telsum_112 t2 ON  t.TELSUM_ID = t2.AUTO_ID
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID
+		WHERE
+		 t.ENABLED='1'
+   		and t.QC_TYPE in(4,9) 
+    
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="telsumId != null and telsumId != ''">
+		and t2.AUTO_ID= #{telsumId,jdbcType=VARCHAR}
+	</if>
+	<if test="telsumType != null and telsumType != ''">
+		and t2.TELSUM_TYPE= #{telsumType,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME &gt; #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+  
+  <select id="get112xjQcHisByordersum" parameterType="cn.sh.ideal.model.QCHistory" resultType="java.lang.Integer">
+		   SELECT
+		count(1)
+		FROM
+		t_qc t		
+	LEFT JOIN t_record_info t1 
+    ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_work_telsum_112 t2 ON  t.TELSUM_ID = t2.AUTO_ID
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID	
+		WHERE
+	    t.ENABLED='1'
+   		and t.QC_TYPE in(4,9) 
+    
+   	 <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+		<if test="telsumId != null and telsumId != ''">
+		and t2.AUTO_ID= #{telsumId,jdbcType=VARCHAR}
+	</if>
+	<if test="telsumType != null and telsumType != ''">
+		and t2.TELSUM_TYPE= #{telsumType,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME &gt;= #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="declarationBigType != null and declarationBigType != ''">
+		and t2.complaint_type= #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+   
+   <!-- c网电话小结质检记录 -->
+   <select id="getcwxjQcHisByorder" parameterType="cn.sh.ideal.model.QCHistory" resultMap="BaseResultMap">
+		   SELECT
+			t.QC_ID,
+			t.RECORD_ID,
+			t.TELSUM_ID  workorderId,
+			t2.cdma_autoid telsumId,
+			t2.result_type telsumType,
+			t.QC_USER_WORKID,
+			t1.RESERVED_THREE,
+			t.AGENTWORKID smallWorkid,
+			date_format(t.QC_TIME,'%Y-%m-%d %H:%i:%s') QC_TIME,
+			t3.QUALITY_LEVEL,
+			(select ts.USER_NAME from  t_sys_user ts where ts.USER_ID=t4.Pid) agentName,
+			t4.GROUP_NAME,
+			t3.BUSINESS_TYPE,
+			(select name from t_sys_code where pid= 
+			(
+			case when t3.BUSINESS_TYPE='10' then 124  
+			 when t3.BUSINESS_TYPE='32' then 96
+			 when t3.BUSINESS_TYPE='54' then 124  
+			 when t3.BUSINESS_TYPE='76' then 172 
+			 when t3.BUSINESS_TYPE='178' then 124
+			 when t3.BUSINESS_TYPE='200' then 96
+			 end )  	
+			and VALUEES=t3.CHECKCONTENT ) checkcontent
+		FROM
+		t_qc t		
+		  LEFT JOIN t_record_info t1 
+    ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_workorder_cdma_sum t2 ON  t.TELSUM_ID = t2.cdma_autoid
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID
+		WHERE
+		 t.ENABLED='1'
+   		and t.QC_TYPE in(5,10) 
+    <if test="smallWorkid != null and smallWorkid != ''">
+		and t.AGENTWORKID LIKE CONCAT ('%', #{smallWorkid,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="telsumId != null and telsumId != ''">
+		and t2.cdma_autoid= #{telsumId,jdbcType=VARCHAR}
+	</if>
+	<if test="telsumType != null and telsumType != ''">
+		and t2.result_type= #{telsumType,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME &gt;= #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="telsumId != null and telsumId != ''">
+		and  t.TELSUM_ID = #{telsumId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+  
+  <select id="getcwxjQcHisByordersum" parameterType="cn.sh.ideal.model.QCHistory" resultType="java.lang.Integer">
+		   SELECT
+		count(1)
+		FROM
+		t_qc t
+	LEFT JOIN t_record_info t1 
+    ON t.RECORD_ID = t1.RECORD_ID 
+    LEFT JOIN t_qc_detail t3 ON t3.QC_ID = t.QC_ID AND t.QC_SUM = t3.QC_NUM
+    LEFT JOIN t_workorder_cdma_sum t2 ON  t.TELSUM_ID = t2.cdma_autoid
+    LEFT JOIN t_sys_user t4 ON  t4.Smail_workid = t.AGENTWORKID
+		WHERE
+		 t.ENABLED='1'
+   		and t.QC_TYPE in(4,9) 
+    
+   	 <if test="workorderId != null and workorderId != ''">
+		and t.TELSUM_ID LIKE CONCAT ('%', #{workorderId,jdbcType=INTEGER},'%')
+	</if>
+	<if test="qcUserWorkid != null and qcUserWorkid != ''">
+		and t.QC_USER_WORKID LIKE CONCAT ('%', #{qcUserWorkid,jdbcType=VARCHAR},'%')
+	</if>
+		<if test="telsumId != null and telsumId != ''">
+		and t2.cdma_autoid= #{telsumId,jdbcType=VARCHAR}
+	</if>
+	<if test="telsumType != null and telsumType != ''">
+		and t2.result_type= #{telsumType,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeStart != null and qcTimeStart != ''">
+		and t.QC_TIME &gt;= #{qcTimeStart,jdbcType=VARCHAR}
+	</if>
+	<if test="qcTimeEnd != null and qcTimeEnd != ''">
+		and t.QC_TIME &lt;= #{qcTimeEnd,jdbcType=VARCHAR}
+	</if>
+	<if test="declarationBigType != null and declarationBigType != ''">
+		and t2.complaint_type= #{declarationBigType,jdbcType=VARCHAR}
+	</if>
+	<if test="qualityLevel != null and qualityLevel != ''">
+		and t3.QUALITY_LEVEL = #{qualityLevel,jdbcType=VARCHAR}
+	</if>
+	<if test="reservedThree != null and reservedThree != ''">
+		and t1.RESERVED_THREE= #{reservedThree,jdbcType=VARCHAR}
+	</if>
+	<if test="groupName != null and groupName != ''">
+		and  t4.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+	</if>
+	<if test="businessType != null and businessType != ''">
+		and  t3.BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR}
+	</if>
+	<if test="checkcontent != null and checkcontent != ''">
+		and  t3.CHECKCONTENT = #{checkcontent,jdbcType=VARCHAR}
+	</if>
+	<if test="workorderId != null and workorderId != ''">
+		and  t3.WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+	</if>
+	<if test="qcId != null and qcId != ''">
+		and  t.QC_ID = #{qcId,jdbcType=VARCHAR}
+	</if>
+    order by t.QC_TIME desc
+  </select>
+</mapper>

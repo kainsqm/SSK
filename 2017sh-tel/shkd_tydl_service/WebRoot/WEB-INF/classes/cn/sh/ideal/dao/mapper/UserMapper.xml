@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.IUserDao">
+	<resultMap type="cn.sh.ideal.model.UserInfo" id="BaseResultMap">
+		<id column="USER_ID" property="userId" jdbcType="INTEGER" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="PASSWD" property="passwd" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="queryUserByWork" parameterType="cn.sh.ideal.model.UserInfo"
+		resultMap="BaseResultMap">
+		select t.USER_ID,t.USER_NAME,t.PASSWD from t_sys_user 
+		t where t.WORK_ID=#{workId} and t.ENABLED='1'
+	</select>
+
+</mapper>

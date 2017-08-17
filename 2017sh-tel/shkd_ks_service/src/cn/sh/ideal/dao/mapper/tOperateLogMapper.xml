@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.ItOperateLogDao" >
+	<resultMap type="cn.sh.ideal.model.OperateLog" id="BaseResultMap">
+		<id column="AUTO_ID" property="autoId" jdbcType="INTEGER" />  
+		<result column="OPERATE_USERID"  property="operateUserid"  jdbcType="INTEGER" />
+		<result column="OPERATE_USERNAME"  property="operateUsername"  jdbcType="INTEGER" />
+		<result column="OPERATE_DATE"  property="operateDate"  jdbcType="VARCHAR" />
+		<result column="IP"  property="ip"  jdbcType="VARCHAR" />
+		<result column="MODULE_NAME"  property="moduleName"  jdbcType="VARCHAR" />
+		<result column="FUNCTION_NAME"  property="functionName"  jdbcType="VARCHAR" />
+		<result column="METHOD_NAME"  property="methodName"  jdbcType="VARCHAR" />
+		<result column="CLASS_NAME"  property="className"  jdbcType="VARCHAR" />
+		<result column="OPERATE_CONTENT"  property="operateContent"  jdbcType="VARCHAR" />
+		<result column="REMARK"  property="remark"  jdbcType="VARCHAR" />
+		<result column="workId" property="workId" />
+		<result column="startoperateDate" property="startoperateDate" />
+		<result column="stopoperateDate" property="stopoperateDate" />
+	</resultMap>
+		<select id="listOperatelog" parameterType="cn.sh.ideal.model.OperateLog" resultMap="BaseResultMap">		
+		select 
+		AUTO_ID,
+		ts.WORK_ID as workId,
+		OPERATE_USERID,
+		OPERATE_USERNAME,
+		date_format(OPERATE_DATE,'%Y-%m-%d %H:%i:%s') OPERATE_DATE,
+		IP,
+		MODULE_NAME,
+		FUNCTION_NAME,
+		METHOD_NAME,
+		CLASS_NAME,
+		OPERATE_CONTENT,
+		REMARK
+		from t_operate_log t inner join t_sys_user ts on t.OPERATE_USERID=ts.USER_ID 
+		where 1=1 
+		<if test="workId !=null  and workId !='' ">
+		and OPERATE_USERID=(select USER_ID from t_sys_user where WORK_ID=#{workId,jdbcType=VARCHAR})
+		</if>
+		<if test="startoperateDate != null and startoperateDate != ''" >
+       and OPERATE_DATE &gt;= #{startoperateDate,jdbcType=VARCHAR} 
+      </if>
+      <if test="stopoperateDate != null and stopoperateDate != ''" >
+   	 			and  OPERATE_DATE &lt;= #{stopoperateDate,jdbcType=VARCHAR}
+      </if>
+		order by AUTO_ID desc
+		</select>
+	
+	<select id="countOperatelog" parameterType="cn.sh.ideal.model.OperateLog" resultType="java.lang.Integer">		
+		select 
+		count(1)
+		from t_operate_log t inner join t_sys_user ts on t.OPERATE_USERID=ts.USER_ID 
+		where 1=1 
+		<if test="workId !=null and  workId !='' ">
+		and OPERATE_USERID=(select USER_ID from t_sys_user where WORK_ID=#{workId,jdbcType=VARCHAR})
+		</if>
+		<if test="workId !=null  and workId !='' ">
+		and OPERATE_USERID=(select USER_ID from t_sys_user where WORK_ID=#{workId,jdbcType=VARCHAR})
+		</if>
+		<if test="startoperateDate != null and startoperateDate != ''" >
+       and OPERATE_DATE &gt;= #{startoperateDate,jdbcType=VARCHAR} 
+      </if>
+		</select>
+		
+		<!--插入日志 -->
+	<insert id="insert" parameterType="cn.sh.ideal.model.OperateLog">
+		INSERT INTO  t_operate_log
+		(OPERATE_USERID,
+		 OPERATE_USERNAME,
+		OPERATE_DATE,
+		IP,
+		MODULE_NAME,
+		FUNCTION_NAME,
+		METHOD_NAME,
+		CLASS_NAME,
+		OPERATE_CONTENT 
+		)
+		VALUES(
+		#{operateUserid},
+		#{operateUsername},
+		now(),
+		#{ip},
+		#{moduleName},
+		#{functionName},
+		#{methodName},
+		#{className},
+		#{operateContent}
+		)
+	</insert>
+
+	
+</mapper>

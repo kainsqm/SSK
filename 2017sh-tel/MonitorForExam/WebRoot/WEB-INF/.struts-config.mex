@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/examJoin/exampaperSelected.jsp" location="650,50" dimension="226,48" />
+  <StrutsActivity path="/examJoin/exampaperFinishedSelected.jsp" location="950,50" dimension="274,48" />
+  <StrutsActivity path="/examJoin/exampaperJoin.jsp" location="650,150" dimension="202,48" />
+  <StrutsActivity path="/monitorAction.do" location="50,150" dimension="358,84" />
+  <StrutsActivity path="/ok.jsp" location="950,150" dimension="82,48" />
+  <StrutsActivity path="/addrlist/insertaddr.jsp" location="50,350" dimension="184,48" />
+  <StrutsActivity path="/user/queryuser.jsp" location="350,350" dimension="154,48" />
+  <StrutsActivity path="/addrlist/moveaddr.jsp" location="50,450" dimension="172,48" />
+  <StrutsActivity path="/sendmsg/sendmsg.jsp" location="350,450" dimension="160,48" />
+  <StrutsActivity path="/addrlist/queryaddr.jsp" location="650,450" dimension="178,48" />
+  <StrutsActivity path="/addrlist/saveasexcel.jsp" location="950,450" dimension="190,48" />
+  <StrutsActivity path="/sp/ordersp.jsp" location="650,350" dimension="130,48" />
+  <StrutsTransition id="/examJoinAction.do,exampaperJoin,/examJoin/exampaperJoin.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="229,134" />
+      <AbsolutePoint location="229,174" />
+      <AbsolutePoint location="650,174" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/monitorAction.do,exampaperJoin,/examJoin/exampaperJoin.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="408,183" />
+      <AbsolutePoint location="650,183" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,showAdd,/addrlist/insertaddr.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="843,334" />
+      <AbsolutePoint location="843,413" />
+      <AbsolutePoint location="142,413" />
+      <AbsolutePoint location="142,398" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,editAddrListForm,/addrlist/insertaddr.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,262" />
+      <AbsolutePoint location="142,262" />
+      <AbsolutePoint location="142,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,divert,/user/queryuser.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,322" />
+      <AbsolutePoint location="427,322" />
+      <AbsolutePoint location="427,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/monitorAction.do,examFinishedChoosen,/examJoin/exampaperFinishedSelected.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="408,213" />
+      <AbsolutePoint location="1087,213" />
+      <AbsolutePoint location="1087,98" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/monitorAction.do,orderSp,/sp/ordersp.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="219,234" />
+      <AbsolutePoint location="219,279" />
+      <AbsolutePoint location="715,279" />
+      <AbsolutePoint location="715,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/monitorAction.do,examChoosen,/examJoin/exampaperSelected.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="229,150" />
+      <AbsolutePoint location="229,74" />
+      <AbsolutePoint location="650,74" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/monitorAction.do,ok,/examJoin/exampaperSelected.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="229,150" />
+      <AbsolutePoint location="229,74" />
+      <AbsolutePoint location="650,74" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,saveAddrList,/addrlist/saveasexcel.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="965,334" />
+      <AbsolutePoint location="965,450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/examJoinAction.do,examChoosen,/examJoin/exampaperSelected.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="408,83" />
+      <AbsolutePoint location="650,83" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,addrListQuery,/addrlist/queryaddr.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="813,334" />
+      <AbsolutePoint location="813,450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,moveAddrList,/addrlist/moveaddr.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,292" />
+      <AbsolutePoint location="279,292" />
+      <AbsolutePoint location="279,474" />
+      <AbsolutePoint location="222,474" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/addrList.do,sendMsg,/sendmsg/sendmsg.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="873,334" />
+      <AbsolutePoint location="873,573" />
+      <AbsolutePoint location="430,573" />
+      <AbsolutePoint location="430,498" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/monitorAction.do,ok,/ok.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="408,213" />
+      <AbsolutePoint location="991,213" />
+      <AbsolutePoint location="991,198" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/customerSmtype.do,orderSp,/sp/ordersp.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="950,292" />
+      <AbsolutePoint location="715,292" />
+      <AbsolutePoint location="715,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/examJoinAction.do,examFinishedChoosen,/examJoin/exampaperFinishedSelected.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="408,113" />
+      <AbsolutePoint location="1087,113" />
+      <AbsolutePoint location="1087,98" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

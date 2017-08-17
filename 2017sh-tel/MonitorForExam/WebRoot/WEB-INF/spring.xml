@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<!-- <value>jdbc:oracle:thin:@10.4.247.125:1521:DB11G</value> -->
+			<value>jdbc:mysql://172.16.67.37:3306/sh_kd_ks_test?useUnicode=true&amp;characterEncoding=utf-8</value>
+		</property>
+		<property name="username">
+			<value>sh_kd_ks_test</value>
+		</property>
+		<property name="password">
+			<value>sh_kd_ks_test</value>
+		</property>
+	</bean>
+ 
+	
+	<bean name="/monitorAction" class="cn.sh.ideal.action.MonitorAction" autowire="byName" />
+	
+	<bean id="monitorService" class="cn.sh.ideal.serivce.MonitorServiceImp">
+		<property name="monitorDao">
+      		<ref bean="monitorDao" />
+    	</property>
+	</bean>
+	
+	<bean id="monitorDao" class="cn.sh.ideal.dao.MonitorDaoImp">
+		<property name="dataSource">
+      		<ref bean="dataSource" />
+    	</property>
+	</bean>
+	
+	
+	<bean id="accumulatorTimer"
+		class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass">
+			<value>cn.sh.ideal.quart.AccumulatorQua</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="monitorService">
+					<ref local="monitorService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
+
+	
+	<bean id="simpleTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail">
+			<ref local="accumulatorTimer" />
+		</property>
+		<property name="startDelay">
+			<value>10000</value><!-- 服务器启动10秒后执行 -->
+		</property>
+		<property name="repeatInterval">
+			<value>30000</value><!-- 每阁30秒执行一次 -->
+		</property>
+		<property name="repeatCount">
+			<value>-1</value>
+		</property>
+	</bean>
+	
+	<bean id="sfb"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref local="simpleTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

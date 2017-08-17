@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IRecordInfoDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.RecordInfo">
+    <id column="RECORD_ID" jdbcType="INTEGER" property="recordId" />
+    <result column="RESERVED_THREE" jdbcType="VARCHAR" property="reservedThree" />
+    <result column="DIRECTION_FLAG" jdbcType="VARCHAR" property="directionFlag" />
+    <result column="CALLERID" jdbcType="VARCHAR" property="callerid" />
+    <result column="CALLEDID" jdbcType="VARCHAR" property="calledid" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="STOP_TIME" jdbcType="VARCHAR" property="stopTime" />
+    <result column="RECORD_LENGTH" jdbcType="VARCHAR" property="recordLength" />
+    <result column="SMALL_WORKID" jdbcType="VARCHAR" property="smallWorkid" />
+    <result column="BIG_WORKID" jdbcType="VARCHAR" property="bigWorkid" />
+    <result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
+    <result column="GROUP_ID" jdbcType="INTEGER" property="groupId" />
+    <result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+    <result column="EXTENSION" jdbcType="VARCHAR" property="extension" />
+    <result column="RECORD_FILENAME" jdbcType="VARCHAR" property="recordFilename" />
+    <result column="IS_TASK" jdbcType="VARCHAR" property="isTask" />
+    <result column="RECORD_URL" jdbcType="VARCHAR" property="recordUrl" />
+    <result column="IS_QC" jdbcType="INTEGER" property="isQC" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    RECORD_ID, RESERVED_THREE, DIRECTION_FLAG, CALLERID, CALLEDID,
+     date_format(START_TIME,'%Y-%m-%d %H:%i:%s') START_TIME,
+     date_format(STOP_TIME,'%Y-%m-%d %H:%i:%s') STOP_TIME,
+     
+    RECORD_LENGTH, SMALL_WORKID, BIG_WORKID, AGENT_NAME, GROUP_ID, GROUP_NAME, EXTENSION, 
+    RECORD_FILENAME, IS_TASK, RECORD_URL
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_record_info
+    where RECORD_ID = #{recordId,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insert" parameterType="cn.sh.ideal.model.RecordInfo">
+    insert into t_record_info (RECORD_ID, RESERVED_THREE, DIRECTION_FLAG, 
+      CALLERID, CALLEDID, START_TIME, 
+      STOP_TIME, RECORD_LENGTH, SMALL_WORKID, 
+      BIG_WORKID, AGENT_NAME, GROUP_ID, 
+      GROUP_NAME, EXTENSION, RECORD_FILENAME, 
+      IS_TASK, RECORD_URL)
+    values (#{recordId,jdbcType=INTEGER}, #{reservedThree,jdbcType=VARCHAR}, #{directionFlag,jdbcType=VARCHAR}, 
+      #{callerid,jdbcType=VARCHAR}, #{calledid,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{stopTime,jdbcType=TIMESTAMP}, #{recordLength,jdbcType=VARCHAR}, #{smallWorkid,jdbcType=VARCHAR}, 
+      #{bigWorkid,jdbcType=VARCHAR}, #{agentName,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
+      #{groupName,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, #{recordFilename,jdbcType=VARCHAR}, 
+      #{isTask,jdbcType=VARCHAR}, #{recordUrl,jdbcType=VARCHAR})
+  </insert>
+ 
+ 
+  
+  
+   <select id="selectRecordInfo" parameterType="cn.sh.ideal.model.RecordInfo" resultMap="BaseResultMap">
+    select 
+     t.RECORD_ID, t.RESERVED_THREE, t.DIRECTION_FLAG, t.CALLERID, t.CALLEDID,
+     date_format(t.START_TIME,'%Y-%m-%d %H:%i:%s') START_TIME,
+     date_format(t.STOP_TIME,'%Y-%m-%d %H:%i:%s') STOP_TIME,
+     
+    t.RECORD_LENGTH, t.SMALL_WORKID, t.BIG_WORKID, t.AGENT_NAME, t.GROUP_ID,t.GROUP_NAME, t.EXTENSION, 
+    t.RECORD_FILENAME, t.IS_TASK, t.RECORD_URL,q.RECORD_ID IS_QC
+    from t_record_info t
+    LEFT JOIN t_qc q on t.RECORD_ID=q.RECORD_ID and q.enabled='1'
+    where 1=1 and t.IS_TASK='0'
+     <if test="reservedThree != null and reservedThree != ''">
+       and  t.RESERVED_THREE LIKE CONCAT ('%',#{reservedThree,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="directionFlag != null and directionFlag != ''">
+        and  t.DIRECTION_FLAG = #{directionFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="callerid != null and callerid != ''" >
+       and  t.CALLERID  LIKE CONCAT ('%',#{callerid,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="calledid != null and  calledid!='' ">
+        and  t.CALLEDID LIKE CONCAT ('%',#{calledid,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and  t.START_TIME &gt;= #{startTime,jdbcType=VARCHAR}
+      </if>
+      <if test="stopTime != null and stopTime != ''">
+        and  t.START_TIME &lt;=  #{stopTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="recordLengthmin != null and recordLengthmin != ''">
+        and  t.RECORD_LENGTH >= #{recordLengthmin,jdbcType=VARCHAR}
+      </if>
+      <if test="recordLengthmax != null and recordLengthmax != ''">
+        and  t.RECORD_LENGTH &lt;= #{recordLengthmax,jdbcType=VARCHAR}
+      </if>
+      <if test="smallWorkid != null and smallWorkid != ''">
+        and  t.SMALL_WORKID LIKE CONCAT ('%',#{smallWorkid,jdbcType=VARCHAR},'%')
+      </if>     
+      <if test="agentName != null and agentName != ''">
+        and  t.AGENT_NAME = #{agentName,jdbcType=VARCHAR}
+      </if>
+       <if test="groupName != null and groupName != ''">
+        and GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+      </if>
+     order by t.START_TIME desc
+  </select>
+  
+   <select id="selectCount" parameterType="cn.sh.ideal.model.RecordInfo" resultType="java.lang.Integer" >
+    select 
+    count(1)
+    from t_record_info t
+  	LEFT JOIN t_qc q on t.RECORD_ID=q.RECORD_ID and q.enabled='1'
+    where 1=1 and t.IS_TASK='0'
+    
+    <if test="reservedThree != null and reservedThree != ''">
+       and  t.RESERVED_THREE LIKE CONCAT ('%',#{reservedThree,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="directionFlag != null and directionFlag != ''">
+        and  t.DIRECTION_FLAG = #{directionFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="callerid != null and callerid != ''" >
+       and  t.CALLERID  LIKE CONCAT ('%',#{callerid,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="calledid != null and  calledid!='' ">
+        and  t.CALLEDID LIKE CONCAT ('%',#{calledid,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="startTime != null and startTime != ''">
+        and  t.START_TIME &gt;= #{startTime,jdbcType=VARCHAR}
+      </if>
+      <if test="stopTime != null and stopTime != ''">
+        and  t.START_TIME &lt;=  #{stopTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="recordLengthmin != null and recordLengthmin != ''">
+        and  t.RECORD_LENGTH >= #{recordLengthmin,jdbcType=VARCHAR}
+      </if>
+      <if test="recordLengthmax != null and recordLengthmax != ''">
+        and  t.RECORD_LENGTH &lt;= #{recordLengthmax,jdbcType=VARCHAR}
+      </if>
+      <if test="smallWorkid != null and smallWorkid != ''">
+        and  t.SMALL_WORKID LIKE CONCAT ('%',#{smallWorkid,jdbcType=VARCHAR},'%')
+      </if>
+     
+      <if test="agentName != null and agentName != ''">
+        and  t.AGENT_NAME = #{agentName,jdbcType=VARCHAR}
+      </if>
+       <if test="groupName != null and groupName != ''">
+        and GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+      </if>      
+  </select>
+  
+</mapper>

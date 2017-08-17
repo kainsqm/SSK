@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ISysRoleUserDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.SysRoleUser">
+    <id column="AUTO_ID" jdbcType="INTEGER" property="autoId" />
+    <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="ROLE_ID" jdbcType="INTEGER" property="roleId" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+    <result column="CREATE_USER_ID" jdbcType="INTEGER" property="createUserId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_USER_ID" jdbcType="INTEGER" property="updateUserId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    AUTO_ID, USER_ID, ROLE_ID, ENABLED, CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_roleuser
+    where ENABLED='1' and ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_roleuser
+    where AUTO_ID = #{autoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.SysRoleUser">
+    insert into t_sys_roleuser (AUTO_ID, USER_ID, ROLE_ID, 
+      ENABLED, CREATE_USER_ID, CREATE_TIME, 
+      UPDATE_USER_ID, UPDATE_TIME)
+    values (#{autoId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=VARCHAR}, #{createUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.SysRoleUser">
+    insert into t_sys_roleuser
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="autoId != null">
+        AUTO_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="enabled != null">
+        ENABLED,
+      </if>
+      <if test="createUserId != null">
+        CREATE_USER_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateUserId != null">
+        UPDATE_USER_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="autoId != null">
+        #{autoId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserId != null">
+        #{updateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.SysRoleUser">
+    update t_sys_roleuser
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        ROLE_ID = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        ENABLED = #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        CREATE_USER_ID = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserId != null">
+        UPDATE_USER_ID = #{updateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where AUTO_ID = #{autoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.SysRoleUser">
+    update t_sys_roleuser
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      ROLE_ID = #{roleId,jdbcType=INTEGER},
+      ENABLED = #{enabled,jdbcType=VARCHAR},
+      CREATE_USER_ID = #{createUserId,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_USER_ID = #{updateUserId,jdbcType=INTEGER},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where AUTO_ID = #{autoId,jdbcType=INTEGER}
+  </update>
+</mapper>

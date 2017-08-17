@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>客调项目管理系统</title>
+	 <link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+	<script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script> 
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+	<script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <style type="text/css">
+		body{ font-size:13px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		td{ text-align:left;}
+		/*.td_1{ text-align:right;}*/
+		ul{width: 1000px;overflow: hidden;}
+		li{float: left;text-align: left;height: 30px;line-height: 30px;}
+		h3{
+			text-align: left;
+			width: 1000px;
+			margin: 10px auto;
+			color: darkblue;
+			font-size: 13px;
+		}
+		.l-text input{height: 20px;}
+	</style>
+	<script type="text/javascript"> 
+	 $(function ()
+{
+$("#test1").ligerComboBox({ isShowCheckBox: true, isMultiSelect: true,
+data: [
+{ text: '类型1', id: '1' },
+{ text: '类型2', id: '2' },
+{ text: '类型3', id: '44' }
+], valueFieldID: 'test3'
+}); 
+$("#test11").ligerComboBox({ isShowCheckBox: true, isMultiSelect: true,
+data: [
+{ text: '类型1', id: '1' },
+{ text: '类型2', id: '2' },
+{ text: '类型3', id: '44' }
+], valueFieldID: 'test33'
+});
+$("#test111").ligerComboBox({ isShowCheckBox: true, isMultiSelect: true,
+data: [
+{ text: '来源1', id: '1' },
+{ text: '来源2', id: '2' },
+{ text: '来源3', id: '44' }
+], valueFieldID: 'test333'
+});
+});
+	</script> 
+</head>
+<body> 
+	<div align="center" style="height:auto;">
+		<h3>任务信息</h3>
+		<ul>
+			 <li style="width: 260px;">任务名称：<input type="text" name="" id="" value="" /><font color="#FF0000">&nbsp;*</font></li>
+			 <li style="width: 200px;position: relative;top: -2px;">
+			 	  是否发布：<input type="radio" name="fabu_s" />
+			          是&nbsp;&nbsp;&nbsp;<input type="radio" name="fabu_s" />
+			          否<font color="#FF0000">&nbsp;*</font>
+			 </li>
+			 <li>
+			 	任务周期：
+			 	<input class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />&nbsp;-&nbsp;
+			 	<input class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+			 	<font color="#FF0000">&nbsp;*</font>
+			 </li>
+			 <li style="width: 1000px;">任务对象：<input type="text" name="" id="" value="" style="width:760px ;"/>&nbsp;xx人&nbsp;&nbsp;<font color="#FF0000">&nbsp;*(质检员，30人以内)</font></li>
+		     <li style="width: 260px;">受理员被抽检限制次数/天：<input type="text" name="" id="" value="" style="width:52px ;"/></li>
+		     <li>质检员任务规格数/天：<input type="text" name="" id="" value="" style="width:52px ;"/></li>
+		</ul>
+		<h3>电话小结筛选信息</h3>
+		<table border="0" cellpadding="3" cellspacing="3" width="1000px">
+			<tr height="30">
+				<td class="td_1">受理员：</td>
+				<td colspan="7"><input type="text" name="" id="" value="" style="width:760px ;"/>&nbsp;xx人&nbsp;&nbsp;<font color="#FF0000">&nbsp;*(30人以内)</font></td>
+			</tr>	
+			<tr height="30">
+				<td class="td_1" width="60px">业务类型：</td>
+				<td>
+				<input type="text" id="test1" /> 
+				</td>
+				<td class="td_1" width="60px">小结类型：</td>
+				<td>
+				<input type="text" id="test11" /> 
+				</td>
+				<td class="td_1" width="60px">故障来源：</td>
+				<td>
+				<input type="text" id="test111" /> 
+				</td>
+				<td width="65px"></td>
+			</tr>
+			
+			<tr height="100">
+				<td colspan="8" style="text-align:center;">
+					<input type="button" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="返回" onclick="history.go(-1);" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

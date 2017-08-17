@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>试卷管理</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px; background-image:url(../../img/login/title_bg.jpg);border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		table td{ height:30px; line-height:30px;}
+		table .search_table td.td_lable{ text-align:right;}
+		table .search_table td.td_value{ text-align:left;}
+		a{text-decoration : none;color:blue;}
+		red{color: red;}
+	</style>
+	<script type="text/javascript"> 
+		var dialog = frameElement.dialog;
+		var dialogData = dialog.get('data');//获取data参数
+		var inputName = dialogData.name;
+	    var beginexam = {Rows: [
+				{
+					"examId":"3843301",
+					"examName":"期末考试测试卷1",
+					"examDesc":"xxxxxxxxxxxxxxxxxxxxxxxxx",
+					"examDate":"2016-05-09 08:08:08",
+					"examUser":"用户1",
+					"examStatu":"有效",
+					"examType":"日考"
+				},
+				{
+					"examId":"3843301",
+					"examName":"期末考试测试卷2",
+					"examDesc":"xxxxxxxxxxxxxxxxxxxxxxxxx",
+					"examDate":"2016-05-09 08:08:08",
+					"examUser":"用户1",
+					"examStatu":"有效",
+					"examType":"日考"
+				},
+				{
+					"examId":"3843301",
+					"examName":"期末考试测试卷3",
+					"examDesc":"xxxxxxxxxxxxxxxxxxxxxxxxx",
+					"examDate":"2016-05-09 08:08:08",
+					"examUser":"用户1",
+					"examStatu":"有效",
+					"examType":"日考"
+				},
+				{
+					"examId":"3843301",
+					"examName":"期末考试测试卷4",
+					"examDesc":"xxxxxxxxxxxxxxxxxxxxxxxxx",
+					"examDate":"2016-05-09 08:08:08",
+					"examUser":"用户1",
+					"examStatu":"有效",
+					"examType":"日考"
+				}
+			],
+			Total: 4
+		};
+		$(function () {
+            var maingrid_gd= $("#record_list").ligerGrid({
+                columns: [                
+				{ display: '试卷编号', name: 'examId', align: 'left', minWidth :60,isSort:false},
+				{ display: '试卷名称', name: 'examName', align: 'left', minWidth :120,isSort:false},
+				{ display: '生成日期', name: 'examDate', align: 'left', minWidth :60,isSort:false},
+				{ display: '操作人', name: 'examUser', align: 'left', minWidth :60,isSort:false},
+                { display: '状态', name: 'examStatu', align: 'left', width :80,isSort:false},
+				{ display: '试卷类型', name: 'examType', align: 'left', minWidth :80,isSort:false},
+				{ display: '试卷描述', name: 'examDesc', align: 'left', maxWidth :120,isSort:false}
+                ], 
+                data:beginexam, sortName: 'examId',height:'100%', pageSize:10 ,width:"99%",rownumbers :true,checkbox:true,
+                onCheckRow:function(checked,data,rowid,rowdata){
+                	window.parent.document.getElementById(inputName).value = data.examName;
+                	frameElement.dialog.close();
+        		}
+            });
+            
+            
+            var areainput = $("#areainput").ligerComboBox({
+                width: 135,
+                selectBoxWidth: "auto",
+                selectBoxHeight: 200, valueField: 'text',treeLeafOnly:false,
+                tree: { url: 'area.txt', checkbox: false, ajaxType: 'get', idFieldName: 'text' }
+            });
+            
+            
+            var queueinput = $("#queueinput").ligerComboBox({
+                width : 135, 
+                selectBoxWidth: "auto",
+                selectBoxHeight: 300, valueField: 'text', treeLeafOnly: false,
+                tree: { url: 'area.txt', ajaxType: 'get', idFieldName: 'text' }
+            }); 
+            	
+            $("#pageloading").hide(); 
+            
+        });
+		
+		function openChoosePaperUser(){
+      		 $.ligerDialog.open({
+                   height:600,
+                   width: 800,
+                   title : '用户管理',
+                   url: 'choose_user.html', 
+                   showMax: false,
+                   showToggle: true,
+                   showMin: false,
+                   isResize: true,
+                   slide: false,
+                   data: {
+                       name: "username"
+                   },
+                   //自定义参数
+                   myDataName: "自定义参数"
+            });
+    	}
+		
+		function resetbutton(){
+			$("#examId").val("");
+			$("#examName").val("");
+			$("#paperstatu").val("0");
+			$("#papertype").val("0");
+		}
+    </script> 
+</head>
+<body> 
+	<div style="">
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td class="td_lable">试卷编号：</td><td class="td_value"><input type="text" id='examId'/></td>
+					<td class="td_lable">试卷名称：</td><td class="td_value"><input type="text" id='examName'/></td>
+				</tr>
+				<tr>
+					<td class="td_lable">试卷状态：</td><td class="td_value">
+						<select name="paperstatu" id="paperstatu" style="width: 135px">
+			                <option value="0">---请选择---</option>
+			                <option value="opt2">有效</option>
+			                <option value="opt2">无效</option>
+			            </select> 
+					</td>
+					</td>
+					<td class="td_lable">试卷类型：</td><td class="td_value">
+						<select name="papertype" id="papertype" style="width: 135px">
+			                <option value="0">---请选择---</option>
+			                <option value="opt2">日考</option>
+			                <option value="opt2">月考</option>
+			            </select> 
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" align="center">
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" id="resetbutton" onclick="resetbutton()"/>
+					</td>
+				</tr>
+			</table>			
+		</div>
+		
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

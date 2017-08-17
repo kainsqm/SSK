@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ICoachMainDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.CoachMain">
+    <id column="COACHMAIN_ID" jdbcType="INTEGER" property="coachmainId" />
+    <result column="PASS" jdbcType="VARCHAR" property="pass" />
+    <result column="PASSINFO" jdbcType="VARCHAR" property="passinfo" />
+    <result column="PASSUSERID" jdbcType="VARCHAR" property="passuserid" />
+    <result column="PASSTIME" jdbcType="VARCHAR" property="passtime" />
+    <result column="COACHPROJECT" jdbcType="VARCHAR" property="coachproject" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="USERID" jdbcType="INTEGER" property="userid" />
+    <result column="COACHGROUP" jdbcType="VARCHAR" property="coachgroup" />
+    <result column="COACHGROUPID" jdbcType="INTEGER" property="coachgroupid" />
+    <result column="STARTTIME" jdbcType="VARCHAR" property="starttime" />
+    <result column="ENDTIME" jdbcType="VARCHAR" property="endtime" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="USERGROUPID" jdbcType="INTEGER" property="usergroupid" />
+    <result column="USERGROUPNAME" jdbcType="VARCHAR" property="usergroupname" />
+    <result column="CREATEID" jdbcType="INTEGER" property="createid" />
+    <result column="CREATETIME" jdbcType="VARCHAR" property="createtime" />
+    <result column="MODIFID" jdbcType="INTEGER" property="modifid" />
+    <result column="MODIFTIME" jdbcType="VARCHAR" property="modiftime" />
+    <result column="IS_VALID" jdbcType="VARCHAR" property="isValid" />
+    <result column="SUM_COACHPROJECT" jdbcType="VARCHAR" property="sumCoachproject" />
+    <result column="SUM_SUMMARIZE" jdbcType="VARCHAR" property="sumSummarize" />
+    <result column="SUM_IMPROVE" jdbcType="VARCHAR" property="sumImprove" />
+    <result column="SUM_SUGGEST" jdbcType="VARCHAR" property="sumSuggest" />
+    <result column="SUM_CREATE_USER_ID" jdbcType="INTEGER" property="sumCreateUserId" />
+    <result column="SUM_CREATE_TIME" jdbcType="VARCHAR" property="sumCreateTime" />
+    <result column="REMARKER" jdbcType="VARCHAR" property="remaker" />
+    <result column="ISGJ" jdbcType="VARCHAR" property="isgj" />
+    <result column="QCREMARK" jdbcType="VARCHAR" property="qcremark" />
+  </resultMap>
+  
+  <resultMap type="cn.sh.ideal.model.CoachMain" id="CoachMainMap">
+       <id column="COACHMAIN_ID" jdbcType="INTEGER" property="coachmainId" />
+      <result column="SUM_IMPROVE" jdbcType="VARCHAR" property="sumImprove" />
+      <result column="PASS" jdbcType="VARCHAR" property="pass" />
+      <result column="REMARKER" jdbcType="VARCHAR" property="remaker" />
+      <result column="STARTTIME" jdbcType="VARCHAR" property="starttime" />
+      <result column="ENDTIME" jdbcType="VARCHAR" property="endtime" />
+      <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+      <result column="qcUserName" jdbcType="VARCHAR" property="qcUserName" />
+      <result column="AcceptorWorkId" jdbcType="VARCHAR" property="AcceptorWorkId" />
+  </resultMap>
+  <resultMap type="cn.sh.ideal.model.CoachMain" id="TeamMainMap">
+       <id column="COACHMAIN_ID" jdbcType="INTEGER" property="coachmainId"/>
+      <result column="teamvalue" jdbcType="VARCHAR" property="teamvalue" />
+      <result column="teamname" jdbcType="VARCHAR" property="teamname" />
+  </resultMap>
+  
+  <select id="getcoachteam" resultMap="TeamMainMap">
+  select NAME as teamname,VALUEES as teamvalue
+  from t_sys_code
+  where PID=1
+  
+  </select>
+  
+  <sql id="Base_Column_List">
+    COACHMAIN_ID, PASS, PASSINFO, PASSUSERID, PASSTIME, COACHPROJECT, USERNAME, USERID, 
+    COACHGROUP, COACHGROUPID, STARTTIME, ENDTIME, TYPE, USERGROUPID, USERGROUPNAME, CREATEID, 
+    CREATETIME, MODIFID, MODIFTIME, IS_VALID, SUM_COACHPROJECT, SUM_SUMMARIZE, REMARKER, 
+    SUM_SUGGEST, SUM_CREATE_USER_ID, SUM_CREATE_TIME,SUM_IMPROVE,QCREMARK,ISGJ
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_coachmain
+    where COACHMAIN_ID = #{coachmainId,jdbcType=INTEGER}
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update  t_coachmain set IS_VALID='1'
+    where COACHMAIN_ID = #{coachmainId,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" parameterType="cn.sh.ideal.model.CoachMain" useGeneratedKeys="true" keyProperty="coachmainId">
+    insert into t_coachmain (COACHMAIN_ID, PASS, PASSINFO, 
+      PASSUSERID, PASSTIME, COACHPROJECT, 
+      USERNAME, USERID, COACHGROUP, 
+      COACHGROUPID, STARTTIME, ENDTIME, 
+      TYPE, USERGROUPID, USERGROUPNAME, 
+      CREATEID, CREATETIME, MODIFID, 
+      MODIFTIME, IS_VALID, SUM_COACHPROJECT, 
+      SUM_SUMMARIZE, SUM_IMPROVE, SUM_SUGGEST, 
+      SUM_CREATE_USER_ID, SUM_CREATE_TIME,
+      REMARKER,ISGJ,QCREMARK)
+    values (#{coachmainId,jdbcType=INTEGER}, '2', #{passinfo,jdbcType=VARCHAR}, 
+      #{passuserid,jdbcType=VARCHAR}, #{passtime,jdbcType=DATE}, #{coachproject,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{coachgroup,jdbcType=VARCHAR}, 
+      #{coachgroupid,jdbcType=INTEGER}, #{starttime,jdbcType=DATE}, #{endtime,jdbcType=DATE}, 
+      #{type,jdbcType=VARCHAR}, #{usergroupid,jdbcType=INTEGER}, #{usergroupname,jdbcType=VARCHAR}, 
+      #{createid,jdbcType=INTEGER}, now(), #{modifid,jdbcType=INTEGER}, 
+      #{modiftime,jdbcType=TIMESTAMP}, '0', #{sumCoachproject,jdbcType=VARCHAR}, 
+      #{sumSummarize,jdbcType=VARCHAR}, #{sumImprove,jdbcType=VARCHAR}, #{sumSuggest,jdbcType=VARCHAR}, 
+      #{sumCreateUserId,jdbcType=INTEGER}, #{sumCreateTime,jdbcType=TIMESTAMP}, #{remaker,jdbcType=VARCHAR},
+      #{isgj,jdbcType=VARCHAR}, #{qcremark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.CoachMain">
+    insert into t_coachmain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="coachmainId != null">
+        COACHMAIN_ID,
+      </if>
+      <if test="pass != null">
+        PASS,
+      </if>
+      <if test="passinfo != null">
+        PASSINFO,
+      </if>
+      <if test="passuserid != null">
+        PASSUSERID,
+      </if>
+      <if test="passtime != null">
+        PASSTIME,
+      </if>
+      <if test="coachproject != null">
+        COACHPROJECT,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="userid != null">
+        USERID,
+      </if>
+      <if test="coachgroup != null">
+        COACHGROUP,
+      </if>
+      <if test="coachgroupid != null">
+        COACHGROUPID,
+      </if>
+      <if test="starttime != null">
+        STARTTIME,
+      </if>
+      <if test="endtime != null">
+        ENDTIME,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="usergroupid != null">
+        USERGROUPID,
+      </if>
+      <if test="usergroupname != null">
+        USERGROUPNAME,
+      </if>
+      <if test="createid != null">
+        CREATEID,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="modifid != null">
+        MODIFID,
+      </if>
+      <if test="modiftime != null">
+        MODIFTIME,
+      </if>
+      <if test="isValid != null">
+        IS_VALID,
+      </if>
+      <if test="sumCoachproject != null">
+        SUM_COACHPROJECT,
+      </if>
+      <if test="sumSummarize != null">
+        SUM_SUMMARIZE,
+      </if>
+      <if test="sumImprove != null">
+        SUM_IMPROVE,
+      </if>
+      <if test="sumSuggest != null">
+        SUM_SUGGEST,
+      </if>
+      <if test="sumCreateUserId != null">
+        SUM_CREATE_USER_ID,
+      </if>
+      <if test="sumCreateTime != null">
+        SUM_CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="coachmainId != null">
+        #{coachmainId,jdbcType=INTEGER},
+      </if>
+      <if test="pass != null">
+        #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="passinfo != null">
+        #{passinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="passuserid != null">
+        #{passuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="passtime != null">
+        #{passtime,jdbcType=DATE},
+      </if>
+      <if test="coachproject != null">
+        #{coachproject,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="coachgroup != null">
+        #{coachgroup,jdbcType=VARCHAR},
+      </if>
+      <if test="coachgroupid != null">
+        #{coachgroupid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=DATE},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=DATE},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="usergroupid != null">
+        #{usergroupid,jdbcType=INTEGER},
+      </if>
+      <if test="usergroupname != null">
+        #{usergroupname,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null">
+        #{createid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifid != null">
+        #{modifid,jdbcType=INTEGER},
+      </if>
+      <if test="modiftime != null">
+        #{modiftime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="sumCoachproject != null">
+        #{sumCoachproject,jdbcType=VARCHAR},
+      </if>
+      <if test="sumSummarize != null">
+        #{sumSummarize,jdbcType=VARCHAR},
+      </if>
+      <if test="sumImprove != null">
+        #{sumImprove,jdbcType=VARCHAR},
+      </if>
+      <if test="sumSuggest != null">
+        #{sumSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="sumCreateUserId != null">
+        #{sumCreateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="sumCreateTime != null">
+        #{sumCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.CoachMain">
+    update t_coachmain
+    set
+      <if test="pass != null">
+        PASS = #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="passinfo != null">
+        PASSINFO = #{passinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="passuserid != null">
+        PASSUSERID = #{passuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="passtime != null">
+        PASSTIME = #{passtime,jdbcType=DATE},
+      </if>
+      <if test="coachproject != null">
+        COACHPROJECT = #{coachproject,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        USERID = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="coachgroup != null">
+        COACHGROUP = #{coachgroup,jdbcType=VARCHAR},
+      </if>
+      <if test="coachgroupid != null">
+        COACHGROUPID = #{coachgroupid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        STARTTIME = #{starttime,jdbcType=DATE},
+      </if>
+      <if test="endtime != null">
+        ENDTIME = #{endtime,jdbcType=DATE},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="usergroupid != null">
+        USERGROUPID = #{usergroupid,jdbcType=INTEGER},
+      </if>
+      <if test="usergroupname != null">
+        USERGROUPNAME = #{usergroupname,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null">
+        CREATEID = #{createid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifid != null">
+        MODIFID = #{modifid,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null">
+        IS_VALID = #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="sumCoachproject != null">
+        SUM_COACHPROJECT = #{sumCoachproject,jdbcType=VARCHAR},
+      </if>
+      <if test="sumSummarize != null and sumSummarize != ''">
+        SUM_SUMMARIZE = #{sumSummarize,jdbcType=VARCHAR},
+      </if>
+      <if test="sumImprove != null and sumImprove != ''">
+        SUM_IMPROVE = #{sumImprove,jdbcType=VARCHAR},
+      </if>
+      <if test="sumSuggest != null and sumSuggest != ''">
+        SUM_SUGGEST = #{sumSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="sumCreateUserId != null and sumCreateUserId != ''">
+        SUM_CREATE_USER_ID = #{sumCreateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="remaker != null and remaker != ''">
+        REMARKER = #{remaker,jdbcType=INTEGER},
+      </if>
+      <if test="sumCreateTime != null and sumCreateTime != ''">
+        SUM_CREATE_TIME = #{sumCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    MODIFTIME = now()
+    where COACHMAIN_ID = #{coachmainId,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updatezjBycoachmainid" parameterType="cn.sh.ideal.model.CoachMain">
+    update t_coachmain
+    <set>
+      <if test="pass != null">
+        PASS = #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="passinfo != null">
+        PASSINFO = #{passinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="passuserid != null">
+        PASSUSERID = #{passuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="passtime != null">
+        PASSTIME = #{passtime,jdbcType=DATE},
+      </if>
+      <if test="coachproject != null">
+        COACHPROJECT = #{coachproject,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        USERID = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="coachgroup != null">
+        COACHGROUP = #{coachgroup,jdbcType=VARCHAR},
+      </if>
+      <if test="coachgroupid != null">
+        COACHGROUPID = #{coachgroupid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        STARTTIME = #{starttime,jdbcType=DATE},
+      </if>
+      <if test="endtime != null">
+        ENDTIME = #{endtime,jdbcType=DATE},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="usergroupid != null">
+        USERGROUPID = #{usergroupid,jdbcType=INTEGER},
+      </if>
+      <if test="usergroupname != null">
+        USERGROUPNAME = #{usergroupname,jdbcType=VARCHAR},
+      </if>
+      <if test="createid != null">
+        CREATEID = #{createid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifid != null">
+        MODIFID = #{modifid,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null">
+        IS_VALID = #{isValid,jdbcType=VARCHAR},
+      </if>
+      <if test="sumCoachproject != null">
+        SUM_COACHPROJECT = #{sumCoachproject,jdbcType=VARCHAR},
+      </if>
+      <if test="sumSummarize != null and sumSummarize != ''">
+        SUM_SUMMARIZE = #{sumSummarize,jdbcType=VARCHAR},
+      </if>
+      <if test="sumImprove != null and sumImprove != ''">
+        SUM_IMPROVE = #{sumImprove,jdbcType=VARCHAR},
+      </if>
+      <if test="sumSuggest != null and sumSuggest != ''">
+        SUM_SUGGEST = #{sumSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="sumCreateUserId != null and sumCreateUserId != ''">
+        SUM_CREATE_USER_ID = #{sumCreateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="remaker != null and remaker != ''">
+        REMARKER = #{remaker,jdbcType=INTEGER},
+      </if>
+      <if test="sumCreateTime != null and sumCreateTime != ''">
+        SUM_CREATE_TIME = #{sumCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isgj != null and isgj != ''">
+        ISGJ = #{isgj,jdbcType=VARCHAR},
+      </if>
+      <if test="qcremark != null and qcremark != ''">
+        QCREMARK = #{qcremark,jdbcType=VARCHAR},
+      </if>
+      </set>
+    where COACHMAIN_ID = #{coachmainId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.CoachMain">
+    update t_coachmain
+    set PASS = #{pass,jdbcType=VARCHAR},
+      PASSINFO = #{passinfo,jdbcType=VARCHAR},
+      PASSUSERID = #{passuserid,jdbcType=VARCHAR},
+      PASSTIME = #{passtime,jdbcType=DATE},
+      COACHPROJECT = #{coachproject,jdbcType=VARCHAR},
+      USERNAME = #{username,jdbcType=VARCHAR},
+      USERID = #{userid,jdbcType=INTEGER},
+      COACHGROUP = #{coachgroup,jdbcType=VARCHAR},
+      COACHGROUPID = #{coachgroupid,jdbcType=INTEGER},
+      STARTTIME = #{starttime,jdbcType=DATE},
+      ENDTIME = #{endtime,jdbcType=DATE},
+      TYPE = #{type,jdbcType=VARCHAR},
+      USERGROUPID = #{usergroupid,jdbcType=INTEGER},
+      USERGROUPNAME = #{usergroupname,jdbcType=VARCHAR},
+      CREATEID = #{createid,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      MODIFID = #{modifid,jdbcType=INTEGER},
+      MODIFTIME = #{modiftime,jdbcType=TIMESTAMP},
+      IS_VALID = #{isValid,jdbcType=VARCHAR},
+      SUM_COACHPROJECT = #{sumCoachproject,jdbcType=VARCHAR},
+      SUM_SUMMARIZE = #{sumSummarize,jdbcType=VARCHAR},
+      SUM_IMPROVE = #{sumImprove,jdbcType=VARCHAR},
+      SUM_SUGGEST = #{sumSuggest,jdbcType=VARCHAR},
+      SUM_CREATE_USER_ID = #{sumCreateUserId,jdbcType=INTEGER},
+      SUM_CREATE_TIME = #{sumCreateTime,jdbcType=TIMESTAMP}
+    where COACHMAIN_ID = #{coachmainId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="queryCoachMain" parameterType="cn.sh.ideal.model.CoachMain"
+		resultMap="CoachMainMap">
+       select COACHMAIN_ID,
+       (select USER_NAME from T_SYS_USER where USER_ID=CREATEID) qcUserName,
+       (select WORK_ID from T_SYS_USER where USER_ID=USERID) AcceptorWorkId,
+        USERNAME,
+        date_format(STARTTIME,'%Y-%m-%d') STARTTIME,
+        date_format(ENDTIME,'%Y-%m-%d') ENDTIME,
+        REMARKER,
+        PASS,
+        t.SUM_IMPROVE
+       from t_coachmain t where 1=1  and IS_VALID='0'
+        <if test="starttime != null and starttime!=''">
+			and DATE_FORMAT(STARTTIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{starttime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="AcceptorWorkId != null and AcceptorWorkId!=''">
+			and CREATEID=(select USER_ID from T_SYS_USER  where ENABLED='1' and WORK_ID=#{AcceptorWorkId,jdbcType=VARCHAR}) 
+      </if>
+		<if test="endtime != null and endtime!=''">
+			and DATE_FORMAT(endtime,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{endtime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="pass != null and pass!=''">
+			and pass=#{pass,jdbcType=VARCHAR} 
+			and t.SUM_IMPROVE is null
+      </if>
+      <if test="sumImprove != null and sumImprove !=''">
+				and t.SUM_IMPROVE=#{sumImprove,jdbcType=VARCHAR}
+      </if>
+      <if test="qcUserName != null and qcUserName !='' ">
+             and t.USERID in (select ts.USER_ID from t_sys_user ts where ts.USER_NAME like '%${qcUserName}%')
+      </if>      
+  </select>
+  
+  
+  <select id="queryCoachMainCount" parameterType="cn.sh.ideal.model.CoachMain"
+		resultType="Integer">
+       select count(*)
+       from t_coachmain t where 1=1  and IS_VALID='0'
+        <if test="starttime != null and starttime!=''">
+			and DATE_FORMAT(STARTTIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{starttime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="endtime != null and endtime!=''">
+			and DATE_FORMAT(ENDTIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{endtime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="AcceptorWorkId != null and AcceptorWorkId!=''">
+			and CREATEID=(select USER_ID from T_SYS_USER where ENABLED='1'and WORK_ID=#{AcceptorWorkId,jdbcType=VARCHAR}) 
+      </if>
+		
+	  <if test="pass != null and pass!=''">
+			and pass=#{pass,jdbcType=VARCHAR} 
+			and t.SUM_IMPROVE is null
+      </if>
+       <if test="sumImprove != null and sumImprove !=''">
+			and t.SUM_IMPROVE=#{sumImprove,jdbcType=VARCHAR}
+      </if>
+       <if test="qcUserName != null and qcUserName !='' ">
+      and t.USERID in (select ts.USER_ID from t_sys_user ts where ts.USER_NAME like '%${qcUserName}%')
+      </if>
+  </select>
+  
+  
+  <select id="queryCheckCoachMain" parameterType="cn.sh.ideal.model.CoachMain"
+		resultMap="CoachMainMap">
+       select COACHMAIN_ID,
+       (select USER_NAME from T_SYS_USER where WORK_ID=CREATEID) qcUserName,
+       (select WORK_ID from T_SYS_USER where USER_ID=USERID) AcceptorWorkId,
+        USERNAME,
+        date_format(STARTTIME,'%Y-%m-%d') STARTTIME,
+        date_format(ENDTIME,'%Y-%m-%d') ENDTIME,
+        PASSINFO,
+        PASS,
+        t.SUM_IMPROVE
+       from t_coachmain t where 1=1  and IS_VALID='0'
+        <if test="starttime != null and starttime!=''">
+			and DATE_FORMAT(STARTTIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{starttime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="AcceptorWorkId != null and AcceptorWorkId!=''">
+			and CREATEID=(select USER_ID from T_SYS_USER  where ENABLED='1' and WORK_ID=#{AcceptorWorkId,jdbcType=VARCHAR}) 
+      </if>
+		<if test="endtime != null and endtime!=''">
+			and DATE_FORMAT(endtime,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{endtime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="pass != null and pass!=''">
+			and pass=#{pass,jdbcType=VARCHAR}
+      </if>
+		<if test="sumImprove != null and sumImprove!=''">
+			and t.SUM_IMPROVE=#{sumImprove,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  
+  <select id="queryCheckCoachMainCount" parameterType="cn.sh.ideal.model.CoachMain"
+		resultType="Integer">
+       select count(*)
+       from t_coachmain t where 1=1  and IS_VALID='0'
+        <if test="starttime != null and starttime!=''">
+			and DATE_FORMAT(STARTTIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{starttime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="AcceptorWorkId != null and AcceptorWorkId!=''">
+			and CREATEID=(select USER_ID from T_SYS_USER  where  ENABLED='1' and WORK_ID=#{AcceptorWorkId,jdbcType=VARCHAR}) 
+      </if>
+		<if test="endtime != null and endtime!=''">
+			and DATE_FORMAT(ENDTIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{endtime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="pass != null and pass!=''">
+			and pass=#{pass,jdbcType=VARCHAR}
+      </if>
+		<if test="sumImprove != null and sumImprove!=''">
+			and t.SUM_IMPROVE=#{sumImprove,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  
+  
+    <update id="DuDaoCheckCoachMain" parameterType="cn.sh.ideal.model.CoachMain">
+      update T_COACHMAIN set PASS=#{pass,jdbcType=VARCHAR},PASSINFO=#{passinfo,jdbcType=VARCHAR},
+      PASSUSERID=#{passuserid,jdbcType=VARCHAR},PASSTIME=curdate() where COACHMAIN_ID=#{coachmainId,jdbcType=INTEGER}
+   </update>
+  
+  
+  <update id="checkCoachSummary" parameterType="cn.sh.ideal.model.CoachMain">
+      update T_COACHMAIN set SUM_IMPROVE=#{sumImprove,jdbcType=VARCHAR},SUM_SUGGEST=#{sumSuggest,jdbcType=VARCHAR},
+      SUM_CREATE_USER_ID=#{sumCreateUserId,jdbcType=INTEGER},SUM_CREATE_TIME=now() where COACHMAIN_ID=#{coachmainId,jdbcType=INTEGER}
+   </update>
+  
+</mapper>

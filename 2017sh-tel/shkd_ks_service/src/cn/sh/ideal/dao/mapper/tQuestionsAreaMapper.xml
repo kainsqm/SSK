@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItQuestionsAreaDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.TQuestionsArea">
+    <result column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="QUESTION_ID" jdbcType="VARCHAR" property="questionId" />
+    <result column="CREATE_QUESTION_TIME" jdbcType="VARCHAR" property="createQuestionTime" />
+    <result column="IS_TEMPLATE" jdbcType="VARCHAR" property="isTemplate" />
+    <result column="UPDATE_COUNT" jdbcType="INTEGER" property="updateCount" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PK_AUTO_ID,USER_ID, QUESTION_ID, CREATE_QUESTION_TIME, IS_TEMPLATE, UPDATE_COUNT, ENABLED
+  </sql>
+  
+ <insert id="insertSelective" parameterType="cn.sh.ideal.model.TQuestionsArea" >
+    insert into t_questions_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="questionId != null" >
+        QUESTION_ID,
+      </if>
+      <if test="createQuestionTime != null" >
+        CREATE_QUESTION_TIME,
+      </if>
+      <if test="isTemplate != null" >
+        IS_TEMPLATE,
+      </if>
+      <if test="updateCount != null" >
+        UPDATE_COUNT,
+      </if>
+      <if test="enabled != null" >
+        ENABLED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=VARCHAR},
+      </if>
+      <if test="createQuestionTime != null" >
+        #{createQuestionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isTemplate != null" >
+        #{isTemplate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateCount != null" >
+        #{updateCount,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectQuestionAreaById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select <include refid="Base_Column_List"/> from t_questions_area where USER_ID=#{userId,jdbcType=VARCHAR} and ENABLED='1' and IS_TEMPLATE='0'
+  </select>
+  
+  <select id="selectUpdateQuestionAreaById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select <include refid="Base_Column_List"/> from t_questions_area where USER_ID=#{userId,jdbcType=VARCHAR} and ENABLED='1' and IS_TEMPLATE='2'
+  </select>
+  
+  <update id="updateQuestionAreaExaMaprer" parameterType="cn.sh.ideal.model.tQuestions" >
+  	 update t_questions_area
+      set USER_ID = #{userId,jdbcType=VARCHAR},
+      QUESTION_ID = #{questionId,jdbcType=VARCHAR},
+      CREATE_QUESTION_TIME = #{createQuestionTime,jdbcType=TIMESTAMP},
+      IS_TEMPLATE = #{isTemplate,jdbcType=VARCHAR},
+      UPDATE_COUNT = #{updateCount,jdbcType=INTEGER},
+      ENABLED = #{enabled,jdbcType=VARCHAR} where PK_AUTO_ID=#{pkAutoId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectRandomQuestionAreaById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select <include refid="Base_Column_List"/> from t_questions_area where USER_ID=#{userId,jdbcType=VARCHAR} and ENABLED='1' and IS_TEMPLATE='1'
+  </select>
+  
+   <update id="updateRandomQuestionAreaExaMaprer" parameterType="cn.sh.ideal.model.tQuestions" >
+  	 update t_questions_area
+      set USER_ID = #{userId,jdbcType=VARCHAR},
+      QUESTION_ID = #{questionId,jdbcType=VARCHAR},
+      CREATE_QUESTION_TIME = #{createQuestionTime,jdbcType=TIMESTAMP},
+      IS_TEMPLATE = #{isTemplate,jdbcType=VARCHAR},
+      UPDATE_COUNT = #{updateCount,jdbcType=INTEGER},
+      ENABLED = #{enabled,jdbcType=VARCHAR} where PK_AUTO_ID=#{pkAutoId,jdbcType=INTEGER}
+  </update>
+</mapper>

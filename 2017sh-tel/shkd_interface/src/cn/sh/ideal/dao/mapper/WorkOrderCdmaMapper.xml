@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IWorkOrderCdmaDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.WorkOrderCdma">
+    <id column="serial_cdma" jdbcType="INTEGER" property="serialCdma" />
+    <result column="appeal_status" jdbcType="VARCHAR" property="appealStatus" />
+    <result column="dir_num" jdbcType="VARCHAR" property="dirNum" />
+    <result column="wx_serial" jdbcType="VARCHAR" property="wxSerial" />
+    <result column="complaint_time" jdbcType="TIMESTAMP" property="complaintTime" />
+    <result column="complaint_type" jdbcType="VARCHAR" property="complaintType" />
+    <result column="complaint_service" jdbcType="VARCHAR" property="complaintService" />
+    <result column="complaint_reason" jdbcType="VARCHAR" property="complaintReason" />
+    <result column="appealing_num" jdbcType="VARCHAR" property="appealingNum" />
+    <result column="receipt_op_id" jdbcType="VARCHAR" property="receiptOpId" />
+    <result column="pretreat_type" jdbcType="VARCHAR" property="pretreatType" />
+    <result column="pretreat_result1" jdbcType="VARCHAR" property="pretreatResult1" />
+    <result column="pretreat_time" jdbcType="TIMESTAMP" property="pretreatTime" />
+    <result column="pretreat_remark" jdbcType="VARCHAR" property="pretreatRemark" />
+    <result column="tl_op_id" jdbcType="VARCHAR" property="tlOpId" />
+    <result column="tl_time" jdbcType="TIMESTAMP" property="tlTime" />
+    <result column="complaint_type2" jdbcType="VARCHAR" property="complaintType2" />
+    <result column="complaint_service2" jdbcType="VARCHAR" property="complaintService2" />
+    <result column="complaint_reason2" jdbcType="VARCHAR" property="complaintReason2" />
+    <result column="is_zhuan" jdbcType="VARCHAR" property="isZhuan" />
+    <result column="pretreat_remark2" jdbcType="VARCHAR" property="pretreatRemark2" />
+    <result column="deal_" jdbcType="VARCHAR" property="deal" />
+    <result column="pretreat_type2" jdbcType="VARCHAR" property="pretreatType2" />
+    <result column="pretreat_op_id" jdbcType="VARCHAR" property="pretreatOpId" />
+    <result column="pretreat_dir" jdbcType="VARCHAR" property="pretreatDir" />
+    <result column="dispatch_time" jdbcType="TIMESTAMP" property="dispatchTime" />
+    <result column="pretreat_result2" jdbcType="VARCHAR" property="pretreatResult2" />
+    <result column="repair_time" jdbcType="TIMESTAMP" property="repairTime" />
+    <result column="repair_op_id" jdbcType="VARCHAR" property="repairOpId" />
+    <result column="satisfy" jdbcType="VARCHAR" property="satisfy" />
+    <result column="is_english" jdbcType="VARCHAR" property="isEnglish" />
+    <result column="complaint_addr" jdbcType="VARCHAR" property="complaintAddr" />
+    <result column="dispach_op" jdbcType="VARCHAR" property="dispachOp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    serial_cdma, appeal_status, dir_num, wx_serial, complaint_time, complaint_type, complaint_service, 
+    complaint_reason, appealing_num, receipt_op_id, pretreat_type, pretreat_result1, 
+    pretreat_time, pretreat_remark, tl_op_id, tl_time, complaint_type2, complaint_service2, 
+    complaint_reason2, is_zhuan, pretreat_remark2, deal_, pretreat_type2, pretreat_op_id, 
+    pretreat_dir, dispatch_time, pretreat_result2, repair_time, repair_op_id, satisfy, 
+    is_english, complaint_addr, dispach_op
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_workorder_cdma
+    where serial_cdma = #{serialCdma,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_workorder_cdma
+    where serial_cdma = #{serialCdma,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.WorkOrderCdma">
+    insert into t_workorder_cdma (serial_cdma, appeal_status, dir_num, 
+      wx_serial, complaint_time, complaint_type, 
+      complaint_service, complaint_reason, appealing_num, 
+      receipt_op_id, pretreat_type, pretreat_result1, 
+      pretreat_time, pretreat_remark, tl_op_id, 
+      tl_time, complaint_type2, complaint_service2, 
+      complaint_reason2, is_zhuan, pretreat_remark2, 
+      deal_, pretreat_type2, pretreat_op_id, 
+      pretreat_dir, dispatch_time, pretreat_result2, 
+      repair_time, repair_op_id, satisfy, 
+      is_english, complaint_addr, dispach_op
+      )
+    values (#{serialCdma,jdbcType=INTEGER}, #{appealStatus,jdbcType=VARCHAR}, #{dirNum,jdbcType=VARCHAR}, 
+      #{wxSerial,jdbcType=VARCHAR}, #{complaintTime,jdbcType=TIMESTAMP}, #{complaintType,jdbcType=VARCHAR}, 
+      #{complaintService,jdbcType=VARCHAR}, #{complaintReason,jdbcType=VARCHAR}, #{appealingNum,jdbcType=VARCHAR}, 
+      #{receiptOpId,jdbcType=VARCHAR}, #{pretreatType,jdbcType=VARCHAR}, #{pretreatResult1,jdbcType=VARCHAR}, 
+      #{pretreatTime,jdbcType=TIMESTAMP}, #{pretreatRemark,jdbcType=VARCHAR}, #{tlOpId,jdbcType=VARCHAR}, 
+      #{tlTime,jdbcType=TIMESTAMP}, #{complaintType2,jdbcType=VARCHAR}, #{complaintService2,jdbcType=VARCHAR}, 
+      #{complaintReason2,jdbcType=VARCHAR}, #{isZhuan,jdbcType=VARCHAR}, #{pretreatRemark2,jdbcType=VARCHAR}, 
+      #{deal,jdbcType=VARCHAR}, #{pretreatType2,jdbcType=VARCHAR}, #{pretreatOpId,jdbcType=VARCHAR}, 
+      #{pretreatDir,jdbcType=VARCHAR}, #{dispatchTime,jdbcType=TIMESTAMP}, #{pretreatResult2,jdbcType=VARCHAR}, 
+      #{repairTime,jdbcType=TIMESTAMP}, #{repairOpId,jdbcType=VARCHAR}, #{satisfy,jdbcType=VARCHAR}, 
+      #{isEnglish,jdbcType=VARCHAR}, #{complaintAddr,jdbcType=VARCHAR}, #{dispachOp,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.WorkOrderCdma">
+    insert into t_workorder_cdma
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialCdma != null">
+        serial_cdma,
+      </if>
+      <if test="appealStatus != null">
+        appeal_status,
+      </if>
+      <if test="dirNum != null">
+        dir_num,
+      </if>
+      <if test="wxSerial != null">
+        wx_serial,
+      </if>
+      <if test="complaintTime != null">
+        complaint_time,
+      </if>
+      <if test="complaintType != null">
+        complaint_type,
+      </if>
+      <if test="complaintService != null">
+        complaint_service,
+      </if>
+      <if test="complaintReason != null">
+        complaint_reason,
+      </if>
+      <if test="appealingNum != null">
+        appealing_num,
+      </if>
+      <if test="receiptOpId != null">
+        receipt_op_id,
+      </if>
+      <if test="pretreatType != null">
+        pretreat_type,
+      </if>
+      <if test="pretreatResult1 != null">
+        pretreat_result1,
+      </if>
+      <if test="pretreatTime != null">
+        pretreat_time,
+      </if>
+      <if test="pretreatRemark != null">
+        pretreat_remark,
+      </if>
+      <if test="tlOpId != null">
+        tl_op_id,
+      </if>
+      <if test="tlTime != null">
+        tl_time,
+      </if>
+      <if test="complaintType2 != null">
+        complaint_type2,
+      </if>
+      <if test="complaintService2 != null">
+        complaint_service2,
+      </if>
+      <if test="complaintReason2 != null">
+        complaint_reason2,
+      </if>
+      <if test="isZhuan != null">
+        is_zhuan,
+      </if>
+      <if test="pretreatRemark2 != null">
+        pretreat_remark2,
+      </if>
+      <if test="deal != null">
+        deal_,
+      </if>
+      <if test="pretreatType2 != null">
+        pretreat_type2,
+      </if>
+      <if test="pretreatOpId != null">
+        pretreat_op_id,
+      </if>
+      <if test="pretreatDir != null">
+        pretreat_dir,
+      </if>
+      <if test="dispatchTime != null">
+        dispatch_time,
+      </if>
+      <if test="pretreatResult2 != null">
+        pretreat_result2,
+      </if>
+      <if test="repairTime != null">
+        repair_time,
+      </if>
+      <if test="repairOpId != null">
+        repair_op_id,
+      </if>
+      <if test="satisfy != null">
+        satisfy,
+      </if>
+      <if test="isEnglish != null">
+        is_english,
+      </if>
+      <if test="complaintAddr != null">
+        complaint_addr,
+      </if>
+      <if test="dispachOp != null">
+        dispach_op,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialCdma != null">
+        #{serialCdma,jdbcType=INTEGER},
+      </if>
+      <if test="appealStatus != null">
+        #{appealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dirNum != null">
+        #{dirNum,jdbcType=VARCHAR},
+      </if>
+      <if test="wxSerial != null">
+        #{wxSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintTime != null">
+        #{complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="complaintType != null">
+        #{complaintType,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintService != null">
+        #{complaintService,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintReason != null">
+        #{complaintReason,jdbcType=VARCHAR},
+      </if>
+      <if test="appealingNum != null">
+        #{appealingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptOpId != null">
+        #{receiptOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatType != null">
+        #{pretreatType,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatResult1 != null">
+        #{pretreatResult1,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatTime != null">
+        #{pretreatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pretreatRemark != null">
+        #{pretreatRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="tlOpId != null">
+        #{tlOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="tlTime != null">
+        #{tlTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="complaintType2 != null">
+        #{complaintType2,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintService2 != null">
+        #{complaintService2,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintReason2 != null">
+        #{complaintReason2,jdbcType=VARCHAR},
+      </if>
+      <if test="isZhuan != null">
+        #{isZhuan,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatRemark2 != null">
+        #{pretreatRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="deal != null">
+        #{deal,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatType2 != null">
+        #{pretreatType2,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatOpId != null">
+        #{pretreatOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatDir != null">
+        #{pretreatDir,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchTime != null">
+        #{dispatchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pretreatResult2 != null">
+        #{pretreatResult2,jdbcType=VARCHAR},
+      </if>
+      <if test="repairTime != null">
+        #{repairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="repairOpId != null">
+        #{repairOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfy != null">
+        #{satisfy,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnglish != null">
+        #{isEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintAddr != null">
+        #{complaintAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="dispachOp != null">
+        #{dispachOp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.WorkOrderCdma">
+    update t_workorder_cdma
+    <set>
+      <if test="appealStatus != null">
+        appeal_status = #{appealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dirNum != null">
+        dir_num = #{dirNum,jdbcType=VARCHAR},
+      </if>
+      <if test="wxSerial != null">
+        wx_serial = #{wxSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintTime != null">
+        complaint_time = #{complaintTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="complaintType != null">
+        complaint_type = #{complaintType,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintService != null">
+        complaint_service = #{complaintService,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintReason != null">
+        complaint_reason = #{complaintReason,jdbcType=VARCHAR},
+      </if>
+      <if test="appealingNum != null">
+        appealing_num = #{appealingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptOpId != null">
+        receipt_op_id = #{receiptOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatType != null">
+        pretreat_type = #{pretreatType,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatResult1 != null">
+        pretreat_result1 = #{pretreatResult1,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatTime != null">
+        pretreat_time = #{pretreatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pretreatRemark != null">
+        pretreat_remark = #{pretreatRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="tlOpId != null">
+        tl_op_id = #{tlOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="tlTime != null">
+        tl_time = #{tlTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="complaintType2 != null">
+        complaint_type2 = #{complaintType2,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintService2 != null">
+        complaint_service2 = #{complaintService2,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintReason2 != null">
+        complaint_reason2 = #{complaintReason2,jdbcType=VARCHAR},
+      </if>
+      <if test="isZhuan != null">
+        is_zhuan = #{isZhuan,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatRemark2 != null">
+        pretreat_remark2 = #{pretreatRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="deal != null">
+        deal_ = #{deal,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatType2 != null">
+        pretreat_type2 = #{pretreatType2,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatOpId != null">
+        pretreat_op_id = #{pretreatOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="pretreatDir != null">
+        pretreat_dir = #{pretreatDir,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchTime != null">
+        dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pretreatResult2 != null">
+        pretreat_result2 = #{pretreatResult2,jdbcType=VARCHAR},
+      </if>
+      <if test="repairTime != null">
+        repair_time = #{repairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="repairOpId != null">
+        repair_op_id = #{repairOpId,jdbcType=VARCHAR},
+      </if>
+      <if test="satisfy != null">
+        satisfy = #{satisfy,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnglish != null">
+        is_english = #{isEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintAddr != null">
+        complaint_addr = #{complaintAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="dispachOp != null">
+        dispach_op = #{dispachOp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where serial_cdma = #{serialCdma,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.WorkOrderCdma">
+    update t_workorder_cdma
+    set appeal_status = #{appealStatus,jdbcType=VARCHAR},
+      dir_num = #{dirNum,jdbcType=VARCHAR},
+      wx_serial = #{wxSerial,jdbcType=VARCHAR},
+      complaint_time = #{complaintTime,jdbcType=TIMESTAMP},
+      complaint_type = #{complaintType,jdbcType=VARCHAR},
+      complaint_service = #{complaintService,jdbcType=VARCHAR},
+      complaint_reason = #{complaintReason,jdbcType=VARCHAR},
+      appealing_num = #{appealingNum,jdbcType=VARCHAR},
+      receipt_op_id = #{receiptOpId,jdbcType=VARCHAR},
+      pretreat_type = #{pretreatType,jdbcType=VARCHAR},
+      pretreat_result1 = #{pretreatResult1,jdbcType=VARCHAR},
+      pretreat_time = #{pretreatTime,jdbcType=TIMESTAMP},
+      pretreat_remark = #{pretreatRemark,jdbcType=VARCHAR},
+      tl_op_id = #{tlOpId,jdbcType=VARCHAR},
+      tl_time = #{tlTime,jdbcType=TIMESTAMP},
+      complaint_type2 = #{complaintType2,jdbcType=VARCHAR},
+      complaint_service2 = #{complaintService2,jdbcType=VARCHAR},
+      complaint_reason2 = #{complaintReason2,jdbcType=VARCHAR},
+      is_zhuan = #{isZhuan,jdbcType=VARCHAR},
+      pretreat_remark2 = #{pretreatRemark2,jdbcType=VARCHAR},
+      deal_ = #{deal,jdbcType=VARCHAR},
+      pretreat_type2 = #{pretreatType2,jdbcType=VARCHAR},
+      pretreat_op_id = #{pretreatOpId,jdbcType=VARCHAR},
+      pretreat_dir = #{pretreatDir,jdbcType=VARCHAR},
+      dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+      pretreat_result2 = #{pretreatResult2,jdbcType=VARCHAR},
+      repair_time = #{repairTime,jdbcType=TIMESTAMP},
+      repair_op_id = #{repairOpId,jdbcType=VARCHAR},
+      satisfy = #{satisfy,jdbcType=VARCHAR},
+      is_english = #{isEnglish,jdbcType=VARCHAR},
+      complaint_addr = #{complaintAddr,jdbcType=VARCHAR},
+      dispach_op = #{dispachOp,jdbcType=VARCHAR}
+    where serial_cdma = #{serialCdma,jdbcType=INTEGER}
+  </update>
+</mapper>

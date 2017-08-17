@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>表单插件</title>
+<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css"
+	rel="stylesheet" type="text/css" />
+<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+<link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet"
+	type="text/css" />
+<script src="../../lib/jquery/jquery-1.9.0.min.js"
+	type="text/javascript"></script>
+<script src="../../lib/ligerUI/js/ligerui.all.js" type="text/javascript"></script>
+<script src="../../lib/ligerUI/js/plugins/ligerPopupEdit.js"></script>
+<script language="javascript" type="text/javascript"
+	src="../../js/My97DatePicker/WdatePicker.js"></script>
+<script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+<script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+<script src="../../lib/jquery-validation/jquery.metadata.js"></script>
+
+
+<script src="../../js/kindeditor-4.1.10/kindeditor-all-min.js"></script>
+<script src="../../js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script src="../../js/common.js"></script>
+
+
+<script type="text/javascript">
+	$(function() {
+
+		$("#form1").submit(function(e) {
+			alert($("#textbox1").value == '');
+		});
+
+	});
+	var contentAddEditor;
+	$(function() {
+	 $("#form1 input:radio").ligerRadio();
+		$("#form").ligerForm({});
+		contentAddEditor = TT.createEditor("#form1 [name=desc],[name=daan]");
+	});
+	// 验证完成后讲富文本编辑器内容进行刷新
+	// contentAddEditor.sync();
+</script>
+
+
+<style type="text/css">
+div.title_div {
+	border-radius: 5px;
+	text-align: left;
+	margin-top: 5px;
+	border: solid 1px #D7D7D7;
+	width: 90%;
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+	font-size: 14px;
+	font-family: "黑体";
+}
+
+input.input_text {
+	border-radius: 5px;
+	width: 130px;
+	height: 18px;
+	line-height: 18px;
+	padding-left: 3px;
+}
+
+input[type='button'] {
+	border: #d3d3d3 1px solid;
+	width: 80px;
+	height: 25px;
+	cursor: pointer;
+}
+
+input.date_text {
+	border-radius: 5px;
+	width: 135px;
+	height: 18px;
+	line-height: 18px;
+}
+
+table td {
+	height: 30px;
+	line-height: 30px;
+}
+
+table .search_table td.td_lable {
+	text-align: right;
+}
+
+table .search_table td.td_value {
+	text-align: left;
+}
+
+a {
+	text-decoration: none;
+	color: blue;
+}
+html,body{ 
+	overflow: auto !important;
+	}
+red {
+	color: red;
+}
+</style>
+</head>
+
+<body style="padding:10px">
+
+	<form id="form1">
+		<table>
+
+			<tr>
+				<td><label for="textbox1">业务分类：</label></td>
+				<td><input id="textbox1" name="username" type="text"
+					class="td_value" /></td>
+				<td class="td_lable">录入日期：</td>
+				<td class="td_value"><input id="in_startDate"
+					class="Wdate date_text" type="text"
+					onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />&nbsp;
+				<td><label for="pwd1">录入人：</label></td>
+				<td><input id="pwd1" name="username" type="text"
+					validate="{required:true}" value="张三" disabled="disabled"/></td>
+			</tr>
+
+			<tr>
+				<td><label for="pwd1">是否有效：</label></td>
+				<td><input id="pwd1" name="pwd" type="radio"
+					class="ui-password" validate="{required:true}" />是 <input
+					id="pwd1" name="pwd" type="radio" class="ui-password"
+					validate="{required:true}" />否</td>
+				<td align="left" class="l-table-edit-td">试题类型：</td>
+				<td align="left" class="l-table-edit-td"><select
+					name="ddlDepart" id="ddlDepart" style="width: 135px;">
+						<option value="1">选择题</option>
+						<option value="2">判断题</option>
+						<option value="3">填空题</option>
+						<option value="4">问答题</option>
+						<option value="5">完形填空</option>
+				</select></td>
+				<td><label for="pwd1">试题难度：</label></td>
+				<td><input id="pwd1" name="pwd" type="radio"
+					class="ui-password" validate="{required:true}" />难 <input
+					id="pwd1" name="pwd" type="radio" class="ui-password"
+					validate="{required:true}" />中 <input id="pwd1" name="pwd"
+					type="radio" class="ui-password" validate="{required:true}" />易</td>
+			</tr>
+			<tr>
+				<td><label for="textarea1">题目编辑：</label></td>
+				<td colspan="5"><textarea id="textarea1" name="desc" class="ui-textarea"
+						style="resize: auto;width: 700px;height: 400px;"
+						validate="{required:true}"></textarea></td>
+			</tr>
+			<tr>
+				<td><label for="textarea1">可选项：</label></td>
+				<td colspan="5"><textarea id="textarea1" name="area" class="ui-textarea"
+						style="resize: auto;width: 700px;height: 100px;"
+						validate="{required:true}"></textarea></td>
+			</tr>
+			<tr>
+				<td><label for="textarea1">答案：</label></td>
+				<td colspan="5"><textarea id="textarea1" name="daan" class="ui-textarea"
+						style="resize: auto;width: 700px;height: 200px;"
+						validate="{required:true}"></textarea></td>
+			</tr>
+				<tr>
+					<td><br/></td>
+				</tr>
+				<td colspan="8" align="center">
+				<input type="button" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="取消" id="insertOpen"
+					onclick="frameElement.dialog.close();" />
+					</td>
+		</table>
+
+	</form>
+</body>
+</html>

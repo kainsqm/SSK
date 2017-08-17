@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>客调项目管理系统</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+	<script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+	<script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px;border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		
+		table#search_table td{ height:30px; line-height:30px;}
+		table#search_table td.td_lable{ text-align:right;}
+		table#search_table td.td_value{ text-align:left;}
+		div.l-panel-topbar{ height:30px !important; }
+	</style>
+	<script type="text/javascript"> 
+		var TreeDeptData = { Rows : [
+			{ id: '01',username:"员工1",workId:"SKD0001", qudao:"接口同步",role:"督导",
+				children: [
+				{ id: '0101',workId: "s101", zushi:"组室一",gangwei:"岗位一"},
+				{ id: '0102',workId: "s102", zushi:"组室一",gangwei:"岗位一"}
+				]
+			},
+			{ id: '02',username:"员工2",workId:"SKD0001", qudao:"接口同步",role:"督导",
+				children: [
+				{ id: '0201',workId: "s201", zushi:"组室一",gangwei:"岗位一"},
+				{ id: '0202',workId: "s202", zushi:"组室一",gangwei:"岗位一"}
+				]
+			},
+			{ id: '03',username:"员工3",workId:"SKD0001", qudao:"接口同步",role:"督导",
+				children: [
+				{ id: '0301',workId: "s301", zushi:"组室一",gangwei:"岗位一"},
+				{ id: '0302',workId: "s302", zushi:"组室一",gangwei:"岗位一"}
+				]
+			},
+			{ id: '04',username:"员工4",workId:"SKD0001", qudao:"接口同步",role:"督导",
+				children: [
+				{ id: '0401',workId: "s401", zushi:"组室一",gangwei:"岗位一"},
+				{ id: '0402',workId: "s402", zushi:"组室一",gangwei:"岗位一"}
+				]
+			},
+			{ id: '05',username:"员工5",workId:"SKD0001",zushi:"组室一",gangwei:"岗位一", qudao:"人工录入",role:"督导"}
+		]};
+		
+		var manager;
+        $(function ()
+        {
+            manager = $("#workpaper_list").ligerGrid({
+                columns: [
+                    { display: '操作', isSort: false, minWidth : 180, align: 'left' , isSort: false,render: function (rowdata, rowindex, value)
+						{
+							var h = "";
+							if(rowdata.qudao=="人工录入"){
+								h += "<a href='javascript:void(0);' onclick='eidt_user(\"update\");'>编辑</a> ";
+								h += "<a href='javascript:void(0);' onclick='deleteUser(\""+rowdata.username+"\");'>删除</a> ";
+							}
+							if(rowdata.qudao !=null && rowdata.qudao !="" ){
+								h += "<a href='javascript:void(0);' onclick='resetPwd(\""+rowdata.username+"\");'>重置密码</a> ";
+								h += "<a href='javascript:void(0);' onclick='changeRoleInfo(\""+rowdata.username+"\");'>角色分配</a> ";
+							}
+							return h;
+						}
+					},
+					{ display: '姓名', name: 'username',  minWidth: 150, align: 'left' , isSort: false},
+					{ display: '工号', name: 'workId',id: 'id1', minWidth: 100, align: 'left', isSort: false },
+					{ display: '组室', name: 'zushi', minWidth: 100, align: 'left' , isSort: false},
+					{ display: '岗位', name: 'gangwei', minWidth: 100, align: 'left', isSort: false },
+					{ display: '录入渠道', name: 'qudao', minWidth: 100, align: 'left', isSort: false },
+					{ display: '角色', name: 'role', minWidth: 100, align: 'left', isSort: false }					
+                ], width: '100%', pageSizeOptions: [5, 10, 15, 20], height: '97%',
+                data: TreeDeptData, alternatingRow: false, tree: { columnId: 'id1' }
+            }
+            );
+			collapseAll();
+			$("#pageloading").hide(); 
+        });
+        function collapseAll()
+        {
+            manager.collapseAll();
+        }
+        function expandAll()
+        {
+            manager.expandAll();
+        }
+		function itemclick(item)
+        {
+            alert(item.text);
+        }
+		/*********************
+		 * 员工信息编辑
+		 *********************/
+		function eidt_user(editType){
+			var titleInfo="弹出窗口";
+			if(editType=="add"){titleInfo="员工信息新增";}
+			if(editType=="update"){titleInfo="员工信息修改";}
+			$.ligerDialog.open({
+				height:300,
+				width: 300,
+				title : titleInfo,
+				url:'edit_userInfo.html', 
+				showMax: false,
+				showToggle: true,
+				showMin: false,
+				isResize: true,
+				slide: false
+			});
+		}
+		/*********************
+		 * 删除员工信息
+		 *********************/
+		function deleteUser(userID){
+			$.ligerDialog.confirm('确认要删除员工['+userID+']吗？', function (yes) { 
+				if(yes){
+					alert("开始删除...");
+				} 
+			});
+		}
+		/*********************
+		 * 重置员工密码
+		 *********************/
+		function resetPwd(userID){
+			$.ligerDialog.confirm('确认要重置员工['+userID+']的密码吗？', function (yes) { 
+				if(yes){
+					alert("开始重置...");
+				} 
+			});
+		}
+		/*********************
+		 * 员工信息模板下载
+		 *********************/
+		function downUserTemplate(){
+			$.ligerDialog.confirm('确认要下载员工信息模板吗？', function (yes) { 
+				if(yes){
+					alert("开始下载...");
+				} 
+			});
+		}
+		/*********************
+		 * 员工信息导入
+		 *********************/
+		function import_user_info(){
+			$.ligerDialog.open({
+				height:240,
+				width: 570,
+				title : '员工信息批量导入',
+				url:'userInfo_import.html', 
+				showMax: false,
+				showToggle: true,
+				showMin: false,
+				isResize: true,
+				slide: false
+			});
+		}
+		/*********************
+		 * 角色信息分配
+		 *********************/
+		function changeRoleInfo(userID){
+			$.ligerDialog.open({
+				height:430,
+				width: 340,
+				title : '角色信息分配',
+				url:'roleInfoChose.html', 
+				showMax: false,
+				showToggle: true,
+				showMin: false,
+				isResize: true,
+				slide: false
+			});
+		}
+    </script> 
+</head>
+<!-- 
+<body style="margin:0 auto; background-color:#FFFFFF; padding:5px;">
+ -->
+<body> 
+	<div>
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table id="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td>
+						工号：<input />&nbsp;&nbsp;&nbsp;&nbsp;
+						姓名：<input />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="新增" onclick="eidt_user('add');" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="员工模板下载" onclick="downUserTemplate();" style="width:110px;"/>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="员工信息导入" onclick="import_user_info();" style="width:110px;"/>
+					</td>					
+				</tr>
+			</table>			
+		</div>
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="workpaper_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

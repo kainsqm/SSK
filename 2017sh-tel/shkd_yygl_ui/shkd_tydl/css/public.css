@@ -1,0 +1,93 @@
+*{box-sizing: border-box;}
+html,body{
+	width: 100%;
+	height: 100%;
+	background: #f1fcff;
+	/*padding: 3px;*/ 
+	/*overflow: hidden;*/
+	}
+input{
+	height: 22px;
+    text-indent: 5px;
+    border-radius:3px ;
+    border: 1px solid #D0D0D0;
+}
+input[type="button"]{
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#01aacf,endColorStr=#0165a2); /*IE 6 7 8*/ 
+	background: -ms-linear-gradient(top, #01aacf,  #0165a2);        /* IE 10 */
+	background:-moz-linear-gradient(top,#01aacf,#0165a2);/*火狐*/ 
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#01aacf), to(#0165a2));/*谷歌*/ 
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#01aacf), to(#0165a2));      /* Safari 4-5, Chrome 1-9*/
+	background: -webkit-linear-gradient(top, #01aacf, #0165a2);   /*Safari5.1 Chrome 10+*/
+	background: -o-linear-gradient(top, #01aacf, #0165a2);  /*Opera 11.10+*/
+	color: #FFFFFF;
+    border: 1px solid #0297bf !important;
+}
+.l-grid-header{
+	background: #3b98c8 !important;
+	color: #FFFFFF;
+}
+.l-grid-body{
+	background: #f1fcff;
+}
+.l-selected .l-grid-row-cell, .l-selected {
+    background: #7ac9f1 !important;
+    color: #FFFFFF;
+}
+.l-grid-row-over .l-grid-row-cell,.l-grid-row-over{
+	background: #7ac9f1 !important;
+	color: #FFFFFF;
+}
+.l-grid-row-alt .l-grid-row-cell-rownumbers, .l-selected .l-grid-row-cell-rownumbers, .l-grid-row-over .l-grid-row-cell-rownumbers, .l-grid-row-cell-rownumbers {
+    background: #FFFFFF ;
+}
+.l-grid-row-alt,.l-grid-row-alt .l-grid-row-cell{
+    background: #f1fcff;
+}
+.l-grid-row {
+    background: #fff;
+}
+.l-grid-row:nth-child(even) {
+    background: #f1fcff;
+}
+.l-dialog-tc {
+    background: #3b98c8 !important;
+}
+.l-dialog-title{
+	color: #FFFFFF !important;
+}
+input.date_text {
+    border-radius: 3px !important;
+    width: 140px !important;
+    height: 22px !important;
+    line-height: 22px !important;
+    border: 1px solid #D0D0D0 !important;
+}
+.l-panel-bar {
+    position: relative;
+    top: -3px;
+}
+
+
+
+
+/*.l-grid-row-over{
+	background: #000000 !important;
+}
+.l-grid-row-cell {
+    overflow: hidden;
+    border-right: 1px solid #0286ca;
+    border-bottom: 1px solid #0286ca;
+    text-align: center;
+    overflow: hidden;
+}
+.l-grid-hd-cell {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border-right: 1px solid #0286ca;
+    text-align: center;
+}
+.l-panel {
+    border: 1px solid #0286ca;
+}*/

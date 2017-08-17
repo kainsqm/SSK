@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ISysRoleDao">
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.SysRole">
+		<id column="ROLE_ID" jdbcType="INTEGER" property="roleId" />
+		<result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+		<result column="ROLE_FLAG" jdbcType="VARCHAR" property="roleFlag" />
+		<result column="IS_DISPLAY" jdbcType="VARCHAR" property="isDisplay" />
+		<result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+		<result column="CREATE_USER_ID" jdbcType="INTEGER" property="createUserId" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER_ID" jdbcType="INTEGER" property="updateUserId" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap2" type="cn.sh.ideal.model.SysRole">
+		<id column="ROLE_ID" jdbcType="INTEGER" property="roleId" />
+		<result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+		<result column="ROLE_FLAG" jdbcType="VARCHAR" property="roleFlag" />
+		<result column="ROLE_CODE" jdbcType="VARCHAR" property="roleCode" />
+	</resultMap>
+	<!-- 查询用户的角色信息 -->
+	<select id="queryRoleByUserId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap2">
+		select r.ROLE_ID,
+		r.ROLE_FLAG,
+		r.ROLE_NAME,
+		r.ROLE_CODE
+		FROM
+		t_sys_role r where r.ENABLED = '1' and r.role_id in
+		(select t.ROLE_ID
+		from t_sys_roleuser t where t.ENABLED = '1' and t.USER_ID =
+		#{userId,jdbcType=INTEGER})
+
+	</select>
+
+
+	<!-- 根据用户ID以及系统标识查询该用户在该系统中所属角色 -->
+	<select id="queryRoleByCode" parameterType="cn.sh.ideal.model.UserInfo"
+		resultMap="BaseResultMap2">
+		select a.* from (select r.ROLE_ID,
+		r.ROLE_FLAG,
+		r.ROLE_NAME
+		FROM
+		t_sys_role r
+		where r.ENABLED = '1'
+		and r.pid=(select pid from t_sys_role where r.ROLE_CODE=#{roleCode})
+		) a
+		where a.role_id in
+		(select t.ROLE_ID from t_sys_roleuser t where
+		t.ENABLED = '1' and t.USER_ID =
+		#{userId,jdbcType=INTEGER})
+
+	</select>
+
+</mapper>

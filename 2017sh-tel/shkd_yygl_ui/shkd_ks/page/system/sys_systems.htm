@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title> 
+    <link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" /> 
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>   
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerPanel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var manager;
+        $(function ()
+        {
+            // $("#panel1-1").ligerPanel({
+            //     onToggle: function(isColl){
+            //         alert(isColl ? "收缩" : "显示");
+            //     },
+            //     title: '区域管理',
+            //     width: 200,
+            //     height : 500,
+            //     url : 'sys_district.html'
+            // });
+            // $("#panel1-2").ligerPanel({
+            //      title: '班组管理',
+            //     width: 200,
+            //     height : 500,
+            //     url : 'sys_classgroup.html'
+            // });
+            var wid = $("body").width()/2-32;
+            var hei = $("body").height()-40;
+            $("#panel2").ligerPanel({
+                title: '业务分类管理',
+                width: wid,
+                height : hei,
+                url : 'sys_question.html'
+            });
+             $("#panel3").ligerPanel({
+                title: '参数配置',
+                width: wid,
+                height : hei,
+                url : 'sys_seting.html'
+            });
+
+        }); 
+    </script>
+
+</head>
+<body >
+
+      <div style="width:100%;padding: 20px;">
+            <div id="panel1-1" style="float:left"></div>
+            <div id="panel1-2" style="float:left; margin-left:10px;"></div>
+            <div id="panel2" style=" float:left;"> </div>
+            <div id="panel3" style=" float:left; margin-left:20px;"> </div>
+            <div class="l-clear"></div>
+        </div>
+
+</body>
+</html>

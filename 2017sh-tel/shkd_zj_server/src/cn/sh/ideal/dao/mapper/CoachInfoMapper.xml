@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ICoachInfoDao">
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.CoachInfo">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="COACHMAIN_ID" jdbcType="INTEGER" property="coachmainId" />
+		<result column="COACHPROJECT" jdbcType="VARCHAR" property="coachproject" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="COACHMETHOD" jdbcType="VARCHAR" property="coachmethod" />
+		<result column="INSTRUCTIONS" jdbcType="VARCHAR" property="instructions" />
+		<result column="COACHRECORD" jdbcType="VARCHAR" property="coachrecord" />
+		<result column="STARTTIME" jdbcType="VARCHAR" property="starttime" />
+		<result column="ENDTIME" jdbcType="VARCHAR" property="endtime" />
+		<result column="COMFORABLESTATE" jdbcType="VARCHAR" property="comforablestate" />
+		<result column="UNCOMFORABLE" jdbcType="VARCHAR" property="uncomforable" />
+		<result column="DESCRIBES" jdbcType="VARCHAR" property="describe" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createtime" />
+		<result column="CREATEID" jdbcType="VARCHAR" property="createid" />
+		<result column="MODIFTIME" jdbcType="VARCHAR" property="modiftime" />
+		<result column="MODIFID" jdbcType="VARCHAR" property="modifid" />
+		<result column="VALID" jdbcType="VARCHAR" property="valid" />
+		<result column="STATE" jdbcType="VARCHAR" property="state" />
+		<result column="PASSUSERID" jdbcType="VARCHAR" property="passuserid" />
+		<result column="PASSTIME" jdbcType="VARCHAR" property="passtime" />
+	</resultMap>
+
+	<resultMap type="cn.sh.ideal.model.CoachInfo" id="CoachInfoMap">
+		<result column="ID" jdbcType="INTEGER" property="id" />
+		<result column="COACHPROJECT" jdbcType="VARCHAR" property="coachproject" />
+		<result column="STARTTIME" jdbcType="VARCHAR" property="starttime" />
+		<result column="ENDTIME" jdbcType="VARCHAR" property="endtime" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createtime" />
+		<result column="STATE" jdbcType="VARCHAR" property="state" />
+		<result column="acceptorWorkId" jdbcType="VARCHAR" property="acceptorWorkId" />
+		<result column="COACHMAIN_ID" jdbcType="INTEGER" property="coachmainId" />
+	</resultMap>
+
+
+
+	<sql id="Base_Column_List">
+		ID, COACHMAIN_ID, COACHPROJECT, TYPE, COACHMETHOD, INSTRUCTIONS,
+		COACHRECORD, STARTTIME,
+		ENDTIME, COMFORABLESTATE, UNCOMFORABLE, DESCRIBES, CREATETIME, CREATEID,
+		MODIFTIME,
+		MODIFID, VALID, STATE, PASSUSERID, PASSTIME
+  </sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_coachinfo
+		where ID = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_coachinfo
+		where ID = #{id,jdbcType=INTEGER}
+  </delete>
+	<insert id="insert" parameterType="cn.sh.ideal.model.CoachInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into t_coachinfo (ID, COACHMAIN_ID, COACHPROJECT,
+		TYPE, COACHMETHOD, INSTRUCTIONS,
+		COACHRECORD, STARTTIME, ENDTIME,
+		COMFORABLESTATE, UNCOMFORABLE, DESCRIBES,
+		CREATETIME, CREATEID, MODIFTIME,
+		MODIFID, VALID, STATE,
+		PASSUSERID, PASSTIME)
+		values (#{id,jdbcType=INTEGER}, #{coachmainId,jdbcType=INTEGER},
+		#{coachproject,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR}, #{coachmethod,jdbcType=VARCHAR}, #{instructions,jdbcType=VARCHAR},
+		#{coachrecord,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR},
+		#{endtime,jdbcType=VARCHAR},
+		#{comforablestate,jdbcType=VARCHAR}, #{uncomforable,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR},
+		now(), #{createid,jdbcType=VARCHAR},
+		#{modiftime,jdbcType=DATE},
+		#{modifid,jdbcType=VARCHAR}, #{valid,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},
+		#{passuserid,jdbcType=VARCHAR}, #{passtime,jdbcType=DATE})
+  </insert>
+	<insert id="insertSelective" parameterType="cn.sh.ideal.model.CoachInfo">
+		insert into t_coachinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+      </if>
+			<if test="coachmainId != null">
+				COACHMAIN_ID,
+      </if>
+			<if test="coachproject != null">
+				COACHPROJECT,
+      </if>
+			<if test="type != null">
+				TYPE,
+      </if>
+			<if test="coachmethod != null">
+				COACHMETHOD,
+      </if>
+			<if test="instructions != null">
+				INSTRUCTIONS,
+      </if>
+			<if test="coachrecord != null">
+				COACHRECORD,
+      </if>
+			<if test="starttime != null">
+				STARTTIME,
+      </if>
+			<if test="endtime != null">
+				ENDTIME,
+      </if>
+			<if test="comforablestate != null">
+				COMFORABLESTATE,
+      </if>
+			<if test="uncomforable != null">
+				UNCOMFORABLE,
+      </if>
+			<if test="DESCRIBE != null">
+				DESCRIBES,
+      </if>
+			<if test="createtime != null">
+				CREATETIME,
+      </if>
+			<if test="createid != null">
+				CREATEID,
+      </if>
+			<if test="modiftime != null">
+				MODIFTIME,
+      </if>
+			<if test="modifid != null">
+				MODIFID,
+      </if>
+			<if test="valid != null">
+				VALID,
+      </if>
+			<if test="state != null">
+				STATE,
+      </if>
+			<if test="passuserid != null">
+				PASSUSERID,
+      </if>
+			<if test="passtime != null">
+				PASSTIME,
+      </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+      </if>
+			<if test="coachmainId != null">
+				#{coachmainId,jdbcType=INTEGER},
+      </if>
+			<if test="coachproject != null">
+				#{coachproject,jdbcType=VARCHAR},
+      </if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+      </if>
+			<if test="coachmethod != null">
+				#{coachmethod,jdbcType=VARCHAR},
+      </if>
+			<if test="instructions != null">
+				#{instructions,jdbcType=VARCHAR},
+      </if>
+			<if test="coachrecord != null">
+				#{coachrecord,jdbcType=VARCHAR},
+      </if>
+			<if test="starttime != null">
+				#{starttime,jdbcType=DATE},
+      </if>
+			<if test="endtime != null">
+				#{endtime,jdbcType=DATE},
+      </if>
+			<if test="comforablestate != null">
+				#{comforablestate,jdbcType=VARCHAR},
+      </if>
+			<if test="uncomforable != null">
+				#{uncomforable,jdbcType=VARCHAR},
+      </if>
+			<if test="DESCRIBE != null">
+				#{describe,jdbcType=VARCHAR},
+      </if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=DATE},
+      </if>
+			<if test="createid != null">
+				#{createid,jdbcType=VARCHAR},
+      </if>
+			<if test="modiftime != null">
+				#{modiftime,jdbcType=DATE},
+      </if>
+			<if test="modifid != null">
+				#{modifid,jdbcType=VARCHAR},
+      </if>
+			<if test="valid != null">
+				#{valid,jdbcType=VARCHAR},
+      </if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+      </if>
+			<if test="passuserid != null">
+				#{passuserid,jdbcType=VARCHAR},
+      </if>
+			<if test="passtime != null">
+				#{passtime,jdbcType=DATE},
+      </if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.CoachInfo">
+		update t_coachinfo
+		<set>
+			
+			<if test="comforablestate != null">
+				COMFORABLESTATE = #{comforablestate,jdbcType=VARCHAR},
+      </if>
+			<if test="uncomforable != null">
+				UNCOMFORABLE = #{uncomforable,jdbcType=VARCHAR},
+      </if>
+			<if test="DESCRIBE != null">
+				DESCRIBES = #{describe,jdbcType=VARCHAR},
+      </if>			
+			<if test="modiftime != null">
+				MODIFTIME = #{modiftime,jdbcType=VARCHAR},
+      </if>
+			<if test="modifid != null">
+				MODIFID = #{modifid,jdbcType=VARCHAR},
+      </if>	
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+      </if>
+			<if test="passuserid != null">
+				PASSUSERID = #{passuserid,jdbcType=VARCHAR},
+      </if>
+			<if test="passtime != null">
+				PASSTIME = #{passtime,jdbcType=VARCHAR},
+      </if>
+		</set>
+		where ID = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.CoachInfo">
+		update t_coachinfo
+		<set>
+			<if test="coachmainId != null and coachmainId!=''">
+				COACHMAIN_ID = #{coachmainId,jdbcType=INTEGER},
+      </if>
+			
+			<if test="instructions != null">
+				INSTRUCTIONS = #{instructions,jdbcType=VARCHAR},
+      </if>
+			<if test="coachrecord != null">
+				COACHRECORD = #{coachrecord,jdbcType=VARCHAR},
+      </if>
+			
+			<if test="comforablestate != null">
+				COMFORABLESTATE = #{comforablestate,jdbcType=VARCHAR},
+      </if>
+			<if test="uncomforable != null">
+				UNCOMFORABLE = #{uncomforable,jdbcType=VARCHAR},
+      </if>
+			<if test="describe != null">
+				DESCRIBES = #{describe,jdbcType=VARCHAR},
+      </if>
+			
+			
+			<if test="modiftime != null">
+				MODIFTIME = #{modiftime,jdbcType=VARCHAR},
+      </if>
+			<if test="modifid != null">
+				MODIFID = #{modifid,jdbcType=VARCHAR},
+      </if>
+		
+			<if test="state != null">
+				STATE = #{state,jdbcType=VARCHAR},
+      </if>
+			<if test="passuserid != null">
+				PASSUSERID = #{passuserid,jdbcType=VARCHAR},
+      </if>
+			<if test="passtime != null">
+				PASSTIME = #{passtime,jdbcType=VARCHAR},
+      </if>
+		</set>
+		where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+	<!-- 根据月计划ID查询周计划列表 -->
+	<select id="selectByCoachMain" parameterType="java.lang.Integer"
+		resultMap="CoachInfoMap">
+		select
+		t.ID,
+		 COACHPROJECT,
+		 STARTTIME,
+		 ENDTIME,
+	     CREATETIME,
+		t.STATE
+		from
+		T_COACHINFO t where COACHMAIN_ID=#{coachMainId,jdbcType=INTEGER} and VALID='0'
+  </select>
+
+
+   
+<!-- 根据辅导项目ID  查询辅导项目名称，并且拼接成一个字符串 -->
+	<select id="getCoachProjectById" parameterType="java.util.Map"
+		resultType="String">
+		SELECT group_concat(name) FROM t_sys_code where AUTO_ID in (${id})
+  </select>
+
+	<!-- 根据月计划ID查询周计划列表数量 -->
+	<select id="selectByCoachMainCount" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(*) from
+		T_COACHINFO t where COACHMAIN_ID=#{coachMainId,jdbcType=INTEGER} and VALID='0'
+  </select>
+
+
+   <update id="deleteCoachInfo" parameterType="java.lang.Integer">
+      update  T_COACHINFO  set VALID='1' where COACHMAIN_ID=#{coachMainId,jdbcType=INTEGER}
+   </update>
+    <update id="delCoachInfo" parameterType="java.lang.Integer">
+      update  T_COACHINFO  set VALID='1' where ID=#{id,jdbcType=INTEGER}
+   </update>
+
+
+	<select id="selectByinfo" parameterType="cn.sh.ideal.model.CoachInfo" resultMap="CoachInfoMap" >
+	select
+		 ID,
+		 tci.STARTTIME,
+		 tci.ENDTIME,
+	     tci.CREATETIME,
+	     tci.COACHMAIN_ID,
+	    (select  WORK_ID  from t_sys_user t where t.user_id= tcm.USERID) as acceptorWorkId,
+		 tci.STATE
+		from t_coachinfo tci
+		inner join  t_coachmain tcm on tcm.COACHMAIN_ID=tci.COACHMAIN_ID
+		where 1=1
+			<if test="acceptorWorkId != null and acceptorWorkId !=''">
+		and tcm.USERID=(select t.USER_ID from t_sys_user t where t.WORK_ID= #{acceptorWorkId,jdbcType=VARCHAR})
+     	 </if>	
+			<if test="starttime != null and starttime !=''">
+			and DATE_FORMAT(tci.STARTTIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{starttime,jdbcType=VARCHAR},'%Y-%m-%d')
+      </if>
+			<if test="endtime != null and endtime !='' ">
+			and DATE_FORMAT(tci.ENDTIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{endtime,jdbcType=VARCHAR},'%Y-%m-%d')
+      </if>
+	</select>
+	<select id="selectByinfoCount" parameterType="cn.sh.ideal.model.CoachInfo" resultType="INTEGER" >
+	select
+		count(1)
+		from t_coachinfo tci
+		inner join t_coachmain tcm on tcm.COACHMAIN_ID=tci.COACHMAIN_ID
+		where 1=1
+			<if test="acceptorWorkId != null and acceptorWorkId !=''">
+		and tcm.USERID=(select t.USER_ID from t_sys_user t where t.WORK_ID= #{acceptorWorkId,jdbcType=VARCHAR})
+      </if>	
+			<if test="starttime != null and starttime !=''">
+			and DATE_FORMAT(tci.STARTTIME,'%Y-%m-%d')
+			&gt;=DATE_FORMAT(#{starttime,jdbcType=VARCHAR},'%Y-%m-%d')
+      </if>
+			<if test="endtime != null and endtime !='' ">
+			and DATE_FORMAT(tci.ENDTIME,'%Y-%m-%d')
+			&lt;=DATE_FORMAT(#{endtime,jdbcType=VARCHAR},'%Y-%m-%d')
+      </if>
+	</select>
+
+   
+</mapper>

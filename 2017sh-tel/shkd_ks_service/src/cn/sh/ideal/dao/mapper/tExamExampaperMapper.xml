@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItExamExampaperDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tExamExampaper">
+  	<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="FK_EXAM_ID" jdbcType="INTEGER" property="fkExamId" />
+    <result column="FK_EXAMPAPER_ID" jdbcType="INTEGER" property="fkExampaperId" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tExamExampaper" useGeneratedKeys="true" keyProperty="pkAutoId">
+    insert into t_exam_exampaper (FK_EXAM_ID, FK_EXAMPAPER_ID)
+    values (#{fkExamId,jdbcType=INTEGER}, #{fkExampaperId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tExamExampaper">
+    insert into t_exam_exampaper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fkExamId != null">
+        FK_EXAM_ID,
+      </if>
+      <if test="fkExampaperId != null">
+        FK_EXAMPAPER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fkExamId != null">
+        #{fkExamId,jdbcType=INTEGER},
+      </if>
+      <if test="fkExampaperId != null">
+        #{fkExampaperId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectByExamId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select PK_AUTO_ID
+    from t_exam_exampaper
+    where FK_EXAM_ID = #{fkExamId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_exam_exampaper
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </delete>
+  
+  <select id="selectPrimaryKey" parameterType="cn.sh.ideal.model.tExamExampaper" resultType="java.lang.Integer">
+    select PK_AUTO_ID
+    from t_exam_exampaper
+    where FK_EXAM_ID = #{fkExamId,jdbcType=INTEGER} 
+    	and FK_EXAMPAPER_ID = #{fkExampaperId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

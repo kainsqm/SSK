@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.ItNoticeDao">
+	<resultMap type="cn.sh.ideal.model.Notice" id="BaseResultMap">
+		<id column="PK_AUTO_ID" property="pkAutoId" jdbcType="INTEGER" />
+		<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="RELEASE_DATE" property="releaseDate" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="INSERT_TIME" property="insertTime" jdbcType="VARCHAR" />
+		<result column="INSERT_USERNAME" property="insertUserName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="queryNoticeList" parameterType="cn.sh.ideal.model.Notice"
+		resultMap="BaseResultMap">
+		SELECT t.PK_AUTO_ID,
+		t.CONTENT,t.TITLE,
+		date_format(T.RELEASE_DATE,'%Y-%m-%d') RELEASE_DATE,
+		date_format(T.INSERT_TIME,'%Y-%m-%d') INSERT_TIME,
+		(select u.USER_NAME
+		from t_sys_user u where u.USER_ID=t.FK_INSERT_USER_ID) as
+		INSERT_USERNAME,
+		t.status
+		FROM t_notice t
+		where 1=1 and t.enabled='1'
+		<if test="status !=null  and status !='' ">
+			and t.STATUS=#{status,jdbcType=VARCHAR}
+		</if>
+		<if test="title != null and title != ''">
+			and t.title like CONCAT('%','${title}','%' )
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+
+	<select id="queryNoticeListCount" parameterType="cn.sh.ideal.model.Notice"
+		resultType="java.lang.Integer">
+		SELECT count(0)
+		FROM t_notice t
+		where 1=1 and t.enabled='1'
+		<if test="status !=null  and status !='' ">
+			and t.STATUS=#{status,jdbcType=VARCHAR}
+		</if>
+		<if test="title != null and title != ''">
+			and t.title like CONCAT('%','${title}','%' )
+		</if>
+	</select>
+
+
+
+    <select id="queryNoticeListByMain" parameterType="cn.sh.ideal.model.Notice"
+		resultMap="BaseResultMap">
+		SELECT t.PK_AUTO_ID,
+		t.CONTENT,t.TITLE,
+		date_format(T.RELEASE_DATE,'%Y-%m-%d') RELEASE_DATE,
+		date_format(T.INSERT_TIME,'%Y-%m-%d') INSERT_TIME,
+		(select u.USER_NAME
+		from t_sys_user u where u.USER_ID=t.FK_INSERT_USER_ID) as
+		INSERT_USERNAME,
+		t.status
+		FROM t_notice t
+		where 1=1 and t.enabled='1'
+		and t.status='已发布'
+		and date_format(now(),'%Y-%m-%d')&gt;=date_format(t.RELEASE_DATE,'%Y-%m-%d')
+		<if test="status !=null  and status !='' ">
+			and t.STATUS=#{status,jdbcType=VARCHAR}
+		</if>
+		<if test="title != null and title != ''">
+			and t.title like CONCAT('%','${title}','%' )
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+
+	<select id="queryNoticeListByMainCount" parameterType="cn.sh.ideal.model.Notice"
+		resultType="java.lang.Integer">
+		SELECT count(0)
+		FROM t_notice t
+		where 1=1 and t.enabled='1'
+		and t.status='已发布'
+		and date_format(now(),'%Y-%m-%d')&gt;=date_format(t.RELEASE_DATE,'%Y-%m-%d')
+		<if test="status !=null  and status !='' ">
+			and t.STATUS=#{status,jdbcType=VARCHAR}
+		</if>
+		<if test="title != null and title != ''">
+			and t.title like CONCAT('%','${title}','%' )
+		</if>
+	</select>
+
+     
+     <insert id="insertNotice" parameterType="cn.sh.ideal.model.Notice">
+         insert into t_notice(TITLE,CONTENT,RELEASE_DATE,STATUS,ENABLED,FK_INSERT_USER_ID,INSERT_TIME)
+         values(#{title},#{content},#{releaseDate},#{status},'1',#{insertUserId},now())
+     </insert>
+     
+     <select id="queryNotice"  parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+          SELECT t.PK_AUTO_ID,
+		 t.CONTENT,t.TITLE,
+		 (select u.USER_NAME from t_sys_user u where u.USER_ID=t.FK_INSERT_USER_ID) INSERT_USERNAME,
+		date_format(T.RELEASE_DATE,'%Y-%m-%d') RELEASE_DATE
+		FROM t_notice t
+		where t.enabled='1'
+		and t.PK_AUTO_ID=${id}
+     </select>
+
+     <update id="updateNotice" parameterType="cn.sh.ideal.model.Notice">
+         update t_notice set TITLE=#{title,jdbcType=VARCHAR},status=#{status,jdbcType=VARCHAR},CONTENT=#{content,jdbcType=VARCHAR},RELEASE_DATE=#{releaseDate},FK_UPDATE_USER_ID=#{updateUserId},UPDATE_TIME=now()  where PK_AUTO_ID=${pkAutoId}
+     </update>
+     
+     <update id="deleteNotice" parameterType="cn.sh.ideal.model.Notice" >
+         update t_notice set enabled='0',FK_UPDATE_USER_ID=#{updateUserId},UPDATE_TIME=now() where PK_AUTO_ID=${pkAutoId}
+     </update>
+
+</mapper>

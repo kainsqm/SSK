@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.tQuestionsRandomselMapper">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tQuestionsRandomsel">
+    <result column="FK_USER_ID" jdbcType="INTEGER" property="fkUserId" />
+    <result column="FK_QUESTIONID" jdbcType="INTEGER" property="fkQuestionid" />
+    <result column="SCORE" jdbcType="INTEGER" property="score" />
+    <result column="FK_EXAMPAPERID" jdbcType="INTEGER" property="fkExampaperid" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tQuestionsRandomsel">
+    insert into "t_questions_randomsel" (FK_USER_ID, FK_QUESTIONID, SCORE, 
+      FK_EXAMPAPERID, ENABLED, ZUHU_ID
+      )
+    values (#{fkUserId,jdbcType=INTEGER}, #{fkQuestionid,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
+      #{fkExampaperid,jdbcType=INTEGER}, #{enabled,jdbcType=VARCHAR}, #{zuhuId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tQuestionsRandomsel">
+    insert into "t_questions_randomsel"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fkUserId != null">
+        FK_USER_ID,
+      </if>
+      <if test="fkQuestionid != null">
+        FK_QUESTIONID,
+      </if>
+      <if test="score != null">
+        SCORE,
+      </if>
+      <if test="fkExampaperid != null">
+        FK_EXAMPAPERID,
+      </if>
+      <if test="enabled != null">
+        ENABLED,
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fkUserId != null">
+        #{fkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="fkQuestionid != null">
+        #{fkQuestionid,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="fkExampaperid != null">
+        #{fkExampaperid,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

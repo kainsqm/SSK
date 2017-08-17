@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="shkd_ks_service"
+  id="myeclipse.1489980580523"
+  context-root="/shkd_ks_service"
+  j2ee-spec="5.0"
+  archive="shkd_ks_service.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+

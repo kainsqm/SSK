@@ -1,0 +1,71 @@
+﻿<style type="text/css">
+	/* 添加头部样式 */
+	#loyout_div_top{ width:100%; height:40px; line-height:40px; background-image:url(img/login/toppic.jpg);/* */ border:#eef0f1 0px solid;}
+	#loyout_div_top #syste_matic_name{ font-family: "宋体"; font-size:20px; color:#FFFFFF; font-weight: bold; margin-left:50px; float:left;}
+	#loyout_div_top #top_div span font{margin-left:20px;}
+	#loyout_div_top #label_a label{ cursor:pointer; margin-left:5px;}
+	
+	div#eidt_pwd_div{position:absolute; border:#CCFF00 1px solid; width:300px; height:200px;border-radius:5px; display:none;}
+	div#eidt_pwd_div .eidt_pwd_div_in,div#eidt_pwd_div .eidt_pwd_div_out{position:absolute;width:0px; height:0px;}
+	div#eidt_pwd_div .eidt_pwd_div_in{border:15px solid transparent;border-bottom-color:#fff; top: -30px; left:261px;}
+	div#eidt_pwd_div .eidt_pwd_div_out{border:16px solid transparent;border-bottom-color:#CCFF00; top:-32px; left:260px;}
+</style>
+<script type="text/javascript">
+	/*var scroll_main,scroll_div,timer;
+	function init_scroll(){
+		scroll_main=getid("scroll_main");
+		scroll_div=getid("scroll_div");
+		scroll_div.style.marginLeft=parseInt(scroll_main.offsetWidth)+"px";
+		timer=setInterval(mar,30);
+	}
+	function mar(){
+		if(scroll_div.style.marginLeft==null || scroll_div.style.marginLeft == ""){scroll_div.style.marginLeft="0px";}
+		if(parseInt(scroll_div.style.marginLeft) <= 0 && (parseInt(scroll_div.style.marginLeft.replace("-","")) >=  parseInt(scroll_div.offsetWidth))){
+			scroll_div.style.marginLeft=parseInt(scroll_main.offsetWidth)+"px";
+		}else{
+			scroll_div.style.marginLeft=(parseInt(scroll_div.style.marginLeft)-1)+"px";
+		}
+	}
+	function getid(id){
+		return document.getElementById(id);
+	}*/
+	/***************
+	 * 系统退出
+	 ***************/
+	function login_out(){
+		$.ligerDialog.confirm('确认要退出系统吗', function (yes) {
+			if(yes){
+				alert("退出...");
+			}
+		});
+	}
+	/***************
+	 * 密码修改
+	 ***************/
+	function edit_pwd(){
+		$.ligerDialog.open({
+			height:240,
+			width: 300,
+			title : "个人密码修改",
+			url:'page/system/edit_pwd.html', 
+			showMax: false,
+			showToggle: false,
+			showMin: false,
+			isResize: true,
+			slide: false
+		});	
+	}
+	/*$(function (){
+		init_scroll();
+	});*/
+</script>
+<div id="loyout_div_top">
+	<span id="syste_matic_name">考试系统</span>
+	<!-- onmouseover="clearInterval(timer)"  onmouseout="timer=setInterval(mar,30);" -->
+	<span style="float:right; margin-right:40px; font-size:13px; color:#FFFFFF;">
+		<font>欢迎你：<label>张三</label></font>&nbsp;&nbsp;
+		<font>登录时间：<label>2016-01-01 00:00:00</label></font>
+		<font id="label_a"><label onclick="edit_pwd();">个人密码修改</label><label onclick="login_out();">退出系统</label></font>			
+	</span>
+	<marquee>你的文字<marquee>
+</div>

@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>模板试卷</title>
+  	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>  
+    <script src="../../lib/ligerUI/js/ligerui.all.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerPopupEdit.js"></script>
+
+    <script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css"> 
+		body{ margin:0;}
+		#layout1{  width:100%;margin:0;}  
+		.l-page-top{ height:80px; background:#f8f8f8; margin-bottom:3px;}
+		h4{ margin:20px;}
+		div.l-layout-header-toggle{ display:none;}
+	</style>
+	<style type="text/css">
+		.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+		.ztree li{ margin-top:5px;}
+	</style>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px; border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		
+		table#search_table td{ height:30px; line-height:30px;}
+		table#search_table td.td_lable{ text-align:right;}
+		table#search_table td.td_value{ text-align:left;}
+		div.l-panel-topbar{ height:30px !important; }
+		
+		div.l-layout-header1 { padding-left:15px; height: 20px; line-height: 20px; font-size:14px; font-family:"黑体"; border-bottom:#f0f0dc 1px solid;}
+	</style>
+	<style type="text/css">
+	div.title_div{border-radius: 5px; text-align:left; margin-top:5px;border: solid 1px #D7D7D7;
+		width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+	}
+	input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+	input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+	input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+	table td{ height:30px; line-height:30px;}
+	table .search_table td.td_lable{ text-align:right;}
+	table .search_table td.td_value{ text-align:left;}
+	a{text-decoration : none;color:blue;}
+	red{color: red;}
+</style>
+	<SCRIPT type="text/javascript">
+		
+		
+	/*	$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			$("#selectAll").bind("click", selectAll);
+		});*/
+		//-->
+	</SCRIPT>
+	<script type="text/javascript">
+
+		$(function ()
+		{
+			 $("#form1").ligerForm({
+                validate: true
+            });
+			$("#layout1").ligerLayout({ leftWidth: 200,height:'99%'});
+		});
+	</script>
+	<script type="text/javascript"> 
+		var TreeDeptData = { Rows : [
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			{ id1: '01',number:'125545156',name:"商客日考12月23日",desc:"2015年模拟考试", time:"20160601",porsens:"AA206",states:"有效",type:"月考"},
+			
+			
+		]};
+			var CustomersData = { Rows : [
+			{ CustomerID: '01',CompanyName:'商客日考2017',ContactName:'业务考试', phone:'20170308',City:'测试一组',Country:'有效',Countype:'日考',isCountype:'是'},
+			{ CustomerID: '02',CompanyName:'商客日考2017',ContactName:'业务考试', phone:'20170308',City:'测试一组',Country:'有效',Countype:'月考',isCountype:'是'},
+			{ CustomerID: '03',CompanyName:'商客日考2017',ContactName:'业务考试', phone:'20170308',City:'测试一组',Country:'有效',Countype:'日考',isCountype:'是'},
+			{ CustomerID: '04',CompanyName:'商客日考2017',ContactName:'业务考试', phone:'20170308',City:'测试一组',Country:'有效',Countype:'月考',isCountype:'是'},
+			{ CustomerID: '05',CompanyName:'商客日考2017',ContactName:'业务考试', phone:'20170308',City:'测试一组',Country:'有效',Countype:'日考',isCountype:'是'},
+			{ CustomerID: '06',CompanyName:'商客日考2017',ContactName:'业务考试', phone:'20170308',City:'测试一组',Country:'有效',Countype:'日考',isCountype:'是'},
+			
+			
+			]};
+		var manager;
+        $(function ()
+        {
+            manager = $("#workpaper_list").ligerGrid({
+            	checkbox: true,
+                columns: [
+                	{ display: '操作', isSort: false, minWidth : 180, align: 'center' , isSort: false,render: function (rowdata, rowindex, value)
+						{
+							var h = "";
+							h += "<a href='javascript:void(0);' onclick='deleteUser(\""+rowdata.username+"\");'>删除</a> ";
+							return h;
+						}
+					},
+					{ display: '试卷编号', name: 'number', minWidth: 100, align: 'left', isSort: false },
+					{ display: '试卷名称', name: 'name', minWidth: 100, align: 'left' , isSort: false},
+					{ display: '试卷描述', name: 'desc', minWidth: 100, align: 'left', isSort: false },
+					{ display: '生成日期', name:'time', minWidth: 100, align: 'left', isSort: false },
+					{ display: '操作人', name:'porsens', minWidth: 100, align: 'left', isSort: false },					
+					{ display: '状态', name: 'states', minWidth: 100, align: 'left', isSort: false },				
+					{ display: '试卷类型', name: 'type', minWidth: 100, align: 'left', isSort: false }
+					
+                ], data: TreeDeptData,width: 'auto', height: '100%',rownumbers :true
+            }
+            );
+			//collapseAll();
+			$("#pageloading").hide(); 
+        });
+        function collapseAll()
+        {
+            manager.collapseAll();
+        }
+        function expandAll()
+        {
+            manager.expandAll();
+        }
+		function itemclick(item)
+        {
+            alert(item.text);
+        }
+		/*********************
+		 * 员工信息编辑
+		 *********************/
+		function eidt_user(editType){
+			location.href="sys_tempoptionque.htm";
+			// var titleInfo="批量导入试卷";
+			// $.ligerDialog.open({
+			// 	url:'sys_optionque.htm',
+			// 	height:'1024',
+			// 	width: '1024',
+			// 	title : titleInfo,
+			// 	showMax: false,
+			// 	showToggle: false,
+			// 	showMin: false,
+			// 	isResize: true,
+			// 	slide: false
+			// });
+		}
+		/*********************
+		 * 删除员工信息
+		 *********************/
+		function deleteUser(userID){
+			$.ligerDialog.confirm('确认要模板['+userID+']吗？', function (yes) { 
+				if(yes){
+					alert("开始删除...");
+				} 
+			});
+		}
+		/*********************
+		 * 重置员工密码
+		 *********************/
+		function resetPwd(userID){
+			$.ligerDialog.confirm('确认要重置员工['+userID+']的密码吗？', function (yes) { 
+				if(yes){
+					alert("开始重置...");
+				} 
+			});
+		}
+		/*********************
+		 * 角色信息分配
+		 *********************/
+		function changeRoleInfo(userID){
+			$.ligerDialog.open({
+				height:330,
+				width: 340,
+				title : '角色信息分配',
+				url:'roleInfoChose.html', 
+				showMax: false,
+				showToggle: false,
+				showMin: false,
+				isResize: true,
+				slide: false
+			});
+		}
+    </script> 
+<script type="text/javascript">
+   function valid()
+     {
+         var form = new liger.get("form1");
+         alert(form.valid());
+     }
+	function f_search()
+        {
+            manager.options.data = $.extend(true, {}, TreeDeptData);
+            manager.loadData(f_getWhere());
+        }
+	function f_getWhere()
+	{
+		if (!manager) return null;
+		var clause = function (rowdata, rowindex)
+		{
+			var key = $("#bumen").val();
+			return rowdata.bumen.indexOf(key) > -1;
+		};
+		return clause; 
+	}
+</script>
+
+</head>
+<div>
+ <body>
+
+		<div align="left">
+			<table class="search_table" cellpadding="3" cellspacing="3"width="100%" style="margin: 10px 0 0 15px;">
+				<tr>
+					<td class="td_lable" width="80px">试卷编号：</td><td class="td_value"><input style="width: 135px;" type="text"/></td>
+					<td class="td_lable" width="80px">试卷名称：</td><td class="td_value"><input style="width: 135px;" type="text"/></td>
+					<td class="td_lable"width="90px">试卷生成人：</td><td class="td_value"><input style="width: 140px;" type="text"/></td>
+						<td class="td_lable" width="60px">试卷状态：</td><td class="td_value">
+						<select name="examtype" id="static" style="width: 135px;" >
+			                <option value="opt1">请选择</option>
+			                <option value="opt2">有效</option>
+			                <option value="opt3">无效</option>
+			            </select> 
+					</td>
+					</tr>
+					<tr>
+
+
+					<td class="td_lable">试卷类型：</td><td class="td_value">
+						<select name="examtype" id="examtype" style="width: 135px;" >
+							<option value="opt1">请选择</option>
+							<option value="opt2">日考</option>
+							<option value="opt2">月考</option>
+			            </select> 
+					</td>
+						<td class="td_lable">试卷描述：</td><td class="td_value"><input style="width: 135px;" type="text"/></td>
+						<td class="td_lable">历史模板试卷：</td><td class="td_value"><input type="text" id="historyid" type="text"/></td>
+				</tr>
+			</div>
+				<tr >
+					<td colspan="8" align="center">
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="抽取考题" id="insertOpen" onclick="eidt_user('add')" />&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+			</table>			
+		   <script type="text/javascript">
+
+
+            $("#historyid").ligerPopupEdit({
+                condition: {
+                    prefixID: 'condtion_',
+                    width:'5000',
+                    fields: [
+                        { name: 'CompanyName', type: 'text', label: '试卷名称'},
+                    ]
+                },
+                textWidth: 800,
+                selectBoxHeight: 240,
+                grid: getGridOptions(true),
+                searchClick : function(e){
+                  
+                    //e.grid.set('parms', { userName: 'zzq' });
+                    //e.grid.reload();
+                    
+                    //grid = e.grid 
+                    alert("这里可以根据搜索规则来搜索（下面的代码已经本地搜索),搜索规则:" + liger.toJSON(e.rules));
+                    e.grid.loadData($.ligerFilter.getFilterFunction(e.rules));
+                },
+                valueField: 'CustomerID',
+                textField: 'CustomerID',
+                width: 135
+            });
+
+            function getGridOptions(checkbox) {
+
+                var options = {
+                    columns: [
+                    { display: '试卷编号', name: 'CustomerID', align: 'left', minWidth: 60 },
+                    { display: '试卷名称', name: 'CompanyName', minWidth: 120, },
+                    { display: '试卷描述', name: 'ContactName', minWidth: 140, },
+                    { display: '生成日期', name: 'phone', },
+                    { display: '操作人', name: 'City',  },
+                    { display: '状态', name: 'Country',  },
+                    { display: '试卷类型', name: 'Countype', },
+                    { display: '是否模板试卷', name: 'isCountype', }
+                    ], switchPageSizeApplyComboBox: false,
+                    data: CustomersData,
+                    pageSize: 10,
+                    width:'100%',
+                    checkbox: checkbox
+                };
+                return options;
+            }
+        </script>
+		<div id="workpaper_list"></div>
+
+		<div id="addusers" style="width:98%; margin:5px; padding-right:20px;display:none;" title="sss">
+		   <table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr><td class="td_lable"></td><td class="td_value" validate="{required:true}" ><input type="file" />&nbsp;
+				<tr><td class="td_lable">试卷名称：</td><td class="td_value"><input validate="{required:true}" />&nbsp;<red>*</red></tr>
+				<tr><td class="td_lable">试卷备注：</td><td class="td_value"><input validate="{required:true}" />&nbsp;<red>*</red></td></tr>
+				<tr><td class="td_lable">是否乱序：</td><td class="td_value"><input validate="{required:true}" />&nbsp;<red>*</red></td></tr>
+				<tr><td class="td_lable">试卷类型：</td><td class="td_value"><input validate="{required:true}" />&nbsp;<red>*</red></td></tr>
+				
+				<tr>
+					<td colspan="8" align="center" style="margin-top: 20px;">
+						<input id="updateForm" type="button"  value="执行导入" />
+					</td>
+				</tr>
+			</table>
+		</div>
+</body>
+</html>
+

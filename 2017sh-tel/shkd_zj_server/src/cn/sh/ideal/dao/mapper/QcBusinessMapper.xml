@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IQcBusinessDao">
+
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.QcBusiness">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="agentName" jdbcType="VARCHAR" property="agentName" />
+    <result column="sgphone" jdbcType="VARCHAR" property="sgphone" />
+    <result column="sgContent" jdbcType="VARCHAR" property="sgContent" />
+    <result column="quesstion" jdbcType="VARCHAR" property="quesstion" />
+    <result column="checkqr" jdbcType="VARCHAR" property="checkqr" />
+    <result column="qcName" jdbcType="VARCHAR" property="qcName" />
+    <result column="zxFzx" jdbcType="VARCHAR" property="zxFzx" />
+    <result column="qcdatetime" jdbcType="VARCHAR" property="qcdatetime" />
+    <result column="isTl9000" jdbcType="VARCHAR" property="isTl9000" />
+
+
+  </resultMap>
+	<select id="listqcbusiness" parameterType="cn.sh.ideal.model.QcBusiness" resultMap="BaseResultMap">			
+	select
+	  @rownum:=@rownum+1 as id,
+	 DATE_FORMAT(t.QC_TIME,'%Y-%m-%d')as qcdate,  DATE_FORMAT(t.QC_TIME,'%H:%i')as qctime,
+	 (select 	t2.USER_NAME from t_sys_user t2 where  t2.USER_ID=
+	(SELECT  t1.pid  FROM  t_sys_user t1 WHERE
+		 t1.ENABLED='1' and t1.Smail_workid=t.AGENTWORKID) )as agentName,tqd.DEVICE_ID as sgphone, 
+
+	(select  ts.NAME from t_sys_code  ts where ts.PID=(case tqd.BUSINESS_TYPE when 10 then 124 
+					  when 54 then  124
+					  when 32 then 96
+					  when 76 then 172	
+					  else 0 end) and VALUEES=tqd.CHECKCONTENT) as  sgContent,
+
+	(case tqd.QUALITY_LEVEL when '合格' then '正常'
+					   when '不合格'  then (select tsc.NAME from t_sys_code tsc where tsc.PID= tqd.BUSINESS_TYPE  and tsc.VALUEES=tqd.DEAL_DIS )
+					  else '0' end	) as  quesstion,
+	(case (select AGENT_VALIDATE from t_agent_workpaper taw where taw.AGENT_WORKPAPER_ID=t.T_AGENT_WORKPAPERID)  when '1' then '有'
+																									       when	 '0' then '无' 
+																										else '' end		  
+			)  as checkqr,
+	(case tqd.IS_TL9000 when '1' then 'tl9000'
+						when '2' then '业务室'
+						when '3' then '受理中心'
+						when '4' then '质检小组'
+						when '5' then '全部' 
+						else '其他'	end) as	isTl9000,	
+ 	(select USER_NAME from t_sys_user tsu where tsu.USER_ID = t.QC_USER_ID ) as qcName,	
+	(case tr.IS_TASK when '1' then '专项' 
+			    when '2' then '非专项'
+			   else '非专项' end) as zxFzx
+  from (SELECT @rownum:=0) r, t_qc t  left join t_record_info tr on tr.RECORD_ID=t.RECORD_ID left join t_qc_detail tqd on tqd.QC_ID=t.QC_ID 
+	where 1=1
+	 <if test="qcstartdatetime != null and qcstartdatetime !=''">
+			and DATE_FORMAT(t.QC_TIME,'%Y-%m-%d %H:%i')
+			&gt;=DATE_FORMAT(#{qcstartdatetime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i')
+		</if>
+		<if test="qcstopdatetime != null and qcstopdatetime !=''">
+			and DATE_FORMAT(t.QC_TIME,'%Y-%m-%d %H:%i')
+			&lt;=DATE_FORMAT(#{qcstopdatetime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i')
+		</if>
+		<if test="agentName != null and agentName !=''">
+			and tr.AGENT_NAME=#{agentName,jdbcType=VARCHAR}
+      </if>
+      <if test="isTl9000 != null and isTl9000 !=''">
+			and  tqd.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+      </if>
+    
+      order by id
+  </select>
+  <select id="selectQcBusinesscount" parameterType="cn.sh.ideal.model.QcBusiness" resultType="java.lang.Integer" >
+  select 
+  count(*)
+  from t_qc t  left join t_record_info tr on tr.RECORD_ID=t.RECORD_ID left join t_qc_detail tqd on tqd.QC_ID=t.QC_ID 
+	where 1=1
+	 <if test="qcstartdatetime != null and qcstartdatetime !=''">
+			and DATE_FORMAT(t.QC_TIME,'%Y-%m-%d %H:%i')
+			&gt;=DATE_FORMAT(#{qcstartdatetime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i')
+		</if>
+		<if test="qcstopdatetime != null and qcstopdatetime !=''">
+			and DATE_FORMAT(t.QC_TIME,'%Y-%m-%d %H:%i')
+			&lt;=DATE_FORMAT(#{qcstopdatetime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i')
+		</if>
+		<if test="agentName != null and agentName !=''">
+			and tr.AGENT_NAME=#{agentName,jdbcType=VARCHAR}
+      </if>
+       <if test="isTl9000 != null and isTl9000 !=''">
+			and  tqd.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+      </if>
+   </select>
+  	
+  	<select id="exportselectQcBusiness" parameterType="cn.sh.ideal.model.QcBusiness" resultType="java.util.LinkedHashMap">
+  
+  select
+	  @rownum:=@rownum+1 as 序号,
+	 DATE_FORMAT(t.QC_TIME,'%Y-%m-%d')as 日期,  DATE_FORMAT(t.QC_TIME,'%H:%i')as 时间,
+	  (select 	t2.USER_NAME from t_sys_user t2 where  t2.USER_ID=
+	(SELECT  t1.pid  FROM  t_sys_user t1 WHERE
+		 t1.ENABLED='1' and t1.Smail_workid=t.AGENTWORKID) )as 受理者 ,
+	 tqd.DEVICE_ID as 申告号码, 
+	(case tqd.IS_TL9000 when '1' then 'tl9000'
+						when '2' then '业务室'
+						when '3' then '受理中心'
+						when '4' then '质检小组'
+						when '5' then '全部' 
+						else '其他'	end) as	检查部门,	
+	(select  ts.NAME from t_sys_code  ts where ts.PID=(case tqd.BUSINESS_TYPE when 10 then 124 
+					  when 54 then  124
+					  when 32 then 96
+					  when 76 then 172	
+					  else 0 end) and VALUEES=tqd.CHECKCONTENT) as  '申告内容/处理',
+
+	(case tqd.QUALITY_LEVEL when '合格' then '正常'
+					   when '不合格'  then (select tsc.NAME from t_sys_code tsc where tsc.PID= tqd.BUSINESS_TYPE  and tsc.VALUEES=tqd.DEAL_DIS )
+					  else '0' end	) as  存在问题,
+	(case (select AGENT_VALIDATE from t_agent_workpaper taw where taw.AGENT_WORKPAPER_ID=t.T_AGENT_WORKPAPERID)  when '1' then '有'
+																									       when	 '0' then '无' 
+																										else '' end		  
+			)  as 被检查人确认,
+ 	(select USER_NAME from t_sys_user tsu where tsu.USER_ID = t.QC_USER_ID ) as 质检员,	
+	(case tr.IS_TASK when '1' then '专项' 
+			    when '2' then '非专项'
+			   else '非专项' end) as 专项非专项
+  from (SELECT @rownum:=0) r, t_qc t  left join t_record_info tr on tr.RECORD_ID=t.RECORD_ID left join t_qc_detail tqd on tqd.QC_ID=t.QC_ID 
+	where 1=1
+	 <if test="qcstartdatetime != null and qcstartdatetime !=''">
+			and DATE_FORMAT(t.QC_TIME,'%Y-%m-%d %H:%i')
+			&gt;=DATE_FORMAT(#{qcstartdatetime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i')
+		</if>
+		<if test="qcstopdatetime != null and qcstopdatetime !=''">
+			and DATE_FORMAT(t.QC_TIME,'%Y-%m-%d %H:%i')
+			&lt;=DATE_FORMAT(#{qcstopdatetime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i')
+		</if>
+		<if test="agentName != null and agentName !=''">
+			and tr.AGENT_NAME=#{agentName,jdbcType=VARCHAR}
+      </if>
+       <if test="isTl9000 != null and isTl9000 !=''">
+			and  tqd.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+      </if>
+      order by 序号
+  
+  	</select>
+  
+</mapper> 

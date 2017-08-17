@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<HTML>
+	<HEAD>
+		<TITLE> ZTREE DEMO - checkbox</TITLE>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" href="../../js/ztree/css/demo.css" type="text/css">
+		<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="../../js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+		<script type="text/javascript" src="../../js/ztree/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="../../js/ztree/js/jquery.ztree.core-3.5.js"></script>
+		<script type="text/javascript" src="../../js/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+		<script type="text/javascript" src="../../js/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+
+		<SCRIPT type="text/javascript">
+			<!--
+			var IDMark_A = "_a";
+			var setting = {
+				check: {
+					enable: true
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				view: {
+					addDiyDom: addDiyDom
+				},
+				callback: {
+					beforeCheck:zTreeBeforeCheck
+				}
+			};
+
+			var zNodes =[
+			{ id:1, pId:0, name:"考试维护", open:true,checked:true},
+			{ id:11, pId:1, name:"用户管理",checked:true,btnItems:[
+			{btn_name:"新增角色",check:true},
+			{btn_name:"修改角色"},
+			{btn_name:"删除角色"},
+			{btn_name:"参数配置"},
+			{btn_name:"重置密码"},
+			{btn_name:"角色分配"}
+			]},
+			{ id:12, pId:1, name:"角色管理",checked:true,btnItems:[
+			{btn_name:"查询",check:true},
+			{btn_name:"新增"},
+			{btn_name:"修改"},
+			{btn_name:"删除"}
+			]},
+			{ id:13, pId:1, name:"参数配置",check:true,btnItems:[
+			{btn_name:"查询",},
+			{btn_name:"新增"},
+			{btn_name:"修改"},
+			{btn_name:"删除"}
+			]},
+			{ id:14, pId:1, name:"日志查询",btnItems:[
+			{btn_name:"查询"}
+			]},
+			{ id:2, pId:0, name:"考试管理", open:true},
+			{ id:21, pId:2, name:"试卷管理",btnItems:[
+			{btn_name:"查询"},
+			{btn_name:"新增"},
+			{btn_name:"编辑"},
+			{btn_name:"变更申请"}
+			]},
+			{ id:22, pId:2, name:"试卷管理",btnItems:[
+			{btn_name:"查询"},
+			{btn_name:"审批"}
+			]},
+			{ id:23, pId:2, name:"考试维护",btnItems:[
+			{btn_name:"查询"},
+			{btn_name:"新增考试"},
+			{btn_name:"查询考试"},
+			{btn_name:"修改考题"},
+			{btn_name:"删除考题"}
+			]},
+			];
+			var zNodes1 =[
+			{ id:1, pId:0, name:"管理系统", open:true,checked:true},
+			{ id:11, pId:1, name:"员工信息维护",checked:true,btnItems:[
+			{btn_name:"新增员工",check:true},
+			{btn_name:"修改员工"},
+			{btn_name:"删除员工"},
+			{btn_name:"重置密码"},
+			{btn_name:"角色分配"}
+			]},
+			{ id:12, pId:1, name:"角色维护",checked:true,btnItems:[
+			{btn_name:"查询",check:true},
+			{btn_name:"新增"},
+			{btn_name:"修改"},
+			{btn_name:"删除"}
+			]},
+			{ id:13, pId:1, name:"参数配置",btnItems:[
+			{btn_name:"查询"},
+			{btn_name:"新增"},
+			{btn_name:"修改"},
+			{btn_name:"删除"}
+			]},
+			{ id:14, pId:1, name:"日志查询",btnItems:[
+			{btn_name:"查询"}
+			]}
+			];
+			var zNodes2 =[
+			{ id:1, pId:0, name:"质检系统", open:true,checked:true},
+			{ id:11, pId:1, name:"质检评分",checked:true,btnItems:[
+			{btn_name:"工单查询112",check:true},
+			{btn_name:"工单查询c网"},
+			{btn_name:"112电话小结"},
+			{btn_name:"c网电话小结"},
+			{btn_name:"历史记录查询"},
+			{btn_name:"问题反馈单"}
+			]},
+			{ id:12, pId:1, name:"角色管理",checked:true,btnItems:[
+			{btn_name:"查询",check:true},
+			{btn_name:"新增"},
+			{btn_name:"修改"},
+			{btn_name:"删除"}
+			]},
+			{ id:13, pId:1, name:"参数配置",btnItems:[
+			{btn_name:"查询"},
+			{btn_name:"新增"},
+			{btn_name:"修改"},
+			{btn_name:"删除"}
+			]},
+			{ id:14, pId:1, name:"日志查询",btnItems:[
+			{btn_name:"查询"}
+			]},
+			{ id:2, pId:0, name:"任务计划", open:true},
+			{ id:21, pId:2, name:"任务派发",btnItems:[
+			{btn_name:"任务派发(工单112)"},
+			{btn_name:"任务派发(工单c网)"},
+			{btn_name:"任务派发(电话小结)"}
+			]},
+			{ id:22, pId:2, name:"执行任务",btnItems:[
+			{btn_name:"执行任务(工单112)"},
+			{btn_name:"执行任务(工单c网)"},
+			{btn_name:"执行任务(电话小结)"}
+			]},
+			{ id:23, pId:2, name:"统计报表",btnItems:[
+			{btn_name:"结案汇总"},
+			{btn_name:"差错汇总"},
+			]},
+			];
+
+			var code;
+
+			function setCheck() {
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+				py = $("#py").attr("checked")? "p":"",
+				sy = $("#sy").attr("checked")? "s":"",
+				pn = $("#pn").attr("checked")? "p":"",
+				sn = $("#sn").attr("checked")? "s":"",
+				type = { "Y":py + sy, "N":pn + sn};
+				zTree.setting.check.chkboxType = type;
+				showCode('setting.check.chkboxType = { "Y" : "' + type.Y + '", "N" : "' + type.N + '" };');
+			}
+			function showCode(str) {
+				if (!code) code = $("#code");
+				code.empty();
+				code.append("<li>"+str+"</li>");
+			}
+
+			$(document).ready(function(){
+				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+				setCheck();
+				$("#py").bind("change", setCheck);
+				$("#sy").bind("change", setCheck);
+				$("#pn").bind("change", setCheck);
+				$("#sn").bind("change", setCheck);
+
+				initCheck();
+			});
+
+			function changeSelect(){
+
+				var opt=$('#select2').val();
+				switch (opt)
+				{
+					case '1':
+					$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+					setCheck();
+					$("#py").bind("change", setCheck);
+					$("#sy").bind("change", setCheck);
+					$("#pn").bind("change", setCheck);
+					$("#sn").bind("change", setCheck);
+					initCheck();
+					break;
+					case '2':
+					$.fn.zTree.init($("#treeDemo"), setting, zNodes1);
+					setCheck();
+					$("#py").bind("change", setCheck);
+					$("#sy").bind("change", setCheck);
+					$("#pn").bind("change", setCheck);
+					$("#sn").bind("change", setCheck);
+					initCheck();
+					break;
+					case '3':
+					$.fn.zTree.init($("#treeDemo"), setting, zNodes2);
+					setCheck();
+					$("#py").bind("change", setCheck);
+					$("#sy").bind("change", setCheck);
+					$("#pn").bind("change", setCheck);
+					$("#sn").bind("change", setCheck);
+					initCheck();
+					break;
+				}
+
+			}
+
+			function addDiyDom(treeId, treeNode) {
+			//if (treeNode.parentNode && treeNode.parentNode.id!=2) return;
+			var aObj = $("#" + treeNode.tId + IDMark_A);
+			if (treeNode.btnItems!=null) {
+				var editStr="&nbsp;&nbsp;&nbsp;&nbsp;";
+				var btn_id="";
+				var btn_name="";
+				for(var i in treeNode.btnItems){
+					//alert(treeNode.btnItems[i].btn_name);check
+					btn_name="btn_"+treeNode.id;
+					btn_id="btn_"+treeNode.id+"_"+i;
+					if(treeNode.btnItems[i].check){
+						editStr+="<input id='"+btn_id+"' name='"+btn_name+"' type='checkbox' checked='checked' />&nbsp;<label style='cursor:pointer;' for='"+btn_id+"'>"+treeNode.btnItems[i].btn_name+"</label>&nbsp;&nbsp;";
+					}else{
+						editStr+="<input id='"+btn_id+"' name='"+btn_name+"' type='checkbox' />&nbsp;<label style='cursor:pointer;' for='"+btn_id+"'>"+treeNode.btnItems[i].btn_name+"</label>&nbsp;&nbsp;";
+					}
+					
+				}
+				aObj.after(editStr);
+			}
+		}
+		function initCheck(){
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			for(var i in zTree.getNodes()){
+				if(zTree.getNodes()[i].isParent){
+					child_nodes_init(zTree.getNodes()[i]);
+				}else{
+					if(zTree.getNodes()[i].btnItems!=null){
+						child_nodes_btn_init(zTree.getNodes()[i]);
+					}
+				}
+			}
+		}
+		function child_nodes_init(nodeObj){
+			var j = 0;
+			for(j in nodeObj.children){
+				if(nodeObj.children[j].isParent){
+					child_nodes_init(nodeObj.children[j]);
+				}else{
+					if(nodeObj.children[j].btnItems!=null){
+						child_nodes_btn_init(nodeObj.children[j]);
+					}
+				}
+			}
+		}
+		function child_nodes_btn_init(nodeObj1){
+			//alert(nodeObj.name+"\t"+nodeObj.checked);
+			if(!nodeObj1.checked){
+				var checkboxItems = document.getElementsByName("btn_"+nodeObj1.id);
+				if(checkboxItems!=null){
+					for(var ii =0;ii<checkboxItems.length;ii++){
+						checkboxItems[ii].disabled="disabled";
+					}
+				}
+			}
+			
+			//var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			//zTree.checkNode(nodeObj, true, true);
+		}
+		function zTreeBeforeCheck(treeId, treeNode) {
+			var disabled="disabled";
+			var checked=false;
+			if(!treeNode.checked){
+				disabled="";
+				checked=true;
+			}
+			var checkboxItems = document.getElementsByName("btn_"+treeNode.id);
+			if(checkboxItems!=null){
+				for(var ii =0;ii<checkboxItems.length;ii++){
+					checkboxItems[ii].disabled=disabled;
+					checkboxItems[ii].checked=checked;
+				}
+			}
+			return true;
+		}
+		//-->
+	</SCRIPT>
+	<style type="text/css">
+		ul.ztree{ width:auto; height:auto; border:#0033CC 0px solid;}
+		.ztree li{ margin-top:5px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+	</style>
+</HEAD>
+
+<BODY>
+	<div style="display:none;">
+		被勾选时：<input type="checkbox" id="py" class="checkbox first" checked /><span>关联父</span>
+		<input type="checkbox" id="sy" class="checkbox first" /><span>关联子</span><br/>
+		取消勾选时：<input type="checkbox" id="pn" class="checkbox first" checked /><span>关联父</span>
+		<input type="checkbox" id="sn" class="checkbox first" /><span>关联子</span><br/>
+	</div>
+	<div>
+		<table cellpadding="5" cellspacing="5">
+			<tr>
+				<td>角色名称：<input /><font color="#FF0000">&nbsp;*</font></td>
+			</tr>
+			<tr>
+				<td>角色描述：<input /></td>
+			</tr>
+			<tr>
+				<td>权限区域：<select name="select2" id="select2" onchange="changeSelect()" style="width: 173px;" >
+					<option value="1">考试系统</option>
+					<option value="2">管理系统</option>
+					<option value="3">客调系统</option>
+				</select> 
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div style=" border:#bed5f3 1px solid; width:820px; height:300px; overflow:auto;">
+					<ul id="treeDemo" class="ztree"></ul>
+					<div>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<input type="button" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="取消" onClick="frameElement.dialog.close();" />
+					</td>
+				</tr>
+			</table>
+		</div>
+	</BODY>
+</HTML>

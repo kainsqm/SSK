@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<title>多媒体需求单管理系统</title>
+	<style type="text/css">
+		body{ font-size:13px;}
+		.head_h3{ width:100%; height:36px; line-height:36px; background:url(../../img/login/toppic.jpg); margin-top:-14px;}
+		.head_h3 h3{ color:#ffffff; margin-left:70px; font-size:16px;}
+		
+		.mainDiv{ width:73%; height:auto; border:#CCCCFF 1px solid; margin:auto; padding:20px; font-size:14px; margin-top:10px;}
+		.inputText{ border:none; border-bottom:#CCCCFF 1px solid; width:120px;}
+		fieldset{ padding:10px; border:#CCCCFF 1px solid; font-size:13px; margin-top:15px;}		
+		legend{ margin-left:5px; font-size:14px;}
+		textarea{ border:#CCCCFF 1px solid;}
+		input[type='button']{ width:80px; height:30px; border: #CCCCCC 1px solid; cursor:pointer;}
+		.maginTopDiv{ margin-top:5px;}
+	</style>
+</head>
+
+<body style="margin:0 auto; background-image: url(../../img/login/bgmain.png); min-width:1200px;">
+	<div class="head_h3" style="position: relative;"><h3>多媒体需求单管理系统</h3></div>
+	<div class="mainDiv">
+		<!-- 
+		<h2 align="center" style=" height:20px; line-height:20px; border:#0000CC 0px solid; margin-top:-10px;">需求单新增</h2>
+		 -->
+		<fieldset style="margin-top:-20px;">
+			<legend>需求内容</legend>
+				<table cellpadding="5" cellpadding="5" width="100%" border="0">
+					<tr>
+						<td>需求提出人：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+						<td>需求提出时间：</td><td><input /></td>
+						<td>需求提出部门：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+					</tr>
+					<tr>
+						<td>需求提出人联系方式：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+						<td>需求提出人邮箱：</td><td><input /></td>
+						<td>期望完成时间：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+					</tr>
+					<tr>
+						<td>工单号：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+						<td>需求大类：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+						<td>需求小类：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+					</tr>
+					<tr>
+						<td>需求标题：</td><td colspan="5"><input style="width:80%;" /><font color="#FF0000" size="1">&nbsp;*</font></td>
+					</tr>
+					<tr>
+						<td style="vertical-align:top">需求描述：</td><td colspan="5"><textarea style="width:80%;" rows="5"></textarea><font color="#FF0000" size="1">&nbsp;*</font></td>
+					</tr>
+					<tr>
+						<td>分部门需求管理员：</td><td><input /><font color="#FF0000" size="1">&nbsp;*</font></td>
+						<td>分部门需求管理员邮箱：</td><td><input /></td>
+						<td>&nbsp;</td><td>&nbsp;</td>
+					</tr>	
+					<tr>
+						<td>分部门领导：</td>
+						<td colspan="5">
+							<input type="checkbox" name="fen_lingdao" id="fen_lingdao1" /><label for="fen_lingdao1" style="cursor:pointer;">分部门领导1</label>
+							<input type="checkbox" name="fen_lingdao" id="fen_lingdao2" /><label for="fen_lingdao2" style="cursor:pointer;">分部门领导2
+							<font color="#FF0000" size="1">&nbsp;*</font>
+						</td>
+					</tr>										
+				</table>
+	  	</fieldset>
+		<fieldset style="margin-top:0px;">
+			<legend><label style="cursor:pointer;">附件上传</label></legend>
+				<table cellpadding="5" cellpadding="5" width="100%" border="0">
+																	
+				</table>
+	  	</fieldset>
+		<fieldset>
+			<legend>需求单审批</legend>
+				<div class="maginTopDiv">
+					<label>审批结果：</label><input name="shenpi" id="shenpi1" type="radio" /><label for="shenpi1">通过</label><input name="shenpi" id="shenpi2" type="radio" /><label for="shenpi2">驳回</label>	
+					<font color="#FF0000" size="1">&nbsp;*</font>
+				</div>
+				<div>
+					<label style="float:left; margin-top:10px;">驳回理由：</label><textarea rows="4" style=" overflow:auto; width:90%; margin-top:10px;"></textarea>
+				</div>
+				<div style="margin-top:5px;">
+					<label>下级处理人：</label>
+					<input type="checkbox" name="fen_kefu" id="fen_kefu1" /><label for="fen_kefu1" style="cursor:pointer;">客服中心归口人1</label>
+					<input type="checkbox" name="fen_kefu" id="fen_kefu2" /><label for="fen_kefu2" style="cursor:pointer;">客服中心归口人2
+					<font color="#FF0000" size="1">&nbsp;*</font>
+				</div>
+	  	</fieldset>
+		<fieldset>
+			<legend>需求单审核</legend>
+				<div class="maginTopDiv">
+					<label>是否同意：</label><input name="hwyyj" id="hwyyj1" type="radio" /><label for="hwyyj1">同意</label><input name="hwyyj" id="hwyyj2" type="radio" /><label for="hwyyj2">不同意</label>	
+				</div>
+				<div>
+					<label style="float:left; margin-top:10px;">处理意见：</label><textarea rows="4" style=" overflow:auto; width:90%; margin-top:10px;"></textarea>
+				</div>
+				<div style="margin-top:10px; padding-right:40px;">
+					<div style="width:auto; float:right;">
+						<label>处理人：<input type="text" class="inputText" /></label>&nbsp;&nbsp;
+						<label>处理日期：<input type="text" class="inputText"  /></label>
+					</div>
+				</div>
+	  	</fieldset>
+		<fieldset>
+			<legend>需求处理</legend>
+				<div class="maginTopDiv">
+					<label>是否同意：</label><input name="hwyyj" id="hwyyj1" type="radio" /><label for="hwyyj1">同意</label><input name="hwyyj" id="hwyyj2" type="radio" /><label for="hwyyj2">不同意</label>	
+				</div>
+				<div>
+					<label style="float:left; margin-top:10px;">处理意见：</label><textarea rows="4" style=" overflow:auto; width:90%; margin-top:10px;"></textarea>
+				</div>
+				<div style="margin-top:10px; padding-right:40px;">
+					<div style="width:auto; float:right;">
+						<label>处理人：<input type="text" class="inputText" /></label>&nbsp;&nbsp;
+						<label>处理日期：<input type="text" class="inputText"  /></label>
+					</div>
+				</div>
+	  	</fieldset>
+		<div align="center" style="margin-top:15px;">
+			<input type="button" value="提交" />&nbsp;&nbsp;<input type="button" value="返回" />
+		</div>
+	</div>
+</body>
+</html>

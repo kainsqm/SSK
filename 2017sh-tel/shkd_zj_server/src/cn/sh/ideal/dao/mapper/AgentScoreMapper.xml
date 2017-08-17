@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IAgentScoreDao">
+
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.AgentScore">
+    <id column="COUMID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SMAILWORKID" jdbcType="VARCHAR" property="smailworkid" />
+    <result column="IS112" jdbcType="INTEGER" property="is112" />
+    <result column="ISCW" jdbcType="INTEGER" property="iscw" />
+    <result column="ISYCL" jdbcType="INTEGER" property="ycl" />
+    <result column="ISGK" jdbcType="INTEGER" property="gk" />
+    <result column="LXCW" jdbcType="INTEGER" property="lxcw" />
+    <result column="CP" jdbcType="INTEGER" property="cp" />
+    <result column="LP" jdbcType="INTEGER" property="lp" />
+    <result column="YWBS" jdbcType="INTEGER" property="ywbs" />
+    <result column="YWBL" jdbcType="INTEGER" property="ywbl" />
+    <result column="WFL" jdbcType="INTEGER" property="wfl" />
+    <result column="YWBGF" jdbcType="INTEGER" property="ywbgf" />
+    <result column="TDSY" jdbcType="INTEGER" property="tdsy" />
+    <result column="FLXZCW" jdbcType="INTEGER" property="flxzcw" />
+    <result column="WFXC" jdbcType="INTEGER" property="wfxc" />
+    <result column="BSBGF" jdbcType="INTEGER" property="bsbgf" />
+    <result column="JNDMC" jdbcType="INTEGER" property="jndmc" />
+    <result column="PDCS" jdbcType="INTEGER" property="pdcs" />
+    <result column="CZBGF" jdbcType="INTEGER" property="czbgf" />
+    <result column="YXBG" jdbcType="INTEGER" property="yxbg" />
+    <result column="QT" jdbcType="INTEGER" property="qt" />
+    <result column="YHTS" jdbcType="INTEGER" property="yhts" />
+    <result column="YHBY" jdbcType="INTEGER" property="yhby" />
+    <result column="BZXXC" jdbcType="INTEGER" property="bzxxc" />
+    <result column="YDBGF" jdbcType="INTEGER" property="ydbgf" />
+    <result column="GKCP" jdbcType="INTEGER" property="gkcp" />
+    <result column="GKFL" jdbcType="INTEGER" property="gkfl" />
+    <result column="LGK" jdbcType="INTEGER" property="lgk" />
+    <result column="YWGKBS" jdbcType="INTEGER" property="ywgkbs" />
+    <result column="ZLDF" jdbcType="INTEGER" property="zldf" />
+    <result column="isTl9000" jdbcType="VARCHAR" property="isTl9000" />
+     <result column="QCTIME" jdbcType="VARCHAR" property="qctime" />
+    <result column="qualified" jdbcType="VARCHAR" property="qualified" />
+  </resultMap>
+  <select id="nowselectAgentscore" parameterType="cn.sh.ideal.model.AgentScore" resultMap="BaseResultMap">
+    select  
+	   @rownum:=@rownum+1 as coumid,
+	     (select 	t2.USER_NAME from t_sys_user t2 where  t2.USER_ID=
+	(SELECT  t1.pid  FROM  t_sys_user t1 WHERE
+		 t1.ENABLED='1' and t1.Smail_workid=t.AGENTWORKID) )as name,
+	    t.AGENTWORKID as smailworkid, 
+ 	    DATE_FORMAT(t.QC_TIME,'%Y-%m') as qctime,
+	    tq.IS_TL9000 as  isTl9000,
+  (SELECT 
+         CONCAT(ROUND(SUM(
+          CASE
+            WHEN t1.DEAL_DIS = '1' 
+            THEN 1 
+            ELSE 0 
+          END
+        ) / COUNT(*) *100,2),'%')
+    FROM
+      t_qc_detail t1 
+      LEFT JOIN t_qc t2 
+        ON t1.QC_ID = t2.QC_ID 
+    WHERE 1=1
+    <if test="isTl9000 !=null and isTl9000 !='' " >
+	AND   t1.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+      AND t1.ENABLED = '1' 
+      AND DATE_FORMAT(t2.QC_TIME, '%Y-%m') =#{qctime,jdbcType=VARCHAR} 
+      AND t2.AGENTWORKID=t.AGENTWORKID
+    GROUP BY t2.AGENTWORKID,
+      DATE_FORMAT(t1.QC_TIME, '%Y-%m') ORDER BY t1.`QC_NUM` DESC LIMIT 1)AS qualified,
+	    sum(case tq.BUSINESS_TYPE when '10' then 1 else 0 end  ) as is112,
+	    sum(case tq.BUSINESS_TYPE when '54' then 1 else 0 end  ) as ycl,
+  	    sum(case tq.BUSINESS_TYPE when '32' then 1 else 0 end  ) as iscw,
+  	    sum(case tq.BUSINESS_TYPE when '76' then 1 else 0 end  ) as gk,
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32' ) and  tq.DEAL_DIS='8'  then 1 else 0 end) as  lxcw, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='10'  then 1 else 0 end ) as cp,   
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='7'  then 1 else 0 end ) as lp,    
+ 	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='4'  then 1 else 0 end ) as ywbs, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='2'  then 1 else 0 end ) as ywbl, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='9'  then 1 else 0 end ) as wfl, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='3'  then 1 else 0 end ) as ywbgf, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='6'  then 1 else 0 end ) as tdsy,	 
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='13' then 1 else 0 end ) as  flxzcw, 
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='14') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='5' ) then 1 else 0 end ) as 	wfxc, 
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='19') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='15' ) then 1 else 0 end ) as bsbgf,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='16') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='7' ) then 1 else 0 end ) as jndmc,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='15') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='6' ) then 1 else 0 end ) as pdcs,
+            sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='20') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='16' ) then 1 else 0 end ) as czbgf,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='11') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='1' ) then 1 else 0 end ) as yxbg,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='17') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='8' ) then 1 else 0 end ) as qt,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='12') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='2' ) then 1 else 0 end ) as yhts,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='13') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='3' ) then 1 else 0 end ) as yhby,
+            sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='17' then 1 else 0 end ) as   bzxxc,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='18' then 1 else 0 end ) as  ydbgf,
+            sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='14' then 1 else 0 end ) as  gkcp,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='13' then 1 else 0 end ) as  gkfl,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='10' then 1 else 0 end ) as  lgk,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='4' then 1 else 0 end ) as  ywgkbs
+  	 from (SELECT @rownum:=0) r,  t_qc t 
+	left join t_qc_detail tq  on t.qc_id=tq.qc_id 
+	left join t_record_info tr on t.RECORD_ID=tr.RECORD_ID 
+	where tq.ENABLED='1'
+	<if test="isTl9000 !=null and isTl9000 !='' " >
+	and   tq.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+	 <if test="qctime != null and qctime !=''">
+		and  DATE_FORMAT(t.QC_TIME,'%Y-%m')=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and t.AGENTWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+	group by t.AGENTWORKID
+	order by coumid
+  
+  </select>
+   <select id="nowselectAgentscorecount" parameterType="cn.sh.ideal.model.AgentScore" resultType="java.lang.Integer" >
+    select  
+	count(*)
+  	 from  (
+  	 select  t.AGENTWORKID from
+  	  t_qc t 
+	left join t_qc_detail tq  on t.qc_id=tq.qc_id 
+	left join t_record_info tr on t.RECORD_ID=tr.RECORD_ID 
+	where tq.ENABLED='1' 
+	<if test="isTl9000 !=null and isTl9000 !='' " >
+	and   tq.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+	 <if test="qctime != null and qctime !=''">
+			and  DATE_FORMAT(t.QC_TIME,'%Y-%m')=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and t.AGENTWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+	group by t.AGENTWORKID
+	) aa	
+
+   </select>
+  
+
+	<select id="selectAgentscore" parameterType="cn.sh.ideal.model.AgentScore" resultMap="BaseResultMap">		
+	select   COUMID,
+	NAME,SMAILWORKID,IS112,ISCW,ISYCL,ISGK,LXCW,CP,LP,YWBS,YWBL,
+	WFL,YWBGF,TDSY,FLXZCW,WFXC,BSBGF,JNDMC,PDCS,
+	CZBGF,YXBG,QT,YHTS,YHBY,BZXXC,YDBGF,GKCP,GKFL,LGK,YWGKBS,isTl9000,QCTIME,QUALIFIED AS qualified
+	from t_workpaper_score
+	where 1=1
+	<if test="isTl9000 !=null and isTl9000 !='' " >
+	 and isTl9000=#{isTl9000,jdbcType=VARCHAR}
+	 </if>
+	 <if test="qctime != null and qctime !=''">
+			and QCTIME=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and SMAILWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+	group by SMAILWORKID
+	order by COUMID
+  </select>
+  <select id="selectAgentscorecount" parameterType="cn.sh.ideal.model.AgentScore" resultType="java.lang.Integer" >
+   select count(*) from 
+		 t_workpaper_score
+	where  1=1
+	<if test="isTl9000 !=null and isTl9000 !='' " >
+	 and isTl9000=#{isTl9000,jdbcType=VARCHAR}
+	 </if>
+	 <if test="qctime != null and qctime !=''">
+			and QCTIME=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and  SMAILWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+   </select>
+  	
+  	<select id="exportselectAgentscore" parameterType="cn.sh.ideal.model.AgentScore" resultType="java.util.LinkedHashMap">
+  	select  
+	    bb.id as 序号,
+	    bb.name  as 姓名,
+	    bb.smailworkid as 工号, 
+	    bb.qctime as 质检时间,
+	    bb.is112 as '112',
+	    bb.ycl as 预处理,
+  	    bb.iscw as c网,
+  	    bb.gk as 管控,
+	    bb.lxcw as 联系信息输入错, 
+	    bb.cp as '错派/错约',   
+	    bb.LP as '漏派/漏约修',    
+ 	    bb.YWBS as 业务不熟处理不当, 
+	    bb.YWBL as 有闻不录, 
+	    bb.WFL as 号码未复述, 
+	    bb.YWBGF as 用语不规范, 
+	    bb.TDSY as 受理中态度生硬,	 
+	    bb.FLXZCW as  分类选择错误, 
+	    bb.WFXC as 违反现场管理制度, 
+	    bb.BSBGF as 表式（原始记录）填写不规范,
+	    bb.JNDMC as '受理/测试/结案代码错',
+	    bb.PDCS as '受理/抽单/派修超时',
+        bb.CZBGF as 操作不规范,
+	    bb.YXBG as 用心服务不够,
+	    bb.QT as 其它,
+	    bb.YHTS as 用户投诉,
+	    bb.YHBY as 用户表扬,
+        bb.BZXXC as   备注信息错,
+	    bb.YDBGF as 129应答不规范,
+       	bb.GKCP as  '管控错派/错约',
+	    bb.GKFL as  管控分类选择错误,
+	    bb.LGK as  '漏管控/点评/关注',
+	    bb.YWGKBS as  业务不熟管控错误,
+	    (100+((bb.lxcw*-5)+(bb.cp*-5)+(bb.lp*-5)+(bb.ywbs*-2)+(bb.ywbl*-1)+(bb.wfl*-1)+(bb.ywbgf*-3)+(bb.tdsy*-5)
+	    +(bb.flxzcw*-3)+(bb.wfxc*-5)+(bb.bsbgf*-2)+(bb.jndmc*-2)+(bb.pdcs*-2)+(bb.czbgf*-2)+(bb.yxbg*-5)+(bb.bzxxc*-3)
+	    +(bb.ydbgf*-3)+(bb.gkcp*-5)+(bb.gkfl*-3)+(bb.lgk*-5)+(bb.ywgkbs*-2)
+	    )) as 质量得分,
+	    bb.qualified as 合格率
+	    from(	    
+	  select   
+		isTl9000,
+	    COUMID as id,
+	    NAME  as name,
+	    SMAILWORKID as smailworkid, 
+	    QCTIME as qctime,
+	    IS112 as is112,
+	    ISYCL as ycl,
+  	    ISCW as iscw,
+  	   ISGK as gk,
+	    LXCW as lxcw, 
+	    CP as cp,   
+	    LP as lp,    
+ 	    YWBS as ywbs, 
+	    YWBL as ywbl, 
+	    WFL as wfl, 
+	    YWBGF as ywbgf, 
+	    TDSY as tdsy,	 
+	    FLXZCW as  flxzcw, 
+	    WFXC as wfxc, 
+	    BSBGF as bsbgf,
+	    JNDMC as jndmc,
+	    PDCS as pdcs,
+        CZBGF as czbgf,
+	    YXBG as yxbg,
+	    QT as qt,
+	    YHTS as yhts,
+	    YHBY as yhby,
+        BZXXC as  bzxxc,
+	    YDBGF as ydbgf,
+        GKCP as  gkcp,
+	    GKFL as  gkfl,
+	    LGK as  lgk,
+	    YWGKBS as  ywgkbs,
+	    QUALIFIED AS qualified
+   	from t_workpaper_score    
+	    where  1=1
+	    <if test="isTl9000 !=null and isTl9000 !='' " >
+		and   isTl9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+	 	<if test="qctime != null and qctime !=''">
+			and QCTIME=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and SMAILWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+		group by SMAILWORKID	
+		order by COUMID		
+			)  bb
+	    union
+		select 
+		'合计' as 序号,
+		'' as 姓名,
+		'' as 工号 ,
+		'' as 质检时间,
+		sum(aa.is112) as '112',
+	    sum(aa.ycl) as 预处理,
+  	    sum(aa.iscw) as c网,
+  	    sum(aa.gk) as 管控,
+	    sum(aa.lxcw) as 联系信息输入错, 
+	    sum(aa.cp) as '错派/错约',   
+	    sum(aa.LP) as '漏派/漏约修',    
+ 	    sum(aa.YWBS) as 业务不熟处理不当, 
+	    sum(aa.YWBL) as 有闻不录, 
+	    sum(aa.WFL) as 号码未复述, 
+	    sum(aa.YWBGF) as 用语不规范, 
+	    sum(aa.TDSY) as 受理中态度生硬,	 
+	    sum(aa.FLXZCW) as  分类选择错误, 
+	    sum(aa.WFXC) as 违反现场管理制度, 
+	    sum(aa.BSBGF) as 表式（原始记录）填写不规范,
+	    sum(aa.JNDMC) as '受理/测试/结案代码错',
+	    sum(aa.PDCS) as '受理/抽单/派修超时',
+        sum(aa.CZBGF) as 操作不规范,
+	    sum(aa.YXBG) as 用心服务不够,
+	    sum(aa.QT) as 其它,
+	    sum(aa.YHTS) as 用户投诉,
+	    sum(aa.YHBY) as 用户表扬,
+        sum(aa.BZXXC) as   备注信息错,
+	    sum(aa.YDBGF) as 129应答不规范,
+       	sum(aa.GKCP) as  '管控错派/错约',
+	    sum(aa.GKFL) as  管控分类选择错误,
+	    sum(aa.LGK) as  '漏管控/点评/关注',
+	    sum(aa.YWGKBS) as  业务不熟管控错误,
+	    '' as 质量得分,
+	    '' as 合格率
+	from(
+		select   
+		isTl9000,
+	    COUMID as id,
+	    NAME  as name,
+	    SMAILWORKID as smailworkid, 
+	    QCTIME as qctime,
+	    IS112 as is112,
+	    ISYCL as ycl,
+  	    ISCW as iscw,
+  	   	ISGK as gk,
+	    LXCW as lxcw, 
+	    CP as cp,   
+	    LP as lp,    
+ 	    YWBS as ywbs, 
+	    YWBL as ywbl, 
+	    WFL as wfl, 
+	    YWBGF as ywbgf, 
+	    TDSY as tdsy,	 
+	    FLXZCW as  flxzcw, 
+	    WFXC as wfxc, 
+	    BSBGF as bsbgf,
+	    JNDMC as jndmc,
+	    PDCS as pdcs,
+        CZBGF as czbgf,
+	    YXBG as yxbg,
+	    QT as qt,
+	    YHTS as yhts,
+	    YHBY as yhby,
+        BZXXC as  bzxxc,
+	    YDBGF as ydbgf,
+        GKCP as  gkcp,
+	    GKFL as  gkfl,
+	    LGK as  lgk,
+	    YWGKBS as ywgkbs,
+	    QUALIFIED AS qualified
+   	from t_workpaper_score  
+   		)  aa
+	where 1=1
+	<if test="isTl9000 !=null and isTl9000 !='' " >
+	and   isTl9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+	 <if test="qctime != null and qctime !=''">
+			and QCTIME=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and SMAILWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+	 
+  	</select>
+  	
+  	
+  	
+  	
+  	  <select id="exportselectAgentscorenew" parameterType="cn.sh.ideal.model.AgentScore" resultType="java.util.LinkedHashMap">
+  	 select  
+	  	  bb.coumid as 序号,
+		  bb.name  as 姓名,
+		  bb.smailworkid as 工号, 
+		  bb.qctime as 质检时间,
+		  bb.is112 as '112',
+	      bb.ycl AS 预处理,
+		  bb.iscw AS c网,
+		  bb.gk AS 管控,
+		  bb.lxcw AS 联系信息输入错,
+		  bb.cp AS '错派/错约',
+		  bb.lp AS '漏派/漏约修',
+		  bb.ywbs AS 业务不熟处理不当,
+		  bb.ywbl AS 有闻不录,
+		  bb.wfl AS 号码未复述,
+		  bb.ywbgf AS 用语不规范,
+		  bb.tdsy AS 受理中态度生硬,
+		  bb.flxzcw AS 分类选择错误,
+		  bb.wfxc AS 违反现场管理制度,
+		  bb.bsbgf AS 表式（原始记录）填写不规范,
+		  bb.jndmc AS '受理/测试/结案代码错',
+		  bb.pdcs AS '受理/抽单/派修超时',
+		  bb.czbgf AS 操作不规范,
+		  bb.yxbg AS 用心服务不够,
+		  bb.qt AS 其它,
+		  bb.yhts AS 用户投诉,
+		  bb.yhby AS 用户表扬,
+		  bb.bzxxc AS 备注信息错,
+		  bb.ydbgf AS '129 应答不规范',
+		  bb.gkcp AS '管控错派/错约',
+		  bb.gkfl AS 管控分类选择错误,
+		  bb.lgk AS '漏管控/点评/关注',
+		  bb.ywgkbs AS 业务不熟管控错误,
+	    (100+((bb.lxcw*-5)+(bb.cp*-5)+(bb.lp*-5)+(bb.ywbs*-2)+(bb.ywbl*-1)+(bb.wfl*-1)+(bb.ywbgf*-3)+(bb.tdsy*-5)
+	    +(bb.flxzcw*-3)+(bb.wfxc*-5)+(bb.bsbgf*-2)+(bb.jndmc*-2)+(bb.pdcs*-2)+(bb.czbgf*-2)+(bb.yxbg*-5)+(bb.bzxxc*-3)
+	    +(bb.ydbgf*-3)+(bb.gkcp*-5)+(bb.gkfl*-3)+(bb.lgk*-5)+(bb.ywgkbs*-2)
+	    )) as 质量得分,
+	   (case  when bb.qualified is null  then '0%'
+	   else bb.qualified end
+	   ) as 合格率
+	    from(
+    select  
+	   @rownum:=@rownum+1 as coumid,
+	     (select 	t2.USER_NAME from t_sys_user t2 where  t2.USER_ID=
+		(SELECT  t1.pid  FROM  t_sys_user t1 WHERE
+		 t1.ENABLED='1' and t1.Smail_workid=t.AGENTWORKID) )as name,
+	    t.AGENTWORKID as smailworkid, 
+ 	    DATE_FORMAT(t.QC_TIME,'%Y-%m') as qctime,
+	    tq.IS_TL9000 as  isTl9000,	     
+  (SELECT 
+        CONCAT(ROUND(SUM(
+          CASE
+            WHEN t1.DEAL_DIS = '1' 
+            THEN 1 
+            ELSE 0 
+          END
+        ) / COUNT(*) *100,2),'%')
+    FROM
+      t_qc_detail t1 
+      LEFT JOIN t_qc t2 
+        ON t1.QC_ID = t2.QC_ID 
+    WHERE 1=1
+    <if test="isTl9000 !=null and isTl9000 !='' " >
+	AND   t1.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+      AND t1.ENABLED = '1' 
+      AND DATE_FORMAT(t2.QC_TIME, '%Y-%m') =#{qctime,jdbcType=VARCHAR} 
+      AND t2.AGENTWORKID=t.AGENTWORKID
+    GROUP BY t2.AGENTWORKID,
+      DATE_FORMAT(t1.QC_TIME, '%Y-%m') ORDER BY t1.`QC_NUM` DESC LIMIT 1 )AS qualified,
+	    sum(case tq.BUSINESS_TYPE when '10' then 1 else 0 end  ) as is112,
+	    sum(case tq.BUSINESS_TYPE when '54' then 1 else 0 end  ) as ycl,
+  	    sum(case tq.BUSINESS_TYPE when '32' then 1 else 0 end  ) as iscw,
+  	    sum(case tq.BUSINESS_TYPE when '76' then 1 else 0 end  ) as gk,
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32' ) and  tq.DEAL_DIS='8'  then 1 else 0 end) as  lxcw, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='10'  then 1 else 0 end ) as cp,   
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='7'  then 1 else 0 end ) as lp,    
+ 	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='4'  then 1 else 0 end ) as ywbs, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='2'  then 1 else 0 end ) as ywbl, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='9'  then 1 else 0 end ) as wfl, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='3'  then 1 else 0 end ) as ywbgf, 
+	    sum(case when (tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='6'  then 1 else 0 end ) as tdsy,	 
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='13' then 1 else 0 end ) as  flxzcw, 
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='14') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='5' ) then 1 else 0 end ) as 	wfxc, 
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='19') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='15' ) then 1 else 0 end ) as bsbgf,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='16') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='7' ) then 1 else 0 end ) as jndmc,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='15') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='6' ) then 1 else 0 end ) as pdcs,
+            sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='20') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='16' ) then 1 else 0 end ) as czbgf,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='11') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='1' ) then 1 else 0 end ) as yxbg,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='17') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='8' ) then 1 else 0 end ) as qt,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='12') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='2' ) then 1 else 0 end ) as yhts,
+	    sum(case when ((tq.BUSINESS_TYPE='10' or tq.BUSINESS_TYPE='54'  or tq.BUSINESS_TYPE='32')and  tq.DEAL_DIS='13') or (tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='3' ) then 1 else 0 end ) as yhby,
+            sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='17' then 1 else 0 end ) as   bzxxc,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='18' then 1 else 0 end ) as  ydbgf,
+            sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='14' then 1 else 0 end ) as  gkcp,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='13' then 1 else 0 end ) as  gkfl,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='10' then 1 else 0 end ) as  lgk,
+	    sum(case when tq.BUSINESS_TYPE='76' and tq.DEAL_DIS='4' then 1 else 0 end ) as  ywgkbs
+  	 from (SELECT @rownum:=0) r,  t_qc t 
+	left join t_qc_detail tq  on t.qc_id=tq.qc_id 
+	left join t_record_info tr on t.RECORD_ID=tr.RECORD_ID 
+	where tq.ENABLED='1' 
+	<if test="isTl9000 !=null and isTl9000 !='' " >
+	and   tq.IS_TL9000=#{isTl9000,jdbcType=VARCHAR}
+	</if>
+	 <if test="qctime != null and qctime !=''">
+		and  DATE_FORMAT(t.QC_TIME,'%Y-%m')=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="smailworkid != null and smailworkid !=''">
+			and t.AGENTWORKID=#{smailworkid,jdbcType=VARCHAR}
+		</if>
+	group by t.AGENTWORKID
+	order by coumid ) bb
+  
+  </select>
+  	
+  	
+  	
+  	
+  	<select id="getworkAgentscoreInfo"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select 
+  t.`AGENTWORKID`  smailworkid ,t.`QC_TIME` qctime,tq.DEVICE_ID  qualified
+	from
+  t_qc t 
+  left join t_qc_detail tq  on t.`QC_ID`=tq.`QC_ID`
+    where 1=1
+   		<if test="qctime != null and qctime !=''">
+			and  DATE_FORMAT(t.QC_TIME,'%Y-%m')=#{qctime,jdbcType=VARCHAR}
+		</if>
+		<if test="qcworkid != null and qcworkid !=''">
+			and t.AGENTWORKID=#{qcworkid,jdbcType=VARCHAR}
+		</if>
+  	</select>
+  	
+  	
+  	
+  
+</mapper> 

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItExamJoinDao">
+	<resultMap id="examJoinMap" type="cn.sh.ideal.model.tExam">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+		<result column="EXAM_BEGIN_TIME" jdbcType="VARCHAR" property="examBeginTimeString" />
+		<result column="EXAM_END_TIME" jdbcType="VARCHAR" property="examEndTimeString" />
+		<result column="EXAM_TIME_LENGTH" jdbcType="INTEGER" property="examTimeLength" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="setQuestionName" />
+		<result column="EXAM_PAPER_NAME" jdbcType="VARCHAR" property="examPaperName" />
+		<result column="E_PK_AUTO_ID" jdbcType="VARCHAR" property="examExampaperExamineId" />
+		<result column="exampaperId" jdbcType="VARCHAR" property="exampaperId" />
+	</resultMap>
+
+	<resultMap id="examineMap" type="cn.sh.ideal.model.tExamExampaperExamine">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="EXAMINEE_STATUS" jdbcType="VARCHAR" property="examineeStatus" />
+		<result column="ISREVERT" jdbcType="VARCHAR" property="isrevert" />
+		<result column="SURPLUSTIME" jdbcType="VARCHAR" property="surplustime" />
+	</resultMap>
+
+	<resultMap id="questionMap" type="cn.sh.ideal.model.tQuestions">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+	</resultMap>
+
+	<resultMap id="examresultMap" type="cn.sh.ideal.model.tExamResults">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<id column="FK_QUESTIONS_ID" jdbcType="INTEGER" property="fkQuestionsId" />
+		<id column="RESULTS_ANSWER" jdbcType="VARCHAR" property="resultsAnswer" />
+		<id column="RESULTS_CORRECT_ANSWER" jdbcType="VARCHAR" property="resultsCorrectAnswer" />
+	</resultMap>
+
+
+	<resultMap id="randomResultMap" type="cn.sh.ideal.model.tExampaperRandom">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="FK_CODETYPE_ID" jdbcType="INTEGER" property="fkCodetypeId" />
+		<result column="QUE_TYPE" jdbcType="VARCHAR" property="queType" />
+		<result column="QUE_COUNT" jdbcType="INTEGER" property="queCount" />
+		<result column="QUE_SCORE" jdbcType="INTEGER" property="queScore" />
+		<result column="FK_EXAMPAPER_ID" jdbcType="INTEGER" property="fkExampaperId" />
+		<result column="QUE_NANDU" jdbcType="VARCHAR" property="queNandu" />
+	</resultMap>
+
+
+	<resultMap id="SysExamResultMap" type="cn.sh.ideal.model.tExam">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="EXAM_TIME_LENGTH" jdbcType="INTEGER" property="examTimeLength" />
+	</resultMap>
+
+	<resultMap type="cn.sh.ideal.model.ExamJoinVO" id="QuestionsVOSelected">
+		<result column="PK_AUTO_ID" property="pkAutoId" jdbcType="VARCHAR" />
+		<result column="QUES_CONTENT" property="quesContent" jdbcType="VARCHAR" />
+		<result column="QUES_TYPE" property="quesType" jdbcType="VARCHAR" />
+		<result column="QUES_SCORE" property="quesScore" jdbcType="DECIMAL" />
+		<result column="QUES_PICK" property="quesPick" jdbcType="VARCHAR" />
+		<result column="exam_paper_name" property="exampaperName"
+			jdbcType="VARCHAR" />
+		<result column="exam_begin_time" property="examBeginTime"
+			jdbcType="VARCHAR" />
+		<result column="exam_time_length" property="examTimeLen"
+			jdbcType="VARCHAR" />
+		<result column="exam_end_time" property="examEndTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+
+
+	<select id="queryToExamList" resultMap="examJoinMap">
+		SELECT
+		e.PK_AUTO_ID,
+		e.EXAM_NAME,
+		ep.PK_AUTO_ID as exampaperId,
+		e.EXAM_TIME_LENGTH,
+		ep.EXAM_PAPER_NAME,
+		epe.PK_AUTO_ID AS E_PK_AUTO_ID,
+		DATE_FORMAT(e.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%s') as EXAM_BEGIN_TIME,
+		DATE_FORMAT(e.EXAM_END_TIME,'%Y-%m-%d %H:%i:%s') as EXAM_END_TIME,
+		(select u.USER_NAME from sh_kd_zj_test1.v_sysuser u where
+		u.USER_ID=ep.FK_INSERT_USER_ID) as USER_NAME
+		FROM
+		t_exam e,
+		t_exam_exampaper ex,
+		t_exampaper ep,
+		t_exam_exampaper_examine epe
+		where
+		e.PK_AUTO_ID=ex.FK_EXAM_ID
+		and ex.FK_EXAMPAPER_ID=ep.PK_AUTO_ID
+		and
+		epe.FK_EXAM_EXAMPAPER_ID=ex.PK_AUTO_ID
+		and epe.EXAMINEE_STATUS='0'
+		and
+		epe.FK_USER_ID=${userId}
+		and e.ZUHU_ID=${zuhuId}
+		and DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s') &gt;=DATE_FORMAT(e.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%s')
+		and DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s') &lt;=DATE_FORMAT(e.EXAM_END_TIME,'%Y-%m-%d %H:%i:%s')
+		<!-- and epe.FK_USER_ID=${userId} -->
+	</select>
+
+
+
+	<select id="queryToExamListCount" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT
+		COUNT(0)
+		FROM
+		t_exam e,
+		t_exam_exampaper ex,
+		t_exampaper
+		ep,
+		t_exam_exampaper_examine epe
+		where e.PK_AUTO_ID=ex.FK_EXAM_ID
+		and
+		ex.FK_EXAMPAPER_ID=ep.PK_AUTO_ID
+		and
+		epe.FK_EXAM_EXAMPAPER_ID=ex.PK_AUTO_ID
+		and epe.EXAMINEE_STATUS='0'
+		and
+		epe.FK_USER_ID=${userId}
+		and e.ZUHU_ID=${zuhuId}
+		and DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s') &gt;=DATE_FORMAT(e.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%s')
+		and DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s') &lt;=DATE_FORMAT(e.EXAM_END_TIME,'%Y-%m-%d %H:%i:%s')
+	</select>
+
+
+
+	<select id="queryExamExampaperExamineById" parameterType="java.lang.Integer"
+		resultMap="examineMap">
+		select
+		t.PK_AUTO_ID,t.EXAMINEE_STATUS,t.ISREVERT,t.SURPLUSTIME from
+		t_exam_exampaper_examine t where
+		t.PK_AUTO_ID=${pkAutoId}
+	</select>
+
+
+
+	<select id="getExampaperRandomByExampaperID" parameterType="java.lang.Integer"
+		resultMap="randomResultMap">
+		select
+		t.PK_AUTO_ID,
+		t.FK_CODETYPE_ID,
+		t.QUE_TYPE,
+		t.QUE_COUNT,
+		t.QUE_SCORE,
+		t.QUE_NANDU,
+		t.FK_EXAMPAPER_ID
+		from
+		t_exampaper_random t
+		where t.ENABLED='1' and
+		t.FK_EXAMPAPER_ID=${exampaperId}
+	</select>
+
+
+
+	<!-- 根据模板元素查找考题 -->
+	<select id="getQuestionsByExampaperRandom" parameterType="java.util.Map"
+		resultMap="questionMap">
+		select * from ( select distinct t.pk_auto_id from
+		t_questions t,T_QUESTIONS_RANDOMSEL tq
+		where
+		t.pk_auto_id=tq.FK_QUESTIONID
+		and tq.ENABLED='1'
+		and
+		tq.FK_EXAMPAPERID=${exampaperId}
+		and t.ques_type=${queType}
+		and
+		t.ques_status='1'
+		and t.FK_CODETYPE_ID=${queSort}
+		and
+		t.QUES_NANDU=#{queNanDu}
+		order by rand()
+		) a limit 0,${queCount}
+	</select>
+
+
+	<select id="queryQuesByExampaperId" parameterType="java.util.Map"
+		resultMap="QuestionsVOSelected">
+		select distinct a.pk_auto_id,
+		a.ques_content,
+		a.ques_type,
+		b.ques_score,
+		a.ques_pick,
+		c.exam_paper_name,
+		d.exam_begin_time,
+		d.exam_time_length,
+		date_add( d.exam_begin_time, interval d.exam_time_length minute)
+		exam_end_time
+		from t_questions a,
+		t_exampaper_questions b ,
+		t_exampaper
+		c,
+		t_exam d,t_exam_exampaper e
+		where
+		a.PK_AUTO_ID=b.FK_QUESTIONS_ID
+		and
+		d.PK_AUTO_ID= ${examId}
+		and e.FK_EXAMPAPER_ID=c.PK_AUTO_ID
+		and
+		c.PK_AUTO_ID=b.FK_EXAMPAPER_ID
+		and c.PK_AUTO_ID=${exampaperId}
+		<if test="exampaperFlag != null and exampaperFlag != '' ">
+			and b.EXAMPAPER_FLAG= #{exampaperFlag}
+		</if>
+		<if test="userId != null and userId != '' ">
+			and b.FK_USER_ID = ${userId}
+		</if>
+		order by a.QUES_TYPE
+		<if test="isIndex != null and isIndex != '' ">
+			,RAND()
+		</if>
+
+	</select>
+
+
+
+	<select id="queryResultMsgByeePexamineId" parameterType="java.lang.Integer"
+		resultMap="examresultMap">
+		SELECT
+		t.PK_AUTO_ID,t.FK_QUESTIONS_ID,t.RESULTS_ANSWER,t.RESULTS_CORRECT_ANSWER
+		FROM t_exam_results t where t.FK_E_EP_EXAMINEE_ID=${examineId}
+	</select>
+
+	<!-- 修改考试考试状态 -->
+	<update id="updateExamStatus" parameterType="cn.sh.ideal.model.tExamExampaperExamine">
+		update t_exam_exampaper_examine
+		<set>
+			<if test="isnormal != null and isnormal != ''">
+				ISNORMAL = #{isnormal},
+			</if>
+			<if test="examineeStatus != null and examineeStatus != ''">
+				EXAMINEE_STATUS = #{examineeStatus},
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				BEGIN_TIME=now(),
+			</if>
+			<if test="submitTime != null and submitTime != ''">
+				SUBMIT_TIME=now(),
+			</if>
+		</set>
+		where PK_AUTO_ID = ${pkAutoId}
+	</update>
+
+	<delete id="deleteExamResult" parameterType="java.lang.Integer">
+		delete from
+		T_EXAM_RESULTS where FK_E_EP_EXAMINEE_ID = ${examExampaperExamineId}
+	</delete>
+
+	<insert id="insertExamResult" parameterType="cn.sh.ideal.model.tExamResults">
+		insert into t_exam_results
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pkAutoId != null">
+				PK_AUTO_ID,
+			</if>
+			<if test="fkEEpExamineeId != null">
+				FK_E_EP_EXAMINEE_ID,
+			</if>
+			<if test="fkQuestionsId != null">
+				FK_QUESTIONS_ID,
+			</if>
+			<if test="resultsAnswer != null and resultsAnswer !='' ">
+				RESULTS_ANSWER,
+			</if>
+			<if test="resultsCorrectAnswer != null and resultsCorrectAnswer !=''">
+				RESULTS_CORRECT_ANSWER,
+			</if>
+			<if test="resultsScore != null">
+				RESULTS_SCORE,
+			</if>
+			<if test="zuhuId != null">
+				ZUHU_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pkAutoId != null">
+				${pkAutoId},
+			</if>
+			<if test="fkEEpExamineeId != null">
+				${fkEEpExamineeId},
+			</if>
+			<if test="fkQuestionsId != null">
+				${fkQuestionsId},
+			</if>
+			<if test="resultsAnswer != null and resultsAnswer !=''">
+				#{resultsAnswer},
+			</if>
+			<if test="resultsCorrectAnswer != null and resultsCorrectAnswer !=''">
+				#{resultsCorrectAnswer},
+			</if>
+			<if test="resultsScore != null">
+				${resultsScore},
+			</if>
+			<if test="zuhuId != null">
+				${zuhuId},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<select id="queryStartTimeSysExam" resultMap="SysExamResultMap">
+		select t.PK_AUTO_ID, e.EXAM_TIME_LENGTH
+		from t_exam_exampaper_examine t
+		left join t_exam_exampaper p on t.FK_EXAM_EXAMPAPER_ID = p.pk_auto_id
+		left join t_exam e on p.FK_EXAM_ID = e.pk_auto_id
+		where t.examinee_status = '1'
+		and t.begin_time is not null
+		and ( (now() - t.begin_time)*24*60 >= (e.EXAM_TIME_LENGTH + 30))
+	</select>
+
+
+    <select id="getCountResultByExamineId" resultType="java.lang.Integer">
+        select count(r.PK_AUTO_ID) from sh_kd_ks.t_exam_results r
+        where r.FK_E_EP_EXAMINEE_ID = ${pkAutoId}
+    </select>
+    
+    
+    <update id="updateExamStatusByOver">
+         update t_exam_exampaper_examine tt set tt.examinee_status = '2',
+         tt.submit_time = (tt.begin_time + ${examTimeLength}/(24*60) )
+         where tt.pk_auto_id =${pkAutoId}
+    </update>
+    
+    <update id="updateExamStatusByStart">
+         update t_exam_exampaper_examine tt set tt.examinee_status = '0',
+         tt.begin_time = null, tt.submit_time = null
+         where tt.pk_auto_id = ${pkAutoId}
+    </update>
+</mapper>

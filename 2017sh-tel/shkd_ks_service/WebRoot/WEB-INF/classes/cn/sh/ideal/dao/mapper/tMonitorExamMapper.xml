@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.tMonitorExamMapper">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tMonitorExam">
+    <id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="FK_USER_ID" jdbcType="INTEGER" property="fkUserId" />
+    <result column="IPADDR" jdbcType="VARCHAR" property="ipaddr" />
+    <result column="STATE" jdbcType="VARCHAR" property="state" />
+    <result column="RAMAININGTIME" jdbcType="INTEGER" property="ramainingtime" />
+    <result column="INSERT_TIME" jdbcType="VARCHAR" property="insertTime" />
+    <result column="FK_EXAM_ID" jdbcType="INTEGER" property="fkExamId" />
+    <result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.sh.ideal.model.tMonitorExam">
+    <result column="ANSWERSTR" jdbcType="LONGVARCHAR" property="answerstr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PK_AUTO_ID, FK_USER_ID, IPADDR, STATE, RAMAININGTIME, INSERT_TIME, FK_EXAM_ID, EXAM_NAME, 
+    ZUHU_ID
+  </sql>
+  <sql id="Blob_Column_List">
+    ANSWERSTR
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from "t_monitor_exam"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from "t_monitor_exam"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tMonitorExam">
+    insert into "t_monitor_exam" (PK_AUTO_ID, FK_USER_ID, IPADDR, 
+      STATE, RAMAININGTIME, INSERT_TIME, 
+      FK_EXAM_ID, EXAM_NAME, ZUHU_ID, 
+      ANSWERSTR)
+    values (#{pkAutoId,jdbcType=INTEGER}, #{fkUserId,jdbcType=INTEGER}, #{ipaddr,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{ramainingtime,jdbcType=DECIMAL}, #{insertTime,jdbcType=TIMESTAMP}, 
+      #{fkExamId,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{zuhuId,jdbcType=INTEGER}, 
+      #{answerstr,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tMonitorExam">
+    insert into "t_monitor_exam"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        PK_AUTO_ID,
+      </if>
+      <if test="fkUserId != null">
+        FK_USER_ID,
+      </if>
+      <if test="ipaddr != null">
+        IPADDR,
+      </if>
+      <if test="state != null">
+        STATE,
+      </if>
+      <if test="ramainingtime != null">
+        RAMAININGTIME,
+      </if>
+      <if test="insertTime != null">
+        INSERT_TIME,
+      </if>
+      <if test="fkExamId != null">
+        FK_EXAM_ID,
+      </if>
+      <if test="examName != null">
+        EXAM_NAME,
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID,
+      </if>
+      <if test="answerstr != null">
+        ANSWERSTR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        #{pkAutoId,jdbcType=INTEGER},
+      </if>
+      <if test="fkUserId != null">
+        #{fkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="ipaddr != null">
+        #{ipaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="ramainingtime != null">
+        #{ramainingtime,jdbcType=DECIMAL},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fkExamId != null">
+        #{fkExamId,jdbcType=INTEGER},
+      </if>
+      <if test="examName != null">
+        #{examName,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        #{zuhuId,jdbcType=INTEGER},
+      </if>
+      <if test="answerstr != null">
+        #{answerstr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tMonitorExam">
+    update "t_monitor_exam"
+    <set>
+      <if test="fkUserId != null">
+        FK_USER_ID = #{fkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="ipaddr != null">
+        IPADDR = #{ipaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        STATE = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="ramainingtime != null">
+        RAMAININGTIME = #{ramainingtime,jdbcType=DECIMAL},
+      </if>
+      <if test="insertTime != null">
+        INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fkExamId != null">
+        FK_EXAM_ID = #{fkExamId,jdbcType=INTEGER},
+      </if>
+      <if test="examName != null">
+        EXAM_NAME = #{examName,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+      </if>
+      <if test="answerstr != null">
+        ANSWERSTR = #{answerstr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.sh.ideal.model.tMonitorExam">
+    update "t_monitor_exam"
+    set FK_USER_ID = #{fkUserId,jdbcType=INTEGER},
+      IPADDR = #{ipaddr,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=VARCHAR},
+      RAMAININGTIME = #{ramainingtime,jdbcType=DECIMAL},
+      INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+      FK_EXAM_ID = #{fkExamId,jdbcType=INTEGER},
+      EXAM_NAME = #{examName,jdbcType=VARCHAR},
+      ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+      ANSWERSTR = #{answerstr,jdbcType=LONGVARCHAR}
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tMonitorExam">
+    update "t_monitor_exam"
+    set FK_USER_ID = #{fkUserId,jdbcType=INTEGER},
+      IPADDR = #{ipaddr,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=VARCHAR},
+      RAMAININGTIME = #{ramainingtime,jdbcType=DECIMAL},
+      INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+      FK_EXAM_ID = #{fkExamId,jdbcType=INTEGER},
+      EXAM_NAME = #{examName,jdbcType=VARCHAR},
+      ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+</mapper>

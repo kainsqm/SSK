@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.IRecordInfoDao" >
+	<resultMap type="cn.sh.ideal.model.RecordInfo" id="BaseResultMap">
+		<result column="stopTime" jdbcType="VARCHAR" property="stopTime" />
+	</resultMap>
+		
+		<!-- 判断数据库是否存在该录音流水号 --> 
+	<select id="checkExistRecordInfo" parameterType="java.lang.String"  resultType="java.lang.Integer">
+		 SELECT count(0) FROM t_record_info t where t.RESERVED_THREE=#{reservedThree,jdbcType=VARCHAR}
+    </select>
+
+
+	 <insert id="insert" parameterType="cn.sh.ideal.model.RecordInfo">
+    insert into t_record_info (RESERVED_THREE, DIRECTION_FLAG, 
+      CALLERID, CALLEDID, START_TIME, 
+      STOP_TIME, RECORD_LENGTH, EXTENSION, BIG_WORKID,SMALL_WORKID,
+      IS_TASK,HUAWEIID,AGENT_NAME,GROUP_NAME)
+    values (#{reservedThree,jdbcType=VARCHAR}, #{directionFlag,jdbcType=VARCHAR}, 
+      #{callerid,jdbcType=VARCHAR}, #{calledid,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{stopTime,jdbcType=TIMESTAMP}, #{recordLength,jdbcType=INTEGER},#{extension,jdbcType=VARCHAR}
+      ,#{bigWorkid,jdbcType=VARCHAR},#{smallWorkid,jdbcType=VARCHAR},
+      #{isTask,jdbcType=VARCHAR}, #{AgentID,jdbcType=VARCHAR},
+      #{agentName,jdbcType=VARCHAR},#{groupName,jdbcType=VARCHAR})
+  </insert>
+</mapper>

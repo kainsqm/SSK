@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  
+  <form-beans>
+		<form-bean name="monitorActionForm" type="cn.sh.ideal.action.MonitorActionForm"/>
+	</form-beans>
+ 
+  <action-mappings>
+  
+  		<action attribute="monitorActionForm" name="monitorActionForm"
+			path="/monitorAction" scope="request"
+			type="org.springframework.web.struts.DelegatingActionProxy">
+			<forward name="ok" path="/ok.jsp" />
+		</action>
+		
+	</action-mappings>
+  
+  
+  
+  <message-resources parameter="cn.sh.ideal.struts.ApplicationResources" />
+  
+  
+  
+  <plug-in
+		className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation"
+			value="/WEB-INF/spring.xml" />
+	</plug-in>
+
+</struts-config>
+

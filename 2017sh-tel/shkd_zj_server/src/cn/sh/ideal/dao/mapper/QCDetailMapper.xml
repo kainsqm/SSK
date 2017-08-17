@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IQCDetailDao">
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.QCDetail">
+		<id column="DETAIL_ID" jdbcType="INTEGER" property="detailId" />
+		<result column="QC_ID" jdbcType="INTEGER" property="qcId" />
+		<result column="QC_NUM" jdbcType="VARCHAR" property="qcNum" />
+		<result column="DEVICE_ID" jdbcType="VARCHAR" property="deviceId" />
+		<result column="BUSINESS_TYPE" jdbcType="VARCHAR" property="businessType" />
+		<result column="DEAL_RES" jdbcType="VARCHAR" property="dealRes" />
+		<result column="DEAL_DIS" jdbcType="VARCHAR" property="dealDis" />
+		<result column="IS_TL9000" jdbcType="VARCHAR" property="isTl9000" />
+		<result column="SATISFIED" jdbcType="VARCHAR" property="satisfied" />
+		<result column="IS_COMPLAIN" jdbcType="VARCHAR" property="isComplain" />
+		<result column="QUALITY_LEVEL" jdbcType="VARCHAR" property="qualityLevel" />
+		<result column="AGENT_TRANSFER" jdbcType="VARCHAR" property="agentTransfer" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+		<result column="QC_USER_ID" jdbcType="INTEGER" property="qcUserId" />
+		<result column="QC_TIME" jdbcType="TIMESTAMP" property="qcTime" />
+		<result column="CHECKCONTENT" jdbcType="VARCHAR" property="checkcontent" />
+	</resultMap>
+
+
+	<resultMap id="monitorResultMap" type="cn.sh.ideal.model.MonitorWorkload">
+		<result column="qcUserName" jdbcType="VARCHAR" property="qcUserName" />
+		<result column="total" jdbcType="VARCHAR" property="total" />
+		<result column="qcUserWorkNo" jdbcType="VARCHAR" property="qcUserWorkNo" />
+		<result column="qcDate" jdbcType="VARCHAR" property="qcDate" />
+		<result column="tl" jdbcType="VARCHAR" property="tl" />
+		<result column="centre" jdbcType="VARCHAR" property="centre" />
+		<result column="htyclTl" jdbcType="VARCHAR" property="htyclTl" />
+		<result column="htyclCentre" jdbcType="VARCHAR" property="htyclCentre" />
+		<result column="ctl" jdbcType="VARCHAR" property="ctl" />
+		<result column="cCentre" jdbcType="VARCHAR" property="cCentre" />
+		<result column="gk" jdbcType="VARCHAR" property="gk" />
+		<result column="zjdd" jdbcType="VARCHAR" property="zjdd" />
+		<result column="haveSatisfaction" jdbcType="VARCHAR" property="haveSatisfaction" />
+		<result column="noSatisfaction" jdbcType="VARCHAR" property="noSatisfaction" />
+		<result column="other" jdbcType="INTEGER" property="other" />
+	</resultMap>
+
+
+
+	<resultMap id="AcceptResultMap" type="cn.sh.ideal.model.AcceptQualityCheck">
+		<result column="qcDate" jdbcType="VARCHAR" property="qcDate" />
+		<result column="acceptName" jdbcType="VARCHAR" property="acceptName" />
+		<result column="monitorTotal" jdbcType="VARCHAR" property="monitorTotal" />
+		<result column="monitorClose" jdbcType="VARCHAR" property="monitorClose" />
+		<result column="monitorOrder" jdbcType="VARCHAR" property="monitorOrder" />
+		<result column="normal" jdbcType="VARCHAR" property="normal" />
+		<result column="mistakeTotal" jdbcType="VARCHAR" property="mistakeTotal" />
+		<result column="mistakeClose" jdbcType="VARCHAR" property="mistakeClose" />
+		<result column="mistakeOrder" jdbcType="VARCHAR" property="mistakeOrder" />
+		<result column="qcworkid" jdbcType="VARCHAR" property="qcworkid" />
+	</resultMap>
+	
+	<resultMap id="AcceptInfoResultMap" type="cn.sh.ideal.model.AcceptQualityCheckInfo">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="date" jdbcType="VARCHAR" property="date" />
+		<result column="day" jdbcType="VARCHAR" property="day" />
+		<result column="telusername" jdbcType="VARCHAR" property="telusername" />
+		<result column="declarationNum" jdbcType="VARCHAR" property="declarationNum" />
+		<result column="istl9000" jdbcType="VARCHAR" property="istl9000" />
+		<result column="declarationcont" jdbcType="VARCHAR" property="declarationcont" />
+		<result column="existingpProblems" jdbcType="VARCHAR" property="existingpProblems" />
+		<result column="telcheck" jdbcType="VARCHAR" property="telcheck" />
+		<result column="qcuser" jdbcType="VARCHAR" property="qcuser" />
+		<result column="noSpecial" jdbcType="VARCHAR" property="noSpecial" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		DETAIL_ID, QC_ID, QC_NUM, DEVICE_ID, BUSINESS_TYPE,
+		DEAL_RES, DEAL_DIS,
+		IS_TL9000,
+		SATISFIED, IS_COMPLAIN, QUALITY_LEVEL,
+		AGENT_TRANSFER, REMARK, ENABLED,
+		QC_USER_ID,CHECKCONTENT,
+		QC_TIME
+  </sql>
+
+
+	<select id="selectDetailByQcid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_qc_detail
+		where 1=1 and ENABLED='1' and QC_ID =
+		#{qcId,jdbcType=INTEGER} order by
+		QC_TIME desc limit 1
+	</select>
+
+	<select id="qcDetailByQcid" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_qc_detail
+		where ENABLED='1' and QC_ID = #{qcId,jdbcType=INTEGER} and QC_NUM='1'
+	</select>
+
+
+	<select id="selectByQcid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select
+		count(1)
+		from t_qc_detail
+		where 1=1
+		<if test="qcId!=null and qcId!=''">
+			and QC_ID = #{qcId,jdbcType=INTEGER} 
+        </if>
+		and ENABLED='1'
+	</select>
+
+	<insert id="insert" parameterType="cn.sh.ideal.model.QCDetail">
+		insert into t_qc_detail (
+		QC_ID, QC_NUM,
+		DEVICE_ID, BUSINESS_TYPE, DEAL_RES,
+		DEAL_DIS, IS_TL9000,
+		SATISFIED,
+		IS_COMPLAIN, QUALITY_LEVEL, AGENT_TRANSFER,
+		REMARK, ENABLED,
+		QC_USER_ID, QC_USER_WORKID,
+		QC_TIME,CHECKCONTENT)
+		values ( #{qcId,jdbcType=INTEGER},
+		#{qcNum,jdbcType=VARCHAR},
+		#{deviceId,jdbcType=VARCHAR},
+		#{businessType,jdbcType=VARCHAR},
+		#{dealRes,jdbcType=VARCHAR},
+		#{dealDis,jdbcType=VARCHAR}, #{isTl9000,jdbcType=VARCHAR},
+		#{satisfied,jdbcType=VARCHAR},
+		#{isComplain,jdbcType=VARCHAR},
+		#{qualityLevel,jdbcType=VARCHAR},
+		#{agentTransfer,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},'1', #{qcUserId,jdbcType=INTEGER},
+		#{qcUserWorkId,jdbcType=VARCHAR},
+		now(),#{checkcontent,jdbcType=VARCHAR})
+  </insert>
+
+	<!-- 质检员监听工作量报表清单统计  -->
+	<select id="MonitorWorkload" parameterType="java.util.Map"
+		resultMap="monitorResultMap">
+		SELECT qd.QC_USER_WORKID AS qcUserWorkNo,
+		count(*) as total,
+		(SELECT
+		t.USER_NAME
+		FROM t_sys_user t
+		WHERE t.USER_ID=qd.QC_USER_ID) AS
+		qcUserName,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS qcDate,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='10'
+		AND qd.IS_TL9000='1' THEN 1 ELSE 0 END) AS tl,
+		sum(CASE WHEN qd.BUSINESS_TYPE='10'
+		AND qd.IS_TL9000='0' THEN 1 ELSE 0
+		END) AS centre,
+		sum(CASE WHEN qd.BUSINESS_TYPE='54'
+		AND qd.IS_TL9000='1'
+		THEN 1 ELSE 0 END) AS htyclTl,
+		sum(CASE WHEN qd.BUSINESS_TYPE='54'
+		AND
+		qd.IS_TL9000='0' THEN 1 ELSE 0 END) AS htyclCentre,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='32'
+		AND qd.IS_TL9000='1' THEN 1 ELSE 0 END) AS ctl,
+		sum(CASE WHEN qd.BUSINESS_TYPE='32'
+		AND qd.IS_TL9000='0' THEN 1 ELSE 0
+		END) AS cCentre,
+		sum(CASE WHEN qd.BUSINESS_TYPE='76' THEN 1 ELSE 0 END)
+		AS gk,
+		sum(CASE WHEN sq.S_QC_USERID=qd.QC_USER_ID THEN 1 ELSE 0 END) AS
+		zjdd,
+		sum(CASE WHEN qd.SATISFIED='1' THEN 1 ELSE 0 END) AS
+		haveSatisfaction,
+		sum(CASE WHEN qd.SATISFIED='0' THEN 1 ELSE 0 END) AS
+		noSatisfaction,
+		null as other
+		FROM (SELECT * FROM t_qc_detaiL GROUP BY QC_ID)  qd
+		LEFT JOIN
+		t_qc tq ON tq.QC_ID=qd.QC_ID
+		LEFT JOIN t_secondary_qc
+		sq ON sq.QC_ID=tq.QC_ID
+		WHERE qd.ENABLED='1'
+		<if test="workNo!=null and workNo!=''">
+			and qd.QC_USER_WORKID = #{workNo,jdbcType=VARCHAR} 
+        </if>
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		GROUP BY qd.QC_USER_ID,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+	</select>
+
+
+
+	<!-- 质检员监听工作量报表清单统计 历史数据 -->
+	<select id="MonitorWorkloadOld" parameterType="java.util.Map"
+		resultMap="monitorResultMap">
+		SELECT QCUSERWORKNO AS qcUserWorkNo,
+		TOTAL as total,
+		QCUSERNAME AS
+		qcUserName,
+		QCDATE AS qcDate,
+		TL AS tl,
+		CENTRE AS centre,
+		HTYCLTL AS
+		htyclTl,
+		HTYCLCENTRE AS htyclCentre,
+		CTL AS ctl,
+		CCentre AS cCentre,
+		GK AS
+		gk,
+		ZJDD AS zjdd,
+		HAVESATISFACTION AS haveSatisfaction,
+		NOSATISFACTION AS
+		noSatisfaction,
+		null as other
+		FROM t_monitor_workload where 1=1 
+		<if test="workNo!=null and workNo!=''">
+			and QCUSERWORKNO = #{workNo,jdbcType=VARCHAR} 
+        </if>
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+
+	<!-- 受理质量检查报表及详单Tl9000  -->
+	<select id="AcceptQualityCheckTl" parameterType="java.util.Map"
+		resultMap="AcceptResultMap">
+		select (case when left(tq.AGENTWORKID,1)='1' then '浦东'
+		when
+		left(tq.AGENTWORKID,1)='3' then '逸仙'
+		when left(tq.AGENTWORKID,1)='2' or
+		left(tq.AGENTWORKID,1)='5' or
+		left(tq.AGENTWORKID,1)='6' then '新华'
+		else
+		'其他' end) as acceptName,
+		tq.AGENTWORKID as qcworkid,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS qcDate,
+		count(*) as monitorTotal,
+		sum(CASE WHEN qd.DEAL_RES='结案' THEN 1 ELSE 0
+		END) as monitorClose,
+		sum(CASE WHEN qd.DEAL_RES='派单' THEN 1 ELSE 0 END)
+		as monitorOrder,
+		sum(CASE WHEN qd.DEAL_DIS='1' THEN 1 ELSE 0 END) as
+		normal,
+		sum(CASE WHEN qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		mistakeTotal,
+		sum(CASE WHEN qd.DEAL_RES='结案' AND qd.DEAL_DIS != '1'
+		THEN 1 ELSE 0 END) as
+		mistakeClose,
+		sum(CASE WHEN qd.DEAL_RES='派单' AND
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		mistakeOrder
+		from
+		t_qc_detail qd left join t_qc tq on
+		qd.QC_ID=tq.QC_ID
+		where qd.IS_TL9000='1'and qd.ENABLED='1'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		group by left(tq.AGENTWORKID,1),
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+	</select>
+
+	
+
+	<!-- 受理质量检查报表及详单Tl9000  历史数据 -->
+	<select id="AcceptQualityCheckTlOld" parameterType="java.util.Map"
+		resultMap="AcceptResultMap">
+		select ACCEPTNAME as acceptName,
+		QCDATE AS qcDate,
+		MONITORTOTAL as
+		monitorTotal,
+		MONITORCLOSE as monitorClose,
+		MONITORORDER as
+		monitorOrder,
+		NORMAL as normal,
+		MISTAKETOTAL as mistakeTotal,
+		MISTAKECLOSE as mistakeClose,
+		MISTAKEORDER as mistakeOrder
+		from
+		t_acceptualitycheck_tl where 1=1
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+	<!-- 受理质量检查报表及详单本中心  历史数据 -->
+	<select id="AcceptQualityCheckOld" parameterType="java.util.Map"
+		resultMap="AcceptResultMap">
+		select ACCEPTNAME as acceptName,
+		QCDATE AS qcDate,
+		MONITORTOTAL as
+		monitorTotal,
+		MONITORCLOSE as monitorClose,
+		MONITORORDER as
+		monitorOrder,
+		NORMAL as normal,
+		MISTAKETOTAL as mistakeTotal,
+		MISTAKECLOSE as mistakeClose,
+		MISTAKEORDER as mistakeOrder
+		from
+		t_acceptualitycheck_centre where 1=1
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+	<!-- 导出 -->
+
+
+	<!-- 质检员监听工作量报表清单统计 导出  -->
+	<select id="MonitorWorkloadExport" parameterType="java.util.Map"
+		resultType="java.util.LinkedHashMap">
+		SELECT
+		(SELECT
+		t.USER_NAME
+		FROM t_sys_user t
+		WHERE
+		t.USER_ID=qd.QC_USER_ID) AS
+		质检员,
+		qd.QC_USER_WORKID AS 工号,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS 日期,
+		count(*) as 质检数,
+		sum(CASE
+		WHEN
+		qd.BUSINESS_TYPE='10'
+		AND qd.IS_TL9000='1' THEN 1 ELSE 0 END) AS
+		112TL9000,
+		sum(CASE WHEN qd.BUSINESS_TYPE='10'
+		AND qd.IS_TL9000='0' THEN
+		1 ELSE 0
+		END) AS 112中心,
+		sum(CASE WHEN qd.BUSINESS_TYPE='54'
+		AND
+		qd.IS_TL9000='1'
+		THEN 1 ELSE 0 END) AS 后台（预处理）TL9000,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='54'
+		AND
+		qd.IS_TL9000='0' THEN 1 ELSE 0 END) AS
+		后台（预处理）本中心,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='32'
+		AND qd.IS_TL9000='1' THEN
+		1 ELSE 0 END) AS C网TL9000,
+		sum(CASE WHEN qd.BUSINESS_TYPE='32'
+		AND
+		qd.IS_TL9000='0' THEN 1 ELSE 0
+		END) AS C网本中心,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='76' THEN 1 ELSE 0 END)
+		AS 管控,
+		sum(CASE WHEN
+		sq.S_QC_USERID=qd.QC_USER_ID THEN 1 ELSE 0 END) AS
+		质检（督导）,
+		sum(CASE WHEN
+		qd.SATISFIED='1' THEN 1 ELSE 0 END) AS
+		有满意度,
+		sum(CASE WHEN
+		qd.SATISFIED='0' THEN 1 ELSE 0 END) AS
+		无满意度,
+		'' as 其他
+		FROM
+		(SELECT * FROM t_qc_detaiL GROUP BY QC_ID)   qd
+		LEFT JOIN
+		t_qc tq ON tq.QC_ID=qd.QC_ID
+		LEFT JOIN t_secondary_qc
+		sq ON
+		sq.QC_ID=tq.QC_ID
+		WHERE qd.ENABLED='1'
+		<if test="workNo!=null and workNo!=''">
+			and qd.QC_USER_WORKID = #{workNo,jdbcType=VARCHAR} 
+        </if>
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		GROUP BY qd.QC_USER_ID,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+
+		union
+		select '合计'
+		as 质检员,
+		'' as 工号,
+		'' as 日期,
+		sum(b.total) as 质检数,
+		sum(b.tl) as
+		112TL9000,
+		sum(b.centre) as 112中心,
+		sum(b.htyclTl) as 后台（预处理）TL9000,
+		sum(b.htyclCentre) as 后台（预处理）本中心,
+		sum(b.ctl) as C网TL9000,
+		sum(b.cCentre) as C网本中心,
+		sum(b.gk) as 管控,
+		sum(b.zjdd) as 质检（督导）,
+		sum(b.haveSatisfaction) as
+		有满意度,
+		sum(b.noSatisfaction) as 无满意度,
+		'' as 其他
+		from (
+		SELECT qd.QC_USER_WORKID AS
+		qcUserWorkNo,
+		count(*) as total,
+		(SELECT
+		t.USER_NAME
+		FROM
+		t_sys_user t
+		WHERE t.USER_ID=qd.QC_USER_ID) AS
+		qcUserName,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS qcDate,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='10'
+		AND qd.IS_TL9000='1' THEN 1 ELSE 0 END) AS tl,
+		sum(CASE WHEN qd.BUSINESS_TYPE='10'
+		AND qd.IS_TL9000='0' THEN 1 ELSE 0
+		END) AS centre,
+		sum(CASE WHEN qd.BUSINESS_TYPE='54'
+		AND qd.IS_TL9000='1'
+		THEN 1 ELSE 0 END) AS htyclTl,
+		sum(CASE WHEN qd.BUSINESS_TYPE='54'
+		AND
+		qd.IS_TL9000='0' THEN 1 ELSE 0 END) AS htyclCentre,
+		sum(CASE WHEN
+		qd.BUSINESS_TYPE='32'
+		AND qd.IS_TL9000='1' THEN 1 ELSE 0 END) AS ctl,
+		sum(CASE WHEN qd.BUSINESS_TYPE='32'
+		AND qd.IS_TL9000='0' THEN 1 ELSE 0
+		END) AS cCentre,
+		sum(CASE WHEN qd.BUSINESS_TYPE='76' THEN 1 ELSE 0 END)
+		AS gk,
+		sum(CASE WHEN sq.S_QC_USERID=qd.QC_USER_ID THEN 1 ELSE 0 END) AS
+		zjdd,
+		sum(CASE WHEN qd.SATISFIED='1' THEN 1 ELSE 0 END) AS
+		haveSatisfaction,
+		sum(CASE WHEN qd.SATISFIED='0' THEN 1 ELSE 0 END) AS
+		noSatisfaction,
+		null as other
+		FROM (SELECT * FROM t_qc_detaiL GROUP BY QC_ID)   qd
+		LEFT JOIN
+		t_qc tq ON tq.QC_ID=qd.QC_ID
+		LEFT JOIN t_secondary_qc
+		sq ON sq.QC_ID=tq.QC_ID
+		WHERE qd.ENABLED='1'
+		<if test="workNo!=null and workNo!=''">
+			and qd.QC_USER_WORKID = #{workNo,jdbcType=VARCHAR} 
+        </if>
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		GROUP BY qd.QC_USER_ID,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+		) b
+	</select>
+
+
+
+	<!-- 质检员监听工作量报表清单统计 历史数据 导出 -->
+	<select id="MonitorWorkloadOldExport" parameterType="java.util.Map"
+		resultType="java.util.LinkedHashMap">
+		SELECT
+		QCUSERNAME AS 质检员,
+		QCUSERWORKNO AS 工号,
+		QCDATE AS 日期,
+		TOTAL as 质检数,
+		TL AS 112TL9000,
+		CENTRE AS 112中心,
+		HTYCLTL AS
+		后台（预处理）TL9000,
+		HTYCLCENTRE AS
+		后台（预处理）本中心,
+		CTL
+		AS C网TL9000,
+		CCentre AS C网本中心,
+		GK AS
+		管控,
+		ZJDD AS 质检（督导）,
+		HAVESATISFACTION
+		AS 有满意度,
+		NOSATISFACTION AS
+		无满意度,
+		'' as 其他
+		FROM
+		t_monitor_workload where
+		1=1
+		<if test="workNo!=null and workNo!=''">
+			and QCUSERWORKNO = #{workNo,jdbcType=VARCHAR} 
+        </if>
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+
+		union
+		select
+		'合计' AS 质检员,
+		'' AS 工号,
+		'' AS 日期,
+		sum(b.TOTAL) as 质检数,
+		sum(b.TL) AS 112TL9000,
+		sum(b.CENTRE) AS 112中心,
+		sum(b.HTYCLTL) AS
+		后台（预处理）TL9000,
+		sum(b.HTYCLCENTRE) AS 后台（预处理）本中心,
+		sum(b.CTL) AS C网TL9000,
+		sum(b.CCentre) AS C网本中心,
+		sum(b.GK) AS
+		管控,
+		sum(b.ZJDD) AS 质检（督导）,
+		sum(b.HAVESATISFACTION) AS 有满意度,
+		sum(b.NOSATISFACTION) AS
+		无满意度,
+		'' as 其他
+		from (
+		SELECT
+		QCUSERWORKNO ,
+		TOTAL,
+		QCUSERNAME ,
+		QCDATE,
+		TL ,
+		CENTRE ,
+		HTYCLTL ,
+		HTYCLCENTRE ,
+		CTL ,
+		CCentre ,
+		GK ,
+		ZJDD ,
+		HAVESATISFACTION ,
+		NOSATISFACTION
+		,
+		null as other
+		FROM t_monitor_workload where 1=1
+		<if test="workNo!=null and workNo!=''">
+			and QCUSERWORKNO = #{workNo,jdbcType=VARCHAR} 
+        </if>
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+		)b
+	</select>
+
+
+
+	<!-- 受理质量检查报表及详单Tl9000 导出 -->
+	<select id="AcceptQualityCheckTlExport" parameterType="java.util.Map"
+		resultType="java.util.LinkedHashMap">
+		select (case when left(tq.AGENTWORKID,1)='1' then '浦东'
+		when
+		left(tq.AGENTWORKID,1)='3' then '逸仙'
+		when left(tq.AGENTWORKID,1)='2' or
+		left(tq.AGENTWORKID,1)='5' or
+		left(tq.AGENTWORKID,1)='6' then '新华'
+		else
+		'其他' end) as 受理员,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS 日期,
+		count(*) as
+		监听数（总）,
+		sum(CASE WHEN qd.DEAL_RES='结案' THEN 1 ELSE 0
+		END) as 监听数（结案）,
+		sum(CASE WHEN qd.DEAL_RES='派单' THEN 1 ELSE 0 END)
+		as 监听数（派单）,
+		sum(CASE
+		WHEN qd.DEAL_DIS='1' THEN 1 ELSE 0 END) as
+		正常数,
+		sum(CASE WHEN
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		差错数（总）,
+		sum(CASE WHEN
+		qd.DEAL_RES='结案' AND qd.DEAL_DIS != '1'
+		THEN 1 ELSE 0 END) as
+		差错数（结案）,
+		sum(CASE WHEN qd.DEAL_RES='派单' AND
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END)
+		as
+		差错数（派单）
+		from
+		t_qc_detail qd left join t_qc tq on
+		qd.QC_ID=tq.QC_ID
+		where qd.IS_TL9000='1' and qd.ENABLED='1'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		group by left(tq.AGENTWORKID,1),
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+
+		union
+		select
+		'合计' as 受理员,
+		'' as 日期,
+		sum(b.monitorTotal) as 监听数（总）,
+		sum(b.monitorClose) as 监听数（结案）,
+		sum(b.monitorOrder) as 监听数（派单）,
+		sum(b.normal) as 正常数,
+		sum(b.mistakeTotal) as 差错数（总）,
+		sum(b.mistakeClose) as 差错数（结案）,
+		sum(b.mistakeOrder) as 差错数（派单）
+		from (
+		select (case when left(tq.AGENTWORKID,1)='1' then '浦东'
+		when
+		left(tq.AGENTWORKID,1)='3' then '逸仙'
+		when left(tq.AGENTWORKID,1)='2'
+		or
+		left(tq.AGENTWORKID,1)='5' or
+		left(tq.AGENTWORKID,1)='6' then '新华'
+		else
+		'其他' end) as acceptName,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS qcDate,
+		count(*) as monitorTotal,
+		sum(CASE WHEN qd.DEAL_RES='结案' THEN 1 ELSE 0
+		END) as monitorClose,
+		sum(CASE WHEN qd.DEAL_RES='派单' THEN 1 ELSE 0 END)
+		as monitorOrder,
+		sum(CASE WHEN qd.DEAL_DIS='1' THEN 1 ELSE 0 END) as
+		normal,
+		sum(CASE WHEN qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		mistakeTotal,
+		sum(CASE WHEN qd.DEAL_RES='结案' AND qd.DEAL_DIS != '1'
+		THEN 1 ELSE 0 END) as
+		mistakeClose,
+		sum(CASE WHEN qd.DEAL_RES='派单' AND
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		mistakeOrder
+		from
+		t_qc_detail qd left join t_qc tq on
+		qd.QC_ID=tq.QC_ID
+		where qd.IS_TL9000='1'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		group by left(tq.AGENTWORKID,1),
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+		) b
+	</select>
+
+	<!-- 受理质量检查报表及详单本中心 导出 -->
+	<select id="AcceptQualityCheckExport" parameterType="java.util.Map"
+		resultType="java.util.LinkedHashMap">
+		select (case when left(ri.BIG_WORKID,1)='1' then '浦东'
+		when
+		left(ri.BIG_WORKID,1)='3' then '逸仙'
+		when left(ri.BIG_WORKID,1)='2' or
+		left(ri.BIG_WORKID,1)='5' or
+		left(ri.BIG_WORKID,1)='6' then '新华'
+		else
+		'其他' end) as 受理员,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS 日期,
+		count(*) as
+		监听数（总）,
+		sum(CASE WHEN qd.DEAL_RES='结案' THEN 1 ELSE 0
+		END) as 监听数（结案）,
+		sum(CASE WHEN qd.DEAL_RES='派单' THEN 1 ELSE 0 END)
+		as 监听数（派单）,
+		sum(CASE
+		WHEN qd.DEAL_DIS='1' THEN 1 ELSE 0 END) as
+		正常数,
+		sum(CASE WHEN
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		差错数（总）,
+		sum(CASE WHEN
+		qd.DEAL_RES='结案' AND qd.DEAL_DIS != '1'
+		THEN 1 ELSE 0 END) as
+		差错数（结案）,
+		sum(CASE WHEN qd.DEAL_RES='派单' AND
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END)
+		as
+		差错数（派单）
+		from
+		t_qc_detail qd left join t_qc tq on
+		qd.QC_ID=tq.QC_ID
+		left join t_record_info ri on
+		tq.RECORD_ID=ri.RECORD_ID
+		where qd.IS_TL9000='0' and qd.ENABLED='1'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		group by left(ri.BIG_WORKID,1),
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+
+		union
+		select
+		'合计' as 受理员,
+		'' as 日期,
+		sum(b.monitorTotal) as 监听数（总）,
+		sum(b.monitorClose) as 监听数（结案）,
+		sum(b.monitorOrder) as 监听数（派单）,
+		sum(b.normal) as 正常数,
+		sum(b.mistakeTotal) as 差错数（总）,
+		sum(b.mistakeClose) as 差错数（结案）,
+		sum(b.mistakeOrder) as 差错数（派单）
+		from (
+		select (case when left(ri.BIG_WORKID,1)='1' then '浦东'
+		when
+		left(ri.BIG_WORKID,1)='3' then '逸仙'
+		when left(ri.BIG_WORKID,1)='2'
+		or
+		left(ri.BIG_WORKID,1)='5' or
+		left(ri.BIG_WORKID,1)='6' then '新华'
+		else
+		'其他' end) as acceptName,
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m') AS qcDate,
+		count(*) as monitorTotal,
+		sum(CASE WHEN qd.DEAL_RES='结案' THEN 1 ELSE 0
+		END) as monitorClose,
+		sum(CASE WHEN qd.DEAL_RES='派单' THEN 1 ELSE 0 END)
+		as monitorOrder,
+		sum(CASE WHEN qd.DEAL_DIS='1' THEN 1 ELSE 0 END) as
+		normal,
+		sum(CASE WHEN qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		mistakeTotal,
+		sum(CASE WHEN qd.DEAL_RES='结案' AND qd.DEAL_DIS != '1'
+		THEN 1 ELSE 0 END) as
+		mistakeClose,
+		sum(CASE WHEN qd.DEAL_RES='派单' AND
+		qd.DEAL_DIS !='1' THEN 1 ELSE 0 END) as
+		mistakeOrder
+		from
+		t_qc_detail qd left join t_qc tq on
+		qd.QC_ID=tq.QC_ID
+		left join t_record_info ri on
+		tq.RECORD_ID=ri.RECORD_ID
+		where qd.IS_TL9000='0' and qd.ENABLED='1'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+			=#{startTime,jdbcType=VARCHAR}
+		</if>
+		group by left(ri.BIG_WORKID,1),
+		DATE_FORMAT(qd.QC_TIME,'%Y-%m')
+		) b
+	</select>
+
+
+
+	<!-- 受理质量检查报表及详单Tl9000  历史数据  导出 -->
+	<select id="AcceptQualityCheckTlOldExport" parameterType="java.util.Map"
+		resultType="java.util.LinkedHashMap">
+		select ACCEPTNAME as 受理员,
+		QCDATE AS 日期,
+		MONITORTOTAL as
+		监听数（总）,
+		MONITORCLOSE as 监听数（结案）,
+		MONITORORDER as
+		监听数（派单）,
+		NORMAL as 正常数,
+		MISTAKETOTAL as 差错数（总）,
+		MISTAKECLOSE as 差错数（结案）,
+		MISTAKEORDER as 差错数（派单）
+		from
+		t_acceptualitycheck_tl where 1=1
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+
+		union
+		select '合计' as 受理员,
+		'' as 日期,
+		sum(b.MONITORTOTAL) as 监听数（总）,
+		sum(b.MONITORCLOSE) as 监听数（结案）,
+		sum(b.MONITORORDER) as 监听数（派单）,
+		sum(b.NORMAL) as 正常数,
+		sum(b.MISTAKETOTAL) as 差错数（总）,
+		sum(b.MISTAKECLOSE) as 差错数（结案）,
+		sum(b.MISTAKEORDER) as 差错数（派单）
+
+		from (
+		select ACCEPTNAME ,
+		QCDATE ,
+		MONITORTOTAL,
+		MONITORCLOSE ,
+		MONITORORDER,
+		NORMAL,
+		MISTAKETOTAL ,
+		MISTAKECLOSE ,
+		MISTAKEORDER
+		from
+		t_acceptualitycheck_tl where 1=1
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+		)b
+	</select>
+
+
+	<!-- 受理质量检查报表及详单本中心  历史数据  导出-->
+	<select id="AcceptQualityCheckOldExport" parameterType="java.util.Map"
+		resultType="java.util.LinkedHashMap">
+		select ACCEPTNAME as 受理员,
+		QCDATE AS 日期,
+		MONITORTOTAL as
+		监听数（总）,
+		MONITORCLOSE as 监听数（结案）,
+		MONITORORDER as
+		监听数（派单）,
+		NORMAL as 正常数,
+		MISTAKETOTAL as 差错数（总）,
+		MISTAKECLOSE as 差错数（结案）,
+		MISTAKEORDER as 差错数（派单）
+		from
+		t_acceptualitycheck_centre where 1=1
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+
+		union
+		select '合计' as 受理员,
+		'' as 日期,
+		sum(b.MONITORTOTAL) as 监听数（总）,
+		sum(b.MONITORCLOSE) as 监听数（结案）,
+		sum(b.MONITORORDER) as 监听数（派单）,
+		sum(b.NORMAL) as 正常数,
+		sum(b.MISTAKETOTAL) as 差错数（总）,
+		sum(b.MISTAKECLOSE) as 差错数（结案）,
+		sum(b.MISTAKEORDER) as 差错数（派单）
+
+		from (
+		select ACCEPTNAME ,
+		QCDATE ,
+		MONITORTOTAL,
+		MONITORCLOSE ,
+		MONITORORDER,
+		NORMAL,
+		MISTAKETOTAL ,
+		MISTAKECLOSE ,
+		MISTAKEORDER
+		from
+		t_acceptualitycheck_centre where 1=1
+		<if test="startTime != null and startTime!=''">
+			and QCDATE=#{startTime,jdbcType=VARCHAR}
+		</if>
+		)b
+	</select>
+
+	<!-- 根据质检id删除质检相关信息 -->
+	<update id="delqcdetailbyQcid" parameterType="java.lang.Integer">
+		update  t_qc_detail t set t.ENABLED='1' where t.QC_ID =
+		#{qcId,jdbcType=INTEGER}
+	
+	</update>
+
+
+	<!-- 受理质量检查报表及详单详情 -->
+	<select id="getAcceptQualityCheckInfo" parameterType="java.util.Map" resultMap="AcceptInfoResultMap">
+	SELECT 
+  @rownum := @rownum + 1 AS id,	
+  DATE_FORMAT(t.`QC_TIME`, '%Y/%m/%d') AS DATE,
+  DATE_FORMAT(t.`QC_TIME`, '%h:%i:%s') AS DAY,
+  (SELECT 
+    t2.USER_NAME 
+  FROM
+    t_sys_user t2 
+  WHERE t2.USER_ID = 
+    (SELECT 
+      t1.pid 
+    FROM
+      t_sys_user t1 
+    WHERE t1.ENABLED = '1' 
+      AND t1.Smail_workid = t.AGENTWORKID)) AS telusername,
+  tw.ERROR_NO AS declarationNum,
+  '是' AS istl9000,
+  tw.DECLARATION_DESCRIPTION AS declarationcont,
+  (SELECT 
+    NAME 
+  FROM
+    t_sys_code 
+  WHERE pid = (
+      CASE
+        WHEN tqd.BUSINESS_TYPE = '10' 
+        THEN 10 
+        WHEN tqd.BUSINESS_TYPE = '32' 
+        THEN 32 
+        WHEN tqd.BUSINESS_TYPE = '54' 
+        THEN 54 
+        WHEN tqd.BUSINESS_TYPE = '76' 
+        THEN 76 
+        WHEN tqd.BUSINESS_TYPE = '178' 
+        THEN 178 
+        WHEN tqd.BUSINESS_TYPE = '200' 
+        THEN 32 
+      END
+    ) 
+    AND VALUEES = tqd.`DEAL_DIS`) existingpProblems,
+  (
+    CASE
+      (SELECT 
+        AGENT_VALIDATE 
+      FROM
+        t_agent_workpaper taw 
+      WHERE taw.AGENT_WORKPAPER_ID = t.T_AGENT_WORKPAPERID) 
+      WHEN '1' 
+      THEN '有' 
+      WHEN '0' 
+      THEN '无' 
+      ELSE '' 
+    END
+  ) AS telcheck,
+  (SELECT tsu.USER_NAME FROM t_sys_user tsu WHERE tsu.user_id=t.`QC_USER_ID`) AS qcuser,
+   (
+    CASE
+      (SELECT 
+       DISTINCT ISQC 
+      FROM
+        t_qc_taskrecord tqt 
+      WHERE tqt.ORDER_ID = t.WORKORDER_ID) 
+      WHEN  '1'
+      THEN '专项' 
+      ELSE '非专项' 
+    END
+  ) AS noSpecial  
+FROM
+(SELECT @rownum:=0) r,
+  t_qc t 
+  LEFT JOIN t_qc_detail tqd 
+    ON t.`QC_ID` = tqd.`QC_ID` 
+  INNER JOIN t_workorder_info_112 tw 
+    ON t.`WORKORDER_ID` = tw.`WORKORDER_ID`    
+  WHERE t.`AGENTWORKID`=#{telworkid,jdbcType=VARCHAR}
+  AND DATE_FORMAT(t.QC_TIME, '%Y-%m') =#{startTime,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 受理质量检查报表及详单详情导出 -->
+	<select id="exportAcceptQualityCheckInfo" parameterType="java.util.Map" resultType="java.util.LinkedHashMap">
+	SELECT 
+  @rownum := @rownum + 1 AS 序号,	
+  DATE_FORMAT(t.`QC_TIME`, '%Y/%m/%d') AS 日期,
+  DATE_FORMAT(t.`QC_TIME`, '%h:%i:%s') AS 时间,
+  (SELECT 
+    t2.USER_NAME 
+  FROM
+    t_sys_user t2 
+  WHERE t2.USER_ID = 
+    (SELECT 
+      t1.pid 
+    FROM
+      t_sys_user t1 
+    WHERE t1.ENABLED = '1' 
+      AND t1.Smail_workid = t.AGENTWORKID)) AS 受理者,
+  tw.ERROR_NO AS 申告号码,
+  '是' AS 是否TL9000,
+  tw.DECLARATION_DESCRIPTION AS 申告内容,
+  (SELECT 
+    NAME 
+  FROM
+    t_sys_code 
+  WHERE pid = (
+      CASE
+        WHEN tqd.BUSINESS_TYPE = '10' 
+        THEN 10 
+        WHEN tqd.BUSINESS_TYPE = '32' 
+        THEN 32 
+        WHEN tqd.BUSINESS_TYPE = '54' 
+        THEN 54 
+        WHEN tqd.BUSINESS_TYPE = '76' 
+        THEN 76 
+        WHEN tqd.BUSINESS_TYPE = '178' 
+        THEN 178 
+        WHEN tqd.BUSINESS_TYPE = '200' 
+        THEN 32 
+      END
+    ) 
+    AND VALUEES = tqd.`DEAL_DIS`) 存在问题,
+  (
+    CASE
+      (SELECT 
+        AGENT_VALIDATE 
+      FROM
+        t_agent_workpaper taw 
+      WHERE taw.AGENT_WORKPAPER_ID = t.T_AGENT_WORKPAPERID) 
+      WHEN '1' 
+      THEN '有' 
+      WHEN '0' 
+      THEN '无' 
+      ELSE '' 
+    END
+  ) AS 被检查人确认,
+  (SELECT tsu.USER_NAME FROM t_sys_user tsu WHERE tsu.user_id=t.`QC_USER_ID`) AS 质检员,
+   (
+    CASE
+      (SELECT 
+       DISTINCT ISQC 
+      FROM
+        t_qc_taskrecord tqt 
+      WHERE tqt.ORDER_ID = t.WORKORDER_ID) 
+      WHEN  '1'
+      THEN '专项' 
+      ELSE '非专项' 
+    END
+  ) AS 专项非专项  
+FROM
+(SELECT @rownum:=0) r,
+  t_qc t 
+  LEFT JOIN t_qc_detail tqd 
+    ON t.`QC_ID` = tqd.`QC_ID` 
+  INNER JOIN t_workorder_info_112 tw 
+    ON t.`WORKORDER_ID` = tw.`WORKORDER_ID`    
+  WHERE t.`AGENTWORKID`=#{telworkid,jdbcType=VARCHAR}
+  AND DATE_FORMAT(t.QC_TIME, '%Y-%m') =#{startTime,jdbcType=VARCHAR}
+	</select>
+
+
+
+</mapper>

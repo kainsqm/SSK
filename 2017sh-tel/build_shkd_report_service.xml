@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<project name="check out from SVN use ant" default="complie" basedir=".">
+
+	<!-- svn的连接配置 -->
+	<!--<property name="urlRepos" value="http://172.16.253.206:8080/svn/12345/zhishiku/daima/12345KnowledgeV1.0" />
+	<property name="svn_login" value="yeqing" />
+	<property name="svn_password" value="123456" />-->
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpath="svnant.classpath" />
+	<!-- 项目名称 -->
+	<property name="project.name" value="shkd_report_service" />
+	<!-- 项目临时路径名称 -->
+	<property name="project.name.temp" value="${project.name}" />
+	<!-- 项目临时路径 -->
+	<property name="project.temp.path" value="${basedir}/${project.name.temp}" />
+	<!-- 项目web临时路径 -->
+	<property name="project.web.temp.path" value="${project.name.temp}/WebRoot" />
+	<!-- 项目引用包所在路径 -->
+	<property name="project.classpath" value="${project.web.temp.path}/WEB-INF/lib" />
+	<!-- 项目源代码所在路径 -->
+	<property name="src" value="${project.name.temp}/src" />
+	<!-- jdk所在路径 -->
+	<property name="jdk.classpath" value="C:/Java/jdk1.7.0_55" />
+	<!-- tomcat所在路径 -->
+	<property name="tomcat.classpath" value="D:/8080/tomcat_Jenkins_8080/lib" />
+	
+	<property name="svnant.classpath" value="d:/tools/apache-ant-1.8.3/lib" />
+	<!-- 分支所在路径 -->
+	<property name="branches" value="d:/SVN/开发维护项目/上海电信客户服务调度中心/上海电信2017年112呼叫中心（业务侧）改造项目/branches/${project.name}" />
+	
+	<!-- 远程服务器配置 
+	<property name="server.url" value="http://10.107.16.230:8082/manager" />
+	<property name="server.username" value="administrator" />
+	<property name="server.password" value="Stor@ge!" />-->
+
+
+	<!--svnant支持库-->
+	<path id="svnant.lib">
+		<pathelement location="${svnant.classpath}/svnjavahl.jar" />
+		<pathelement location="${svnant.classpath}/svnant.jar" />
+		<pathelement location="${svnant.classpath}/libsvnClientAdapter.jar" />
+	</path>
+
+	<!-- 设置环境变量 -->
+	<path id="classpath">
+		<fileset dir="${jdk.classpath}/jre/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${project.classpath}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${tomcat.classpath}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- 定义svn 任务
+	<taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask" classpathref="svnant.lib" />-->
+
+	<!-- 初始化 -->
+	<target name="Init">
+		<!--<delete dir="${project.name.temp}" />-->
+	</target>
+
+	<!-- 签出 svn 
+	<target name="checkout" depends="Init">
+		<echo message="签出操作开始" />
+		<svn username="${svn_login}" password="${svn_password}" javahl="true">
+			<checkout url="${urlRepos}" revision="HEAD" destPath="${project.temp.path}" />
+		</svn>
+		<echo message="签出操作完成" />
+	</target>-->
+	
+	<!-- 【编译】操作-->
+	<target name="complie" depends="Init">
+		<delete dir="${project.web.temp.path}/WEB-INF/classes" />
+		<mkdir dir="${project.web.temp.path}/WEB-INF/classes" />
+
+		<echo message="源代码编译中..." />
+		<javac srcdir="${src}" destdir="${project.web.temp.path}/WEB-INF/classes" classpathref="classpath" 
+			debug="on" target="1.7" source="1.7" fork="true" failonerror="true" includeAntRuntime="false">
+			<compilerarg line="-encoding UTF-8"/>
+			<!-- <compilerarg value="-Xlint:unchecked"/>
+			<compilerarg value="-Xlint:deprecation"/>
+			<compilerarg value="-Xlint"/>-->
+		</javac>
+		<echo message="开始处理src下面的配置文件" />
+		<!-- 配置文件拷贝 -->
+		<copy todir="${project.web.temp.path}/WEB-INF/classes">
+			<fileset dir="${src}">
+				<include name="*.xml" />
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<copy todir="${branches}">
+			<fileset dir="${project.web.temp.path}">
+				<include name="*.*" />
+				<include name="META-INF/"/>
+				<include name="WEB-INF/"/>
+			</fileset>
+		</copy>
+		<!--<copy todir="${project.web.temp.path}/WEB-INF/classes/config/oracle">
+			<fileset dir="${src}/config/oracle">
+			</fileset>
+		</copy>
+		<copy todir="${project.web.temp.path}/WEB-INF/classes/commConfig">
+			<fileset dir="${src}/commConfig">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+		<copy todir="${project.web.temp.path}/WEB-INF/classes/com/lixiang/service">
+			<fileset dir="${src}/com/lixiang/service">
+				<include name="*.wsdl" />
+			</fileset>
+		</copy>-->
+		<echo message="源代码编译完成" />
+	</target>
+
+	
+	
+	
+</project>

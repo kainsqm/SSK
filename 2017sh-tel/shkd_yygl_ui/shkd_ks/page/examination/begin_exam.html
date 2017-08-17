@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>开始考试</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		/* body{  
+		   background: url("../../img/login/bgmain.png") repeat;
+		   height:100%;
+		   width:100%;
+		   background-size:cover;
+		   padding:3px;
+		   padding-bottom: 20px;
+		} */
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		table.search_table td.td_lable{ text-align:left;height:30px; }
+		table.search_table td.td_answer{ text-align:left;padding-left: 5px;padding-top:-2px;height:20px; }
+		a{text-decoration : none;color:blue;}
+		textarea{resize:none;margin-top:3px}
+		red{color: red}
+		.bottom{padding-bottom: 14px;}
+		.times {
+			display: block;
+			position: fixed;
+			right: 10px;
+			top:20px;
+			width: 100px;
+			padding: 5px;
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			border-radius: 4px;
+			background: #187CDA;
+			color: white;
+		}
+		body{overflow: auto !important;}
+	</style>
+	<script type="text/javascript"> 
+	var dialog = frameElement.dialog;
+	var dialogData = dialog.get('data');//获取data参数
+	var examId = dialogData.examId;
+	var examTimeLen = dialogData.examTimeLen;
+	
+	var endtime = addMinutes(examTimeLen);
+	window.setInterval(function() {ShowCountDown(endtime);}, 1000);
+	
+	function queryExam(){
+		$("#exampaperName").html(dialogData.exampaperName); 
+		$("#examTimeLen").html(dialogData.examTimeLen); 
+	} 
+	
+	function  addMinutes(minutes)  {   
+        var t=new Date();//当前时间
+        var t_s=t.getTime();//转化为时间戳毫秒数
+        var nt=new Date();//定义一个新时间
+        nt.setTime(t_s+1000*60*minutes);//设置新时间比旧时间多一分钟
+        return nt;
+    }
+	
+	function ShowCountDown(endDate) {
+		var now = new Date();
+		var leftTime = endDate.getTime() - now.getTime();
+		var leftsecond = parseInt(leftTime / 1000);
+		var day1 = Math.floor(leftsecond / (60 * 60 * 24));
+		var hour = Math.floor((leftsecond - day1 * 24 * 60 * 60) / 3600);
+		var minute = Math
+				.floor((leftsecond - day1 * 24 * 60 * 60 - hour * 3600) / 60);
+		var second = Math.floor(leftsecond - day1 * 24 * 60 * 60 - hour * 3600
+				- minute * 60);
+		$("#showMessage").html(hour + ":" + minute + ":" + second) ;
+	}
+	
+	function close(){
+	   frameElement.dialog.close();
+	}
+	</script> 
+</head>
+<!-- 
+<body style="margin:0 auto; background-color:#FFFFFF; padding:5px;">
+ -->
+<body onload="queryExam()" > 
+	<div class="times">
+		考试倒计时：<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<b><span id="showMessage" style="font-size: 15px;color: white;"></span></b>
+	</div>
+	<div style="background-color:#EEEEEE;padding: 3px 15px 0 15px">
+		<div align="left" id="message" style="margin-top:10px; margin-left:5px; padding-left:10px;" >
+			<div style="text-align: center;padding:10px"> <!-- 头部 -->
+				<span id="exampaperName" style="font-size: 20px;margin-bottom:5px; color: blue">期末考试</span>
+				</p>
+				考试时长 （<span id="examTimeLen">60</span>分钟）
+			</div>
+			
+			<div> <!-- 判断题 -->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType1">一</label>、判断题</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="radio" name="typeJudge1" value="Y"  onclick=''>正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="typeJudge1" value="N"  onclick=''>错误
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							2.积分归集是指经过手机登记的产权客户授权同意，将某个政企手机积分转移到某一私人客户积分账户上的操作。这一私人客户可以是手机的实际使用人，也可以是手机产权人指定的任一具有电信后付费资产的私人客户。（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="radio" name="typeJudge2" value="Y"  onclick=''>正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="typeJudge2" value="N"  onclick=''>错误
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							3.“同名同址”如用户有两门宽带和一门C网语音设备，改光纤后，二门宽带都可以升速。（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="radio" name="typeJudge3" value="Y"  onclick=''>正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="typeJudge3" value="N"  onclick=''>错误
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							4.直线宽带同时移机时，可以变更加载关系。（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="radio" name="typeJudge4" value="Y" onclick=''>正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="typeJudge4" value="N" onclick=''>正确
+						</td>					
+					</tr>
+				</table>
+			</div>
+		
+		
+			<div sytle=""> <!-- 判断改错题 -->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">二</label>、判断改错题</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="radio" name="correctJudge1" value="Y"  onclick=''>正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="correctJudge1" value="N"  onclick=''>错误
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer">
+							<textarea rows="3" cols="140"></textarea>
+						</td>					
+					</tr>
+				</table>
+			</div>
+		
+			<div sytle=""> <!-- 单选题 -->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">三</label>、单选题</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="radio" name="singleCheck1" value="A"  onclick=''>A正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="singleCheck1" value="B"  onclick=''>A正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="singleCheck1" value="C"  onclick=''>C正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="singleCheck1" value="D"  onclick=''>D正确
+							
+						</td>					
+					</tr>
+				</table>
+			</div>
+		
+			<div sytle=""> <!-- 多选题-->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">五</label>、多选题</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="checkbox" name="typeOne1" value="A"  onclick=''>A正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="typeOne1" value="B"  onclick=''>A正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="typeOne1" value="C"  onclick=''>C正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="typeOne1" value="D"  onclick=''>D正确
+						</td>						
+					</tr>
+				</table>
+			</div>
+		
+			<div sytle=""> <!-- 不定项选择-->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">六</label>、不定项选择</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							<input type="checkbox" name="typeOne1" value="A"  onclick=''>A正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="typeOne1" value="B"  onclick=''>A正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="typeOne1" value="C"  onclick=''>C正确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" name="typeOne1" value="D"  onclick=''>D正确
+						</td>					
+					</tr>
+				</table>
+			</div>
+		
+			<div sytle=""> <!-- 填空题 -->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">二</label>、填空题<red>【____为填空部分】</red></b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际___________________长途直拨功能（2分）
+						</td>					
+					</tr>
+				</table>
+			</div>
+		
+			<div sytle=""> <!-- 问答题 -->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">七</label>、问答题</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能？（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							答:<textarea rows="5" cols="140"></textarea>
+						</td>						
+					</tr>
+				</table>
+			</div>
+		
+			<div sytle=""> <!-- 案例分析题 -->
+				<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+					<tr>
+						<td class="td_lable">
+							<b><label id="labelType2">二</label>、案例分析题</b>
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_lable">
+							1.CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能（2分）
+						</td>					
+					</tr>
+					<tr>
+						<td class="td_answer bottom">
+							答:<textarea rows="5" cols="140"></textarea>
+						</td>				
+					</tr>
+					<tr>
+					</tr>
+					<tr style="padding-top: 15px;height: 80px">
+						<td colspan="8" align="center">
+							<input type="button" value="检查试卷" />&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" value="保存试卷" id="insertOpen"/>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" value="交&nbsp;&nbsp;卷" id="deleteTest"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!-- <div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:10px;"></div> -->
+	</div>
+</body>
+</html>

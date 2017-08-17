@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IWorkOrderCdmaSumDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.WorkOrderCdmaSum">
+    <id column="cdma_autoid" jdbcType="INTEGER" property="cdmaAutoid" />
+    <result column="serial_cdma" jdbcType="INTEGER" property="serialCdma" />
+    <result column="service_type" jdbcType="VARCHAR" property="serviceType" />
+    <result column="result_type" jdbcType="VARCHAR" property="resultType" />
+    <result column="complaint_source" jdbcType="VARCHAR" property="complaintSource" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="Dir_num" jdbcType="VARCHAR" property="dirNum" />
+    <result column="result_serial" jdbcType="VARCHAR" property="resultSerial" />
+    <result column="result_time" jdbcType="TIMESTAMP" property="resultTime" />
+    <result column="op_id" jdbcType="VARCHAR" property="opId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cdma_autoid, serial_cdma, service_type, result_type, complaint_source, remark, Dir_num, 
+    result_serial, result_time, op_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_workorder_cdma_sum
+    where cdma_autoid = #{cdmaAutoid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_workorder_cdma_sum
+    where cdma_autoid = #{cdmaAutoid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.WorkOrderCdmaSum">
+    insert into t_workorder_cdma_sum (cdma_autoid, serial_cdma, service_type, 
+      result_type, complaint_source, remark, 
+      Dir_num, result_serial, result_time, 
+      op_id)
+    values (#{cdmaAutoid,jdbcType=INTEGER}, #{serialCdma,jdbcType=INTEGER}, #{serviceType,jdbcType=VARCHAR}, 
+      #{resultType,jdbcType=VARCHAR}, #{complaintSource,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{dirNum,jdbcType=VARCHAR}, #{resultSerial,jdbcType=VARCHAR}, #{resultTime,jdbcType=TIMESTAMP}, 
+      #{opId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.WorkOrderCdmaSum">
+    insert into t_workorder_cdma_sum
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cdmaAutoid != null">
+        cdma_autoid,
+      </if>
+      <if test="serialCdma != null">
+        serial_cdma,
+      </if>
+      <if test="serviceType != null">
+        service_type,
+      </if>
+      <if test="resultType != null">
+        result_type,
+      </if>
+      <if test="complaintSource != null">
+        complaint_source,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="dirNum != null">
+        Dir_num,
+      </if>
+      <if test="resultSerial != null">
+        result_serial,
+      </if>
+      <if test="resultTime != null">
+        result_time,
+      </if>
+      <if test="opId != null">
+        op_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cdmaAutoid != null">
+        #{cdmaAutoid,jdbcType=INTEGER},
+      </if>
+      <if test="serialCdma != null">
+        #{serialCdma,jdbcType=INTEGER},
+      </if>
+      <if test="serviceType != null">
+        #{serviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="resultType != null">
+        #{resultType,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintSource != null">
+        #{complaintSource,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dirNum != null">
+        #{dirNum,jdbcType=VARCHAR},
+      </if>
+      <if test="resultSerial != null">
+        #{resultSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="resultTime != null">
+        #{resultTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opId != null">
+        #{opId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.WorkOrderCdmaSum">
+    update t_workorder_cdma_sum
+    <set>
+      <if test="serialCdma != null">
+        serial_cdma = #{serialCdma,jdbcType=INTEGER},
+      </if>
+      <if test="serviceType != null">
+        service_type = #{serviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="resultType != null">
+        result_type = #{resultType,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintSource != null">
+        complaint_source = #{complaintSource,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="dirNum != null">
+        Dir_num = #{dirNum,jdbcType=VARCHAR},
+      </if>
+      <if test="resultSerial != null">
+        result_serial = #{resultSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="resultTime != null">
+        result_time = #{resultTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opId != null">
+        op_id = #{opId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cdma_autoid = #{cdmaAutoid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.WorkOrderCdmaSum">
+    update t_workorder_cdma_sum
+    set serial_cdma = #{serialCdma,jdbcType=INTEGER},
+      service_type = #{serviceType,jdbcType=VARCHAR},
+      result_type = #{resultType,jdbcType=VARCHAR},
+      complaint_source = #{complaintSource,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      Dir_num = #{dirNum,jdbcType=VARCHAR},
+      result_serial = #{resultSerial,jdbcType=VARCHAR},
+      result_time = #{resultTime,jdbcType=TIMESTAMP},
+      op_id = #{opId,jdbcType=VARCHAR}
+    where cdma_autoid = #{cdmaAutoid,jdbcType=INTEGER}
+  </update>
+</mapper>

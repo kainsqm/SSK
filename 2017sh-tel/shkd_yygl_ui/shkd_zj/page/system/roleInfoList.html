@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>客调项目管理系统</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+	<script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px;border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		
+		table#search_table td{ height:30px; line-height:30px;}
+		table#search_table td.td_lable{ text-align:right;}
+		table#search_table td.td_value{ text-align:left;}
+	</style>
+	<script type="text/javascript"> 
+	var CustomersData={Rows:[{"rolename":"受理员","roledesc":"受理员描述","date":"2017-03-12 10:10:21"}, 
+				{"rolename":"质检员","roledesc":"质检员描述","date":"2017-03-12 10:10:21"},
+				{"rolename":"质检班长","roledesc":"质检班长","date":"2017-03-12 10:10:21"},
+				{"rolename":"督导","roledesc":"督导","date":"2017-03-12 10:10:21"}
+				]}
+	
+	
+	
+		$(function () {
+            var maingrid_gd= $("#workpaper_list").ligerGrid({
+                columns: [                
+				{ display: '操作', isSort: false, width : 100, render: function (rowdata, rowindex, value)
+	                {
+	                    var h = "";
+	                    h += "<a href='javascript:void(0);' onclick='eidt_role(\"update\");'>修改</a> ";
+						h += "<a href='javascript:void(0);' onclick='deleteRoleInfo(\""+rowdata.CustomerID+"\");'>删除</a> ";
+	                    return h;
+	                }
+                },
+				{ display: '角色名称', name: 'rolename', align: 'left', minWidth :130,isSort:false},
+                { display: '角色描述', name: 'roledesc', align: 'left', minWidth :300,isSort:false},
+				{ display: '创建时间', name: 'date', align: 'left', minWidth :80,isSort:false}
+				], data:CustomersData, sortName: 'date',height:'100%', width:"auto", pageSize:10 ,rownumbers :true
+            });
+            $("#pageloading").hide(); 
+        });
+		/*********************
+		 * 删除角色信息
+		 *********************/
+		function deleteRoleInfo(roleID){
+			$.ligerDialog.confirm('确认要删除角色['+roleID+']吗？', function (yes) { 
+				if(yes){
+					alert("开始删除...");
+				} 
+			});
+		}
+		/*********************
+		 * 角色信息编辑
+		 *********************/
+		function eidt_role(editType){
+			var titleInfo="弹出窗口";
+			if(editType=="add"){titleInfo="角色信息新增";}
+			if(editType=="update"){titleInfo="角色信息修改";}
+			$.ligerDialog.open({
+				height:380,
+				width: 320,
+				title : titleInfo,
+				url:'edit_roleInfo.html', 
+				showMax: false,
+				showToggle: true,
+				showMin: false,
+				isResize: true,
+				slide: false
+			});
+		}
+    </script> 
+</head>
+<!-- 
+<body style="margin:0 auto; background-color:#FFFFFF; padding:5px;">
+ -->
+<body> 
+	<div style="">
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table id="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td>
+						角色名称：<input />&nbsp;&nbsp;&nbsp;&nbsp;
+						角色描述：<input />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="新增" onclick="eidt_role('add');" />
+					</td>					
+				</tr>
+			</table>			
+		</div>
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="workpaper_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

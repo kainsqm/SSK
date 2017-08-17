@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.TqcInfoDao">
+	<resultMap type="cn.sh.ideal.model.TqcInfo" id="tqcBeanList">
+		<id column="AUTO_ID" property="autoId" jdbcType="INTEGER" />
+		<result column="WORKORDER_ID" property="workOrderId" jdbcType="VARCHAR" />
+		<result column="QUALITY_LEVEL" property="qualityLever" jdbcType="VARCHAR" />
+		<result column="CHECKCONTENT" property="checkContent" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getTqcInfoList" parameterType="java.lang.String" resultMap="tqcBeanList">
+		SELECT
+			tq.WORKORDER_ID,
+			tqd.QUALITY_LEVEL,
+			tqd.CHECKCONTENT
+		FROM
+			t_qc tq,
+			t_qc_detail tqd
+		WHERE
+			tqd.QC_ID = tq.QC_ID
+			AND ( tq.QC_TYPE = 2 or tq.QC_TYPE = 3)
+			AND tq.WORKORDER_ID IS NOT NULL
+			AND DATE_FORMAT(tq.QC_TIME,'%Y-%m-%d') = #{sdate,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<title>xxx后台管理系统</title>
+	<link rel="stylesheet" type="text/css" href="css/xcConfirm.css"/>
+	<script src="../js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 
+	<script src="../js/xcConfirm.js" type="text/javascript" charset="utf-8"></script>
+	 -->
+	<style type="text/css">
+		body{margin:0px; background-color:#FFFFFF; background-image:url(../img/login/bgmain.png);}
+		body, html{ height:100%; width:100%;}
+		#div_main {background-color: #ffffff;border-radius: 5px; font-weight: bold; color: #535e66; width:220px; height:99%;border: solid 1px #D7D7D7;}
+		#div_top { padding-left:15px; height: 40px; line-height: 40px; font-size:14px; font-family:"黑体"; background-image:url(../img/login/title_bg.jpg); border-bottom:#D7D7D7 1px solid;}
+		
+		.menuDiv{height:40px; vertical-align:middle; line-height:40px; cursor:pointer; border-top:#eef0f1 1px solid;}
+		.menuDiv .menu_img_show{ margin-left:15px;}
+		.menuDiv .menu_text_show{ margin-left:10px; font-size:14px; font-family:"黑体";}
+		.menuDiv .menu_yincang_show{margin-left:60px;}
+		
+		.childMenuDiv{ margin:0px; display:none; padding-bottom:10px; height:auto;}
+		.childMenuDiv ul{ border:#000000 0px solid; margin-top:0px; padding-left:0px;}
+		.childMenuDiv ul li{ list-style-type:none;border:#000000 0px solid; height:35px; line-height:35px; padding-left:50px; font-size:13px; font-family:"宋体"; cursor:pointer;}
+		.childMenuDiv ul li:hover{ background-color:#0D5CA9; color:#FFFFFF;}
+	</style>
+	<script type="text/javascript">
+		var menuTemp=[
+			{id:"1",text:"系统维护",imgUrl:"../img/login/icon1.png",childItems:[{id:"11",text:"员工信息维护",pid:"1",url:"system/userInfoList.html"},{id:"12",text:"角色信息维护",pid:"1",url:"system/roleInfoList.html"},{id:"13",text:"日志信息查询",pid:"1",url:"system/logInfoList.html"}]},
+			{id:"5",text:"质检评分",imgUrl:"../img/login/icon2.png",childItems:[{id:"51",text:"录音信息评分",pid:"5",url:"recordList.html"},{id:"52",text:"112工单评分",pid:"5",url:"paperList_112.html"},{id:"23",text:"c网工单评分",pid:"5",url:"paperList_cw.html"},{id:"54",text:"无工单/录音评分",pid:"5",url:"history_noneqcInfoList.html"},{id:"55",text:"112小结评分",pid:"5",url:"112_dhxjInfo.html"},{id:"56",text:"c网小结查询",pid:"5",url:"cw_dhxjInfo.html"}]},
+			{id:"2",text:"质检记录",imgUrl:"../img/login/icon2.png",childItems:[{id:"21",text:"录音质检记录",pid:"2",url:"history_qcInfoList.html"},{id:"22",text:"112工单质检记录",pid:"2",url:"history_qcInfoList.html"},{id:"23",text:"c网工单质检记录",pid:"2",url:"history_cwqcInfoList.html"},{id:"24",text:"112小结质检记录",pid:"2",url:"history_dhxjqcInfoList.html"},{id:"25",text:"c网小结质检记录",pid:"2",url:"history_dhxjqcInfoList.html"},{id:"26",text:"问题反馈单查询",pid:"2",url:"workPaperList.html"},{id:"27",text:"二级质检查询",pid:"2",url:"secondaryCheckList.html"}]},
+			{id:"6",text:"任务派发",imgUrl:"../img/login/icon3.png",childItems:[{id:"61",text:"录音任务派发",pid:"6",url:"task/task_sys_List.html"},{id:"62",text:"112工单任务派发",pid:"3",url:"task/task_order112_List.html"},{id:"63",text:"c网工单任务派发",pid:"6",url:"task/task_ordercw_List.html"},{id:"64",text:"c网小结任务派发",pid:"6",url:"task/task_112_List.html"},{id:"65",text:"112小结任务派发",pid:"6",url:"task/task_112_List.html"}]},
+			{id:"7",text:"任务执行",imgUrl:"../img/login/icon3.png",childItems:[{id:"71",text:"执行录音任务",pid:"7",url:"task/task_qc_List.html"},{id:"72",text:"执行112工单任务",pid:"7",url:"task/task_qc_order112List.html"},{id:"73",text:"执行c网工单任务",pid:"7",url:"task/task_qc_ordercwList.html"},{id:"74",text:"执行112小结任务",pid:"7",url:"task/task_qc_112List.html"},{id:"75",text:"执行c网小结任务",pid:"7",url:"task/task_qc_112List.html"}]},
+			{id:"3",text:"辅导计划",imgUrl:"../img/login/icon3.png",childItems:[{id:"35",text:"辅导计划(质检员)",pid:"3",url:"coach_program/coachInfoList_qc.html"},{id:"36",text:"辅导计划(督导)",pid:"3",url:"coach_program/coachInfoList_dudao.html"}]},
+			{id:"4",text:"统计报表",imgUrl:"../img/login/icon4.png",childItems:[{id:"41",text:"一级结案汇总表",pid:"4",url:"report/JieanSummary.html"},{id:"42",text:"每月专项差错汇总表",pid:"4",url:"report/Specialerror.html"}]}
+		];
+		$(function(){
+			if(menuTemp!=null && menuTemp.length > 0){
+				var divShowObj = document.getElementById("div_show");				
+				for(var ii in menuTemp){
+					divShowObj.appendChild(add_menu_info(menuTemp[ii].id,menuTemp[ii].imgUrl,menuTemp[ii].text,"close")); 
+					if(menuTemp[ii].childItems!=null){
+						divShowObj.appendChild(add_chlidMenu_info(menuTemp[ii].id,menuTemp[ii].childItems));
+					}
+				}				
+			}
+		});
+		/**
+		 * 添加一级菜单
+		 * @menuID 菜单ID
+		 * @menuImgUrl 菜单对应展示的图片 url
+		 * @menuName 菜单名称
+		 * @showType 加载类型 show:展示 close:隐藏
+		 */
+		function add_menu_info(menuID,menuImgUrl,menuName,showType){
+			var menuInfoDiv=document.createElement("div");
+			$(menuInfoDiv).attr("class","menuDiv");
+			$(menuInfoDiv).attr("id","menuDiv_"+menuID);
+			$(menuInfoDiv).attr("onclick","showChildMenu(this,\""+menuID+"\");");
+			menuInfoDiv.innerHTML=""+
+				"<img class=\"menu_img_show\" src=\""+menuImgUrl+"\" width=\"22\" align=\"middle\" />" +"<span class=\"menu_text_show\">"+menuName+"</span>";
+			if(showType=="show"){
+				menuInfoDiv.innerHTML += "<img class=\"menu_yincang_show\" src=\"../img/login/s_02.png\" width=\"11\" align=\"middle\" />";
+			}else{
+				menuInfoDiv.innerHTML += "<img class=\"menu_yincang_show\" src=\"../img/login/s_01.png\" width=\"11\" align=\"middle\" />";
+			}
+			return menuInfoDiv;
+		}
+		/**
+		 * 添加二级菜单
+		 * @menuID 父菜单对应的ID
+		 * @childItems 二级菜单集合
+		 */
+		function add_chlidMenu_info(menuID,childItems){
+			var childMenuDiv=document.createElement("div");
+			$(childMenuDiv).attr("class","childMenuDiv");
+			$(childMenuDiv).attr("id","childMenuDiv_"+menuID);
+			var ul_temp = document.createElement("ul");
+			var li_temp = null;
+			for(var ii in childItems){
+				li_temp = document.createElement("li");
+				li_temp.innerHTML = childItems[ii].text;
+				//li_temp.innerHTML = "<a target=\"main_page_iframe\" href=\"http://www.baidu.com\">"+childItems[ii].text+"</a>";
+				$(li_temp).attr("onClick","childMenuOnClick('"+childItems[ii].id+"','"+childItems[ii].url+"','"+childItems[ii].text+"');");
+				ul_temp.appendChild(li_temp);
+			}
+			childMenuDiv.appendChild(ul_temp);			
+			return childMenuDiv;
+		}
+		/**
+		 * 点击主菜单时，加载或隐藏子菜单
+		 * @obj 主菜单div对象
+		 * @childMenuNum 子菜单div对应的序号
+		 */
+		function showChildMenu(obj,childMenuNum){
+			changeShowImg(obj);
+			var childMenuObj = document.getElementById("childMenuDiv_"+childMenuNum); 
+			if(childMenuObj!=null){
+				$(childMenuObj).slideToggle();
+			}			
+			var childMenuDivItem = document.getElementsByTagName("div");
+			for(var jj in childMenuDivItem){
+				if(childMenuDivItem[jj].id != null && childMenuDivItem[jj].id.indexOf("childMenuDiv_") != -1){
+					var menuDivID = childMenuDivItem[jj].id.replace("childMenuDiv_","menuDiv_");
+					if(menuDivID != obj.id){
+						if($(childMenuDivItem[jj]).css("display") == "block"){
+							changeShowImg(document.getElementById(menuDivID));
+							$(childMenuDivItem[jj]).slideToggle();
+							break;
+						}
+					}
+				} 
+			}
+		}
+		/**
+		 * 改变一级菜单后面的伸缩图片
+		 * @obj 一级菜单所在的div对象 
+		 */
+		function changeShowImg(obj){
+			var childNodesItem = obj.childNodes;
+			for(var i in childNodesItem){
+				if(childNodesItem[i].className=="menu_yincang_show"){
+					if(childNodesItem[i].src.indexOf("s_01.png") != -1){
+						childNodesItem[i].src=childNodesItem[i].src.replace("s_01.png","s_02.png");
+					}else if(childNodesItem[i].src.indexOf("s_02.png") != -1){
+						childNodesItem[i].src=childNodesItem[i].src.replace("s_02.png","s_01.png");
+					}
+					break;
+				}
+			}
+		}
+		/**
+		 * 子菜单选中事件
+		 * @obj 子菜单对象
+		 */
+		function childMenuOnClick(pageId,pageUrl,pageText){
+			//$(obj).css("background-color","#0D5CA9");
+			//$(obj).css("color","#FFFFFF");
+			if(pageUrl!=null && pageUrl!=""){
+				parent.document.getElementById("daohangLabel").innerHTML=pageText;
+				parent.document.getElementById("main_page_iframe").src=pageUrl; 
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="div_main">
+		<div id="div_top">菜单栏</div>
+		<div id="div_show"></div>
+	</div>
+</body>
+</html>

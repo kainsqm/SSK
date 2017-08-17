@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItExampaperRandomDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tExampaperRandom">
+    <id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="FK_CODETYPE_ID" jdbcType="INTEGER" property="fkCodetypeId" />
+    <result column="QUE_TYPE" jdbcType="VARCHAR" property="queType" />
+    <result column="QUE_COUNT" jdbcType="INTEGER" property="queCount" />
+    <result column="QUE_SCORE" jdbcType="INTEGER" property="queScore" />
+    <result column="FK_EXAMPAPER_ID" jdbcType="INTEGER" property="fkExampaperId" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+    <result column="QUE_NANDU" jdbcType="VARCHAR" property="queNandu" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PK_AUTO_ID, FK_CODETYPE_ID, QUE_TYPE, QUE_COUNT, QUE_SCORE, FK_EXAMPAPER_ID, ENABLED, 
+    QUE_NANDU, ZUHU_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from "t_exampaper_random"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from "t_exampaper_random"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tExampaperRandom">
+    insert into "t_exampaper_random" (PK_AUTO_ID, FK_CODETYPE_ID, QUE_TYPE, 
+      QUE_COUNT, QUE_SCORE, FK_EXAMPAPER_ID, 
+      ENABLED, QUE_NANDU, ZUHU_ID
+      )
+    values (#{pkAutoId,jdbcType=INTEGER}, #{fkCodetypeId,jdbcType=INTEGER}, #{queType,jdbcType=VARCHAR}, 
+      #{queCount,jdbcType=INTEGER}, #{queScore,jdbcType=INTEGER}, #{fkExampaperId,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=VARCHAR}, #{queNandu,jdbcType=VARCHAR}, #{zuhuId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tExampaperRandom">
+    insert into t_exampaper_random
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fkCodetypeId != null">
+        FK_CODETYPE_ID,
+      </if>
+      <if test="queType != null">
+        QUE_TYPE,
+      </if>
+      <if test="queCount != null">
+        QUE_COUNT,
+      </if>
+      <if test="queScore != null">
+        QUE_SCORE,
+      </if>
+      <if test="fkExampaperId != null">
+        FK_EXAMPAPER_ID,
+      </if>
+      <if test="enabled != null">
+        ENABLED,
+      </if>
+      <if test="queNandu != null">
+        QUE_NANDU,
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fkCodetypeId != null">
+        #{fkCodetypeId,jdbcType=INTEGER},
+      </if>
+      <if test="queType != null">
+        #{queType,jdbcType=VARCHAR},
+      </if>
+      <if test="queCount != null">
+        #{queCount,jdbcType=INTEGER},
+      </if>
+      <if test="queScore != null">
+        #{queScore,jdbcType=INTEGER},
+      </if>
+      <if test="fkExampaperId != null">
+        #{fkExampaperId,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="queNandu != null">
+        #{queNandu,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tExampaperRandom">
+    update "t_exampaper_random"
+    <set>
+      <if test="fkCodetypeId != null">
+        FK_CODETYPE_ID = #{fkCodetypeId,jdbcType=INTEGER},
+      </if>
+      <if test="queType != null">
+        QUE_TYPE = #{queType,jdbcType=VARCHAR},
+      </if>
+      <if test="queCount != null">
+        QUE_COUNT = #{queCount,jdbcType=INTEGER},
+      </if>
+      <if test="queScore != null">
+        QUE_SCORE = #{queScore,jdbcType=INTEGER},
+      </if>
+      <if test="fkExampaperId != null">
+        FK_EXAMPAPER_ID = #{fkExampaperId,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null">
+        ENABLED = #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="queNandu != null">
+        QUE_NANDU = #{queNandu,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tExampaperRandom">
+    update "t_exampaper_random"
+    set FK_CODETYPE_ID = #{fkCodetypeId,jdbcType=INTEGER},
+      QUE_TYPE = #{queType,jdbcType=VARCHAR},
+      QUE_COUNT = #{queCount,jdbcType=INTEGER},
+      QUE_SCORE = #{queScore,jdbcType=INTEGER},
+      FK_EXAMPAPER_ID = #{fkExampaperId,jdbcType=INTEGER},
+      ENABLED = #{enabled,jdbcType=VARCHAR},
+      QUE_NANDU = #{queNandu,jdbcType=VARCHAR},
+      ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteByExampaperId" parameterType="java.lang.Integer" >
+   	delete from t_exampaper_random 
+    where FK_EXAMPAPER_ID = #{fkExampaperId,jdbcType=INTEGER}
+  </delete>
+  
+</mapper>

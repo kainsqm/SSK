@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItExamDao">
+  <resultMap id="examMap" type="cn.sh.ideal.model.tExam">
+    <id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+    <result column="EXAM_BEGIN_TIME" jdbcType="VARCHAR" property="examBeginTime" />
+    <result column="EXAM_END_TIME" jdbcType="VARCHAR" property="examEndTime" />
+    <result column="EXAM_TIME_LENGTH" jdbcType="INTEGER" property="examTimeLength" />
+    <result column="EXAM_NORMAL_SCORE" jdbcType="INTEGER" property="examNormalScore" />
+    <result column="EXAM_QUERY" jdbcType="VARCHAR" property="examQuery" />
+<!--     <result column="EXAM_STATUS" jdbcType="VARCHAR" property="examStatus" /> -->
+    <result column="FK_EXAMTYPE_ID" jdbcType="VARCHAR" property="fkExamtypeId" />
+    <result column="FK_EXAMTARGET_ID" jdbcType="VARCHAR" property="fkExamtargetId" />
+    <result column="FK_INSERT_USER_ID" jdbcType="INTEGER" property="fkInsertUserId" />
+    <result column="INSERT_TIME" jdbcType="VARCHAR" property="insertTime" />
+    <result column="FK_UPDATE_USER_ID" jdbcType="INTEGER" property="fkUpdateUserId" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+  </resultMap>
+  
+ 	<resultMap id="examJoinMap" type="cn.sh.ideal.model.tExam">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+		<result column="EXAM_BEGIN_TIME" jdbcType="VARCHAR" property="examBeginTimeString" />
+		<result column="EXAM_END_TIME" jdbcType="VARCHAR" property="examEndTimeString" />
+		<result column="EXAM_TIME_LENGTH" jdbcType="INTEGER" property="examTimeLength" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="setQuestionName" />
+		<result column="EXAM_PAPER_NAME" jdbcType="VARCHAR" property="examPaperName" />
+		<result column="E_PK_AUTO_ID" jdbcType="VARCHAR" property="examExampaperExamineId" />
+		<result column="exampaperId" jdbcType="VARCHAR" property="exampaperId" />
+	</resultMap>
+  
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tExam">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+		<result column="EXAM_QUERY" jdbcType="VARCHAR" property="examQuery" />
+	</resultMap>
+  
+  <resultMap id="examVoResult" type="cn.sh.ideal.model.tExamVo">
+    <id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="EXAM_NAME" jdbcType="VARCHAR" property="examName" />
+    <result column="EXAM_PAPER_NAME" jdbcType="VARCHAR" property="examPaperName" />
+    <result column="TO_EXAM_BEGIN_TIME" jdbcType="VARCHAR" property="toExamBeginTime" />
+    <result column="TO_EXAM_END_TIME" jdbcType="VARCHAR" property="toExamEndTime" />
+    <result column="EXAM_TIME_LENGTH" jdbcType="INTEGER" property="examTimeLength" />
+    <result column="EXAM_NORMAL_SCORE" jdbcType="INTEGER" property="examNormalScore" />
+    <result column="EXAM_QUERY" jdbcType="VARCHAR" property="examQuery" />
+    <result column="TO_EXAM_QUERY" jdbcType="VARCHAR" property="toExamQuery" />
+   <!--  <result column="EXAM_STATUS" jdbcType="VARCHAR" property="examStatus" /> -->
+    <result column="FK_INSERT_USER_ID" jdbcType="INTEGER" property="fkInsertUserId" />
+    <result column="INSERT_TIME" jdbcType="VARCHAR" property="insertTime" />
+    <result column="FK_UPDATE_USER_ID" jdbcType="INTEGER" property="fkUpdateUserId" />
+    <result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+    <result column="TO_EXAMTYPE" jdbcType="INTEGER" property="toExamtype" />
+    <result column="TO_EXAMTARGET" jdbcType="VARCHAR" property="toExamtarget" />
+    <result column="EXAM_PAPER_SCORE" jdbcType="VARCHAR" property="examPaperScore" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+    <result column="FK_EXAMPAPER_ID" jdbcType="INTEGER" property="examPaperId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    PK_AUTO_ID, EXAM_NAME, EXAM_BEGIN_TIME, EXAM_END_TIME, EXAM_TIME_LENGTH, EXAM_NORMAL_SCORE, 
+    EXAM_QUERY, FK_EXAMTYPE_ID, FK_EXAMTARGET_ID, FK_INSERT_USER_ID, INSERT_TIME, 
+    FK_UPDATE_USER_ID, UPDATE_TIME, ZUHU_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="examMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_exam
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </select> 
+  <!-- 查询考试名称 -->
+  <select id="selectByExamName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1)  from t_exam t where t.EXAM_NAME = #{examName,jdbcType=VARCHAR}
+  </select> 
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_exam
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tExam" useGeneratedKeys="true" keyProperty="pkAutoId">
+    insert into t_exam (EXAM_NAME, EXAM_BEGIN_TIME, 
+      EXAM_END_TIME, EXAM_TIME_LENGTH, EXAM_NORMAL_SCORE, 
+      EXAM_QUERY, FK_EXAMTYPE_ID, 
+      FK_EXAMTARGET_ID, FK_INSERT_USER_ID, INSERT_TIME, 
+      FK_UPDATE_USER_ID, UPDATE_TIME, ZUHU_ID
+      )
+    values (#{examName,jdbcType=VARCHAR}, #{examBeginTime,jdbcType=TIMESTAMP}, 
+      #{examEndTime,jdbcType=TIMESTAMP}, #{examTimeLength,jdbcType=INTEGER}, #{examNormalScore,jdbcType=INTEGER}, 
+      #{examQuery,jdbcType=VARCHAR}, #{fkExamtypeId,jdbcType=VARCHAR}, 
+      #{fkExamtargetId,jdbcType=VARCHAR}, #{fkInsertUserId,jdbcType=INTEGER}, now(), 
+      #{fkUpdateUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{zuhuId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tExam">
+    insert into t_exam
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        PK_AUTO_ID,
+      </if>
+      <if test="examName != null">
+        EXAM_NAME,
+      </if>
+      <if test="examBeginTime != null">
+        EXAM_BEGIN_TIME,
+      </if>
+      <if test="examEndTime != null">
+        EXAM_END_TIME,
+      </if>
+      <if test="examTimeLength != null">
+        EXAM_TIME_LENGTH,
+      </if>
+      <if test="examNormalScore != null">
+        EXAM_NORMAL_SCORE,
+      </if>
+      <if test="examQuery != null">
+        EXAM_QUERY,
+      </if>
+      <!-- <if test="examStatus != null">
+        EXAM_STATUS,
+      </if> -->
+      <if test="fkExamtypeId != null">
+        FK_EXAMTYPE_ID,
+      </if>
+      <if test="fkExamtargetId != null">
+        FK_EXAMTARGET_ID,
+      </if>
+      <if test="fkInsertUserId != null">
+        FK_INSERT_USER_ID,
+      </if>
+      <if test="insertTime != null">
+        INSERT_TIME,
+      </if>
+      <if test="fkUpdateUserId != null">
+        FK_UPDATE_USER_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        #{pkAutoId,jdbcType=INTEGER},
+      </if>
+      <if test="examName != null">
+        #{examName,jdbcType=VARCHAR},
+      </if>
+      <if test="examBeginTime != null">
+        #{examBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examEndTime != null">
+        #{examEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examTimeLength != null">
+        #{examTimeLength,jdbcType=INTEGER},
+      </if>
+      <if test="examNormalScore != null">
+        #{examNormalScore,jdbcType=INTEGER},
+      </if>
+      <if test="examQuery != null">
+        #{examQuery,jdbcType=VARCHAR},
+      </if>
+      <if test="examStatus != null">
+        #{examStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExamtypeId != null">
+        #{fkExamtypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExamtargetId != null">
+        #{fkExamtargetId,jdbcType=VARCHAR},
+      </if>
+      <if test="fkInsertUserId != null">
+        #{fkInsertUserId,jdbcType=INTEGER},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fkUpdateUserId != null">
+        #{fkUpdateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zuhuId != null">
+        #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tExam">
+    update t_exam
+    <set>
+      <if test="examName != null">
+        EXAM_NAME = #{examName,jdbcType=VARCHAR},
+      </if>
+      <if test="examBeginTime != null">
+        EXAM_BEGIN_TIME = #{examBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examEndTime != null">
+        EXAM_END_TIME = #{examEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examTimeLength != null">
+        EXAM_TIME_LENGTH = #{examTimeLength,jdbcType=INTEGER},
+      </if>
+      <if test="examNormalScore != null">
+        EXAM_NORMAL_SCORE = #{examNormalScore,jdbcType=INTEGER},
+      </if>
+      <if test="examQuery != null">
+        EXAM_QUERY = #{examQuery,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExamtypeId != null">
+        FK_EXAMTYPE_ID = #{fkExamtypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExamtargetId != null">
+        FK_EXAMTARGET_ID = #{fkExamtargetId,jdbcType=VARCHAR},
+      </if>
+      <if test="fkInsertUserId != null">
+        FK_INSERT_USER_ID = #{fkInsertUserId,jdbcType=INTEGER},
+      </if>
+      <if test="insertTime != null">
+        INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fkUpdateUserId != null">
+        FK_UPDATE_USER_ID = #{fkUpdateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tExam">
+    update t_exam
+    set EXAM_NAME = #{examName,jdbcType=VARCHAR},
+      EXAM_BEGIN_TIME = #{examBeginTime,jdbcType=TIMESTAMP},
+      EXAM_END_TIME = #{examEndTime,jdbcType=TIMESTAMP},
+      EXAM_TIME_LENGTH = #{examTimeLength,jdbcType=INTEGER},
+      EXAM_NORMAL_SCORE = #{examNormalScore,jdbcType=INTEGER},
+      EXAM_QUERY = #{examQuery,jdbcType=VARCHAR},
+      FK_EXAMTYPE_ID = #{fkExamtypeId,jdbcType=VARCHAR},
+      FK_EXAMTARGET_ID = #{fkExamtargetId,jdbcType=VARCHAR},
+      FK_INSERT_USER_ID = #{fkInsertUserId,jdbcType=INTEGER},
+      INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+      FK_UPDATE_USER_ID = #{fkUpdateUserId,jdbcType=INTEGER},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询所有试卷 -->
+  <select id="selectExamVos" parameterType="cn.sh.ideal.model.tExamVo" resultMap="examVoResult">
+    	select  DISTINCT  t.PK_AUTO_ID,
+			    t.EXAM_NAME,
+				date_format(T.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%S') as TO_EXAM_BEGIN_TIME,
+				date_format(T.EXAM_END_TIME,'%Y-%m-%d %H:%i:%S') as TO_EXAM_END_TIME,
+				t.EXAM_TIME_LENGTH,
+				t.EXAM_NORMAL_SCORE,
+				t.EXAM_QUERY,
+				if(t.EXAM_QUERY=1,'是','否') as TO_EXAM_QUERY,
+				t.FK_INSERT_USER_ID,
+				t.INSERT_TIME,
+				t.FK_UPDATE_USER_ID,
+				t.UPDATE_TIME,
+				(select name from t_sys_code where PK_AUTO_ID=t.FK_EXAMTYPE_ID) as TO_EXAMTYPE,
+	     		(select name from t_sys_code where PK_AUTO_ID=t.FK_EXAMTARGET_ID) as TO_EXAMTARGET,
+	     		(select sum(EXAMINEE_STATUS) from T_EXAM_EXAMPAPER_EXAMINE ex where ex.FK_EXAM_EXAMPAPER_ID =e.pk_auto_id ) as examStatus,
+				tp.EXAM_PAPER_SCORE
+				from T_EXAM  T,
+					 T_EXAM_EXAMPAPER  E,
+					 T_EXAM_EXAMPAPER_EXAMINE X,
+					 t_exampaper tp
+		 where e.FK_EXAM_ID = t.pk_auto_id
+			 and e.FK_EXAMPAPER_ID = tp.pk_auto_id
+			 and x.FK_EXAM_EXAMPAPER_ID = e.pk_auto_id
+			 AND X.ENABLED = 1
+		 <if test="examName != null and examName !=''">
+	        AND T.EXAM_NAME like'%${examName}%'
+	     </if> 
+		 <if test="examTimeLength != null and examTimeLength !=''">
+	        AND T.EXAM_TIME_LENGTH =#{examTimeLength,jdbcType=INTEGER}
+	     </if>		    
+		 <if test="examNormalScore != null and examNormalScore !=''">
+	        AND T.EXAM_NORMAL_SCORE =#{examNormalScore,jdbcType=VARCHAR}
+	     </if>			
+		 <if test="examQuery != null and examQuery !=''">
+	        AND T.EXAM_QUERY =#{examQuery,jdbcType=VARCHAR}
+	     </if>	
+		 <if test="toExamBeginTime != null and toExamBeginTime !=''">
+	        AND T.EXAM_BEGIN_TIME  &gt; #{toExamBeginTime,jdbcType=TIMESTAMP}
+	     </if>
+		 <if test="toExamEndTime != null and toExamEndTime !=''">
+		 	AND T.EXAM_END_TIME  &lt; #{toExamEndTime,jdbcType=TIMESTAMP}
+	     </if>
+	     <if test="examPaperId!= null and examPaperId!=''">
+	       AND e.FK_EXAMPAPER_ID =#{examPaperId,jdbcType=INTEGER}
+	     </if>
+	     <!-- 用户过滤 -->
+	     <if test="listUserID != null and listUserID !=''">
+	       AND X.FK_USER_ID =#{listUserID,jdbcType=INTEGER}
+	     </if>  
+	     <if test="toExamtype != null and toExamtype !=''">
+	       AND T.FK_EXAMTYPE_ID =#{toExamtype,jdbcType=INTEGER}
+	     </if>
+	     <if test="toExamtarget != null and toExamtarget !=''">
+	       AND T.FK_EXAMTARGET_ID =#{toExamtarget,jdbcType=INTEGER}
+	     </if>
+	     <if test="zuhuId!=null and zuhuId!=''">
+	       AND T.ZUHU_ID =#{zuhuId,jdbcType=INTEGER}
+	     </if>
+		 order by T.INSERT_TIME desc
+  </select>
+  
+  <select id="selectByPKId" parameterType="java.lang.Integer" resultMap="examVoResult">
+    	select  DISTINCT  t.PK_AUTO_ID,
+			    t.EXAM_NAME,
+				date_format(T.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%S') as TO_EXAM_BEGIN_TIME,
+				date_format(T.EXAM_END_TIME,'%Y-%m-%d %H:%i:%S') as TO_EXAM_END_TIME,
+				t.EXAM_TIME_LENGTH,
+				t.EXAM_NORMAL_SCORE,
+				t.EXAM_QUERY,
+				tp.EXAM_PAPER_NAME,
+				e.FK_EXAMPAPER_ID FK_EXAMPAPER_ID,
+				if(t.EXAM_QUERY=1,'是','否') as TO_EXAM_QUERY,
+				<!-- t.EXAM_STATUS, -->
+				t.FK_INSERT_USER_ID,
+				t.INSERT_TIME,
+				t.FK_UPDATE_USER_ID,
+				t.UPDATE_TIME,
+				t.FK_EXAMTYPE_ID as TO_EXAMTYPE,
+	     		t.FK_EXAMTARGET_ID as TO_EXAMTARGET,
+				tp.EXAM_PAPER_SCORE
+				from T_EXAM  T,
+					 T_EXAM_EXAMPAPER  E,
+					 T_EXAM_EXAMPAPER_EXAMINE X,
+					 t_exampaper tp
+		 where e.FK_EXAM_ID = t.pk_auto_id
+			 and e.FK_EXAMPAPER_ID = tp.pk_auto_id
+			 and x.FK_EXAM_EXAMPAPER_ID = e.pk_auto_id
+			 AND X.ENABLED = 1
+			 AND t.PK_AUTO_ID= #{pkAutoId,jdbcType=INTEGER}
+	</select>		
+	
+	
+	
+	<!-- 查询 待考试信息 显示5条 -->
+	<select id="queryExam" parameterType="java.lang.Integer" resultMap="examJoinMap">
+        SELECT
+		e.PK_AUTO_ID,
+		e.EXAM_NAME,
+		ep.PK_AUTO_ID as exampaperId,
+		e.EXAM_TIME_LENGTH,
+		ep.EXAM_PAPER_NAME,
+		epe.PK_AUTO_ID AS E_PK_AUTO_ID,
+		DATE_FORMAT(e.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%s') as EXAM_BEGIN_TIME,
+		DATE_FORMAT(e.EXAM_END_TIME,'%Y-%m-%d %H:%i:%s') as EXAM_END_TIME,
+		(select u.USER_NAME from sh_kd_zj_test1.v_sysuser u where
+		u.USER_ID=ep.FK_INSERT_USER_ID) as USER_NAME
+		FROM
+		t_exam e,
+		t_exam_exampaper ex,
+		t_exampaper ep,
+		t_exam_exampaper_examine epe
+		where
+		e.PK_AUTO_ID=ex.FK_EXAM_ID
+		and ex.FK_EXAMPAPER_ID=ep.PK_AUTO_ID
+		and epe.FK_EXAM_EXAMPAPER_ID=ex.PK_AUTO_ID
+		and epe.EXAMINEE_STATUS='0'
+		and epe.FK_USER_ID=${userId}
+		and DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s') &gt;=DATE_FORMAT(e.EXAM_BEGIN_TIME,'%Y-%m-%d %H:%i:%s')
+		and DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s') &lt;=DATE_FORMAT(e.EXAM_END_TIME,'%Y-%m-%d %H:%i:%s')
+        order by e.EXAM_BEGIN_TIME desc limit 0,5
+        
+	</select>
+
+
+	<!-- 查询 已考试信息 显示5条 -->
+	<select id="queryExamOver" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+          select e.PK_AUTO_ID,t.EXAM_NAME,t.EXAM_QUERY from t_exam_exampaper_examine e 
+           inner join t_exam_exampaper ep on e.FK_EXAM_EXAMPAPER_ID=ep.PK_AUTO_ID
+           inner join t_exam  t on t.PK_AUTO_ID=ep.FK_EXAM_ID
+           where e.FK_USER_ID=#{userId} and e.EXAMINEE_STATUS !='0'
+           and  e.EXAMINEE_STATUS !='1'
+           order by t.EXAM_BEGIN_TIME desc limit 0,5 
+	</select>
+
+	<select id="selectByCodeId" parameterType="java.lang.Integer" resultMap="examMap">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_exam
+	    where FK_EXAMTARGET_ID = #{pkAutoId,jdbcType=INTEGER}
+	    or FK_EXAMTYPE_ID = #{codeId,jdbcType=INTEGER}
+    </select> 
+</mapper>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">		
+        <script src="js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+		<link href="lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+		<link href="css/public.css" rel="stylesheet" type="text/css" />
+		<link href="lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+		<script src="lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+		<script src="lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+		<script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+		<title></title>
+		<style type="text/css">
+			body{margin:0px; background-color:#FFFFFF; background-image:url(img/login/bgmain.png);}
+			#div_main {
+				        float:left;background-color: #0a316a; font-weight: bold; 
+				        color: #535e66; width:220px; height:100%;position: relative;
+						FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#01add1,endColorStr=#0a316a); /*IE 6 7 8*/ 
+						background: -ms-linear-gradient(top, #01add1,  #0a316a);        /* IE 10 */
+						background:-moz-linear-gradient(top,#01add1,#0a316a);/*火狐*/ 
+						background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#01add1), to(#0a316a));/*谷歌*/ 
+						background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#01add1), to(#0a316a));      /* Safari 4-5, Chrome 1-9*/
+						background: -webkit-linear-gradient(top, #01add1, #0a316a);   /*Safari5.1 Chrome 10+*/
+						background: -o-linear-gradient(top, #01add1, #0a316a);  /*Opera 11.10+*/
+	           }
+			#div_top { padding-left:15px; height: 40px; line-height: 40px; font-size:26px; 
+			           font-family:"黑体";letter-spacing: 2px;    color: #03717f;
+                       text-shadow: 3px 2px 2px #0385ae;}
+			.menuDiv{
+					    height:34px; vertical-align:middle; line-height:34px; cursor:pointer; border-bottom:#b6e7ff 1px solid;
+					    FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#fff,endColorStr=#8ed9fb); /*IE 6 7 8*/ 
+						background: -ms-linear-gradient(top, #fff,  #8ed9fb);        /* IE 10 */
+						background:-moz-linear-gradient(top,#fff,#8ed9fb);/*火狐*/ 
+						background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#fff), to(#8ed9fb));/*谷歌*/ 
+						background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#8ed9fb));      /* Safari 4-5, Chrome 1-9*/
+						background: -webkit-linear-gradient(top, #fff, #8ed9fb);   /*Safari5.1 Chrome 10+*/
+						background: -o-linear-gradient(top, #fff, #8ed9fb);  /*Opera 11.10+*/
+				    }
+			.menuDiv .menu_img_show{ margin-left:15px;position: relative;top: 3px;}
+			.menuDiv .menu_text_show{ margin-left:10px; font-size:14px; font-family:"黑体";color:#1c92bf}
+			.menuDiv .menu_yincang_show{margin-left:60px;}
+			
+			.childMenuDiv{ margin:0px; display:none; height:auto;}
+			.childMenuDiv ul{ border:#000000 0px solid; margin-top:0px; padding-left:0px;background: #f1fcff}
+			.childMenuDiv ul li{ list-style-type:none;border:#000000 0px solid; height:35px; line-height:35px; padding-left:50px; font-size:13px; font-family:"宋体"; cursor:pointer;}
+			.childMenuDiv ul li:hover{ background-color:#01aacf; color:#FFFFFF;}
+			.fa-angle-right:before {position: relative;left: -12px;font-size: 16px;top: 1px;}
+			.fa-home{font-size: 20px;position: relative;left: -5px;top: 1px; color: #164ca8;cursor: pointer;}
+		    .fa-wrench{font-size: 16px;color: #164ca8;cursor: pointer;margin: 0 5px;}
+		    .fa-user-circle-o{font-size: 16px;color: #164ca8;margin-right: 5px;}
+		    .icon-quit{cursor: pointer;}
+		    .icon-quit:before{
+		        font-size: 16px;
+                font-family: "FontAwesome", "microsoft yahei";
+                margin: 0;    
+                content: "\f011";
+                position: relative;
+                top: 2px;
+                }
+				
+            }
+
+           .middle_right_index,.middle_right_index ul{height: 100%;}
+			   .middle_right_index ul>li{
+			   	width: 50%;
+			   	float: left;
+			   	height: 50%;
+			   	padding: 20px 50px;
+			   	position: relative;
+			   }
+			   .middle_right_index ul>li .title{
+			   	  width: 100%;
+			   	  height: 28px;
+	              border:2px solid #D7D7D7;
+	              line-height: 28px;
+	              border-radius:3px ;
+	              text-align: center;
+			   	  background: url(img/Icon2.jpg);
+			   	  background-size:100% 110% ;
+			   	  color: #6f6d6d;
+			   }
+			   .middle_right_index ul>li .content{
+	              border:2px solid #D7D7D7;
+	              border-radius:3px ;
+	              position: absolute;
+	              top: 56px;
+	              bottom: 20px;
+	              left: 50px;
+	              right: 50px;
+			   }
+			   body{background: #f1fcff;}
+			   .content div{padding-left:10px;}
+			   .content div a{text-decoration:none;font-size: 13px;cursor: pointer;color: #333333;}
+			   .fa-caret-right{color: #104190;margin-right: 5px;}
+			   .content div a:hover{color: #104190;text-decoration: underline;}
+			   .title a{text-decoration:none}
+
+		</style>
+		<script type="text/javascript">
+			var menuTemp=[
+				{id:"1",text:"系统维护",imgUrl:"img/login/xitong1.png",childItems:[{id:"11",text:"员工信息维护",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/userInfoList.html"},{id:"12",text:"角色信息维护",pid:"1",url:"http://localhost:8080/shkd_ks/page/system/roleInfoList.html"},{id:"13",text:"日志信息查询",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/logInfoList.html"},{id:"16",text:"公告信息维护",pid:"1",url:"http://localhost:8080/shkd_ks/page/system/noticeInfoList.html"}]},
+			];
+			var menuTemp1=[
+				
+			  // {id:"1",text:"系统维护",imgUrl:"img/login/icon1.png",childItems:[{id:"11",text:"员工信息维护",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/userInfoList.html"},{id:"12",text:"角色信息维护",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/roleInfoList.html"},{id:"13",text:"日志信息查询",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/logInfoList.html"}]},
+			   {id:"5",text:"质检评分",imgUrl:"img/login/zhijian.png",childItems:[{id:"51",text:"录音信息评分",pid:"5",url:"http://localhost:8080/shkd_zj/page/recordList.html"},{id:"52",text:"112工单评分",pid:"5",url:"http://localhost:8080/shkd_zj/page/paperList_112.html"},{id:"23",text:"c网工单评分",pid:"5",url:"http://localhost:8080/shkd_zj/page/paperList_cw.html"},{id:"54",text:"无工单/录音评分",pid:"5",url:"http://localhost:8080/shkd_zj/page/history_noneqcInfoList.html"},{id:"55",text:"112小结评分",pid:"5",url:"http://localhost:8080/shkd_zj/page/112_dhxjInfo.html"},{id:"56",text:"c网小结查询",pid:"5",url:"http://localhost:8080/shkd_zj/page/cw_dhxjInfo.html"}]},
+			   {id:"2",text:"质检记录",imgUrl:"img/login/zjcx.png",childItems:[{id:"21",text:"录音质检记录",pid:"2",url:"http://localhost:8080/shkd_zj/page/history_qcInfoList.html"},{id:"22",text:"112工单质检记录",pid:"2",url:"http://localhost:8080/shkd_zj/page/history_qcInfoList.html"},{id:"23",text:"c网工单质检记录",pid:"2",url:"http://localhost:8080/shkd_zj/page/history_cwqcInfoList.html"},{id:"24",text:"112小结质检记录",pid:"2",url:"http://localhost:8080/shkd_zj/page/history_dhxjqcInfoList.html"},{id:"25",text:"c网小结质检记录",pid:"2",url:"http://localhost:8080/shkd_zj/page/history_dhxjqcInfoList.html"},{id:"26",text:"问题反馈单查询",pid:"2",url:"http://localhost:8080/shkd_zj/page/workPaperList.html"},{id:"27",text:"二级质检查询",pid:"2",url:"http://localhost:8080/shkd_zj/page/secondaryCheckList.html"}]},
+			   {id:"6",text:"任务派发",imgUrl:"img/login/icon51.png",childItems:[{id:"61",text:"录音任务派发",pid:"6",url:"http://localhost:8080/shkd_zj/page/task/task_sys_List.html"},{id:"62",text:"112工单任务派发",pid:"3",url:"http://localhost:8080/shkd_zj/page/task/task_order112_List.html"},{id:"63",text:"c网工单任务派发",pid:"6",url:"http://localhost:8080/shkd_zj/page/task/task_ordercw_List.html"},{id:"64",text:"c网小结任务派发",pid:"6",url:"http://localhost:8080/shkd_zj/page/task/task_112_List.html"},{id:"65",text:"112小结任务派发",pid:"6",url:"http://localhost:8080/shkd_zj/page/task/task_112_List.html"}]},
+			   {id:"7",text:"任务执行",imgUrl:"img/login/icon41.png",childItems:[{id:"71",text:"执行录音任务",pid:"7",url:"http://localhost:8080/shkd_zj/page/task/task_qc_List.html"},{id:"72",text:"执行112工单任务",pid:"7",url:"http://localhost:8080/shkd_zj/page/task/task_qc_order112List.html"},{id:"73",text:"执行c网工单任务",pid:"7",url:"http://localhost:8080/shkd_zj/page/task/task_qc_ordercwList.html"},{id:"74",text:"执行112小结任务",pid:"7",url:"http://localhost:8080/shkd_zj/page/task/task_qc_112List.html"},{id:"75",text:"执行c网小结任务",pid:"7",url:"http://localhost:8080/shkd_zj/page/task/task_qc_112List.html"}]},
+			   {id:"3",text:"辅导计划",imgUrl:"img/login/icon61.png",childItems:[{id:"35",text:"辅导计划(质检员)",pid:"3",url:"http://localhost:8080/shkd_zj/page/coach_program/coachInfoList_qc.html"},{id:"36",text:"辅导计划(督导)",pid:"3",url:"http://localhost:8080/shkd_zj/page/coach_program/coachInfoList_dudao.html"}]},
+			   {id:"4",text:"统计报表",imgUrl:"img/login/icon4.png",childItems:[{id:"41",text:"一级结案汇总表",pid:"4",url:"http://localhost:8080/shkd_zj/page/report/JieanSummary.html"},{id:"42",text:"每月专项差错汇总表",pid:"4",url:"http://localhost:8080/shkd_zj/page/report/Specialerror.html"}]}
+			];
+			var menuTemp2=[
+				{id:"1",text:"参数配置",imgUrl:"img/login/xitong1.png",childItems:[,{id:"16",text:"业务参数配置",pid:"1",url:"http://localhost:8080/shkd_ks/page/system/sys_systems.htm"}]},
+		        {id:"2",text:"题库管理",imgUrl:"img/login/tiku1.png",childItems:[{id:"23",text:"考题维护",pid:"2",url:"http://localhost:8080/shkd_ks/page/system/sys_maintainque.htm"}]},
+		        {id:"3",text:"试卷管理",imgUrl:"img/login/sjk.png",childItems:[{id:"31",text:"题库选题",pid:"3",url:"http://localhost:8080/shkd_ks/page/system/sys_optionque.htm"},{id:"34",text:"模板试卷",pid:"3",url:"http://localhost:8080/shkd_ks/page/system/sys_templateque.htm"},{id:"35",text:"试卷管理",pid:"3",url:"http://localhost:8080/shkd_ks/page/system/sys_managerque.htm"}]},
+		        {id:"4",text:"考试管理",imgUrl:"img/login/kaoshi.png",childItems:[/*{id:"41",text:"进行考试",pid:"4",url:"http://localhost:8080/shkd_ks/page/examination/exam_ing.html"},*/{id:"42",text:"重考设置",pid:"4",url:"http://localhost:8080/shkd_ks/page/examination/resetexam_set.html"},{id:"43",text:"考试维护管理",pid:"4",url:"http://localhost:8080/shkd_ks/page/examination/exam_manage.html"}]},
+		        {id:"5",text:"阅卷管理",imgUrl:"img/login/yuejuan.png",childItems:[{id:"51",text:"试卷评分",pid:"5",url:"http://localhost:8080/shkd_ks/page/marking/testpaper_score.html"}]},
+		        {id:"6",text:"考试查询",imgUrl:"img/login/chaxun1.png",childItems:[{id:"61",text:"考生查询",pid:"6",url:"http://localhost:8080/shkd_ks/page/examsquery/user_query.html"},{id:"62",text:"考试查询",pid:"6",url:"http://localhost:8080/shkd_ks/page/examsquery/exam_query.html"}/*,{id:"63",text:"个人考试查询",pid:"6",url:"http://localhost:8080/shkd_ks/page/examsquery/exam_query_person.html"}*/]},
+		        {id:"7",text:"统计报表",imgUrl:"img/login/icon4.png",childItems:[]}
+			];
+			var menuTemp3=[
+				{id:"1",text:"系统维护",imgUrl:"img/login/xitong1.png",childItems:[{id:"11",text:"员工信息维护",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/userInfoList.html"},{id:"12",text:"角色信息维护",pid:"1",url:"http://localhost:8080/shkd_ks/page/system/roleInfoList.html"},{id:"13",text:"日志信息查询",pid:"1",url:"http://localhost:8080/shkd_zj/page/system/logInfoList.html"},{id:"16",text:"公告信息维护",pid:"1",url:"http://localhost:8080/shkd_ks/page/system/noticeInfoList.html"}]},
+			];
+			
+			$(function(){
+				$(".middle_middle").on("click",function(){
+					$(this).find("i").toggleClass("fa-angle-double-right");
+			    	$(this).prev().toggle();
+			    	$(this).next().toggleClass("all_win");
+			   });
+			   $(".index").on("click",function(){
+			   	    $(".middle .middle_right .route span").html("首页");
+				//	$("#iframediv").css("display","none");
+					//$("#main_page_iframe").css("display","block");
+					$("#iframediv").css("display","none");
+					$("#middle_right_index").css("display","block");
+			   	   // document.getElementById("main_page_iframe").src="right_index.html";
+			   })
+				if(menuTemp!=null && menuTemp.length > 0){
+					var divShowObj = document.getElementById("div_show");				
+					for(var ii in menuTemp){
+						divShowObj.appendChild(add_menu_info(menuTemp[ii].id,menuTemp[ii].imgUrl,menuTemp[ii].text,"close")); 
+						if(menuTemp[ii].childItems!=null){
+							divShowObj.appendChild(add_chlidMenu_info(menuTemp[ii].id,menuTemp[ii].childItems,menuTemp[ii].text));
+						}
+					}				
+				}
+				//切换菜单
+				$(".head .head_nav input.nav").on("click",function(){
+					    var texts = $(this).val();
+//					    texts = texts.substring(1,texts.length-1);
+					    $(".div_content h3").html(texts);
+					    $(this).addClass("cur").siblings().removeClass("cur");
+					    $(".middle .middle_right .route span").html("首页");
+					    //document.getElementById("main_page_iframe").src="right_index.html";
+						$("#iframediv").css("display","none");
+					    $("#middle_right_index").css("display","block");
+					    $("#div_show").html("");
+					    var name = $(this).attr("name");
+					    var menuTemp;
+					    if(name == "menuTemp1"){
+					    	name=menuTemp1;
+					    }if(name == "menuTemp2"){
+					    	name=menuTemp2;
+					    }if(name == "menuTemp3"){
+					    	name=menuTemp3;
+					    }
+					    menuTemp = name;
+						if(menuTemp!=null && menuTemp.length > 0){
+							var divShowObj = document.getElementById("div_show");				
+							for(var ii in menuTemp){
+								divShowObj.appendChild(add_menu_info(menuTemp[ii].id,menuTemp[ii].imgUrl,menuTemp[ii].text,"close")); 
+								if(menuTemp[ii].childItems!=null){
+									divShowObj.appendChild(add_chlidMenu_info(menuTemp[ii].id,menuTemp[ii].childItems,menuTemp[ii].text));
+								}
+							}				
+						}
+				})
+			});
+			/**
+			 * 添加一级菜单
+			 * @menuID 菜单ID
+			 * @menuImgUrl 菜单对应展示的图片 url
+			 * @menuName 菜单名称
+			 * @showType 加载类型 show:展示 close:隐藏
+			 */
+			function add_menu_info(menuID,menuImgUrl,menuName,showType){
+				var menuInfoDiv=document.createElement("div");
+				$(menuInfoDiv).attr("class","menuDiv");
+				$(menuInfoDiv).attr("id","menuDiv_"+menuID);
+				$(menuInfoDiv).attr("onclick","showChildMenu(this,\""+menuID+"\");");
+				menuInfoDiv.innerHTML=""+
+					"<img class=\"menu_img_show\" src=\""+menuImgUrl+"\" width=\"20\"  />" +"<span class=\"menu_text_show\">"+menuName+"</span>";
+				if(showType=="show"){
+					menuInfoDiv.innerHTML += "<img class=\"menu_yincang_show\" src=\"img/login/s_02.png\" width=\"11\"  />";
+				}else{
+					menuInfoDiv.innerHTML += "<img class=\"menu_yincang_show\" src=\"img/login/s_01.png\" width=\"11\"  />";
+				}
+				return menuInfoDiv;
+			}
+			/**
+			 * 添加二级菜单
+			 * @menuID 父菜单对应的ID
+			 * @childItems 二级菜单集合
+			 */
+			function add_chlidMenu_info(menuID,childItems,fisrtext){
+				var childMenuDiv=document.createElement("div");
+				$(childMenuDiv).attr("class","childMenuDiv");
+				$(childMenuDiv).attr("id","childMenuDiv_"+menuID);
+				var ul_temp = document.createElement("ul");
+				var li_temp = null;
+				for(var ii in childItems){
+					li_temp = document.createElement("li");
+					li_temp.innerHTML = childItems[ii].text;
+					//li_temp.innerHTML = "<a target=\"main_page_iframe\" href=\"http://www.baidu.com\">"+childItems[ii].text+"</a>";
+					$(li_temp).attr("onClick","childMenuOnClick('"+childItems[ii].id+"','"+childItems[ii].url+"','"+childItems[ii].text+"','"+fisrtext+"');");
+					ul_temp.appendChild(li_temp);
+				}
+				childMenuDiv.appendChild(ul_temp);			
+				return childMenuDiv;
+			}
+			/**
+			 * 点击主菜单时，加载或隐藏子菜单
+			 * @obj 主菜单div对象
+			 * @childMenuNum 子菜单div对应的序号
+			 */
+			function showChildMenu(obj,childMenuNum){
+				changeShowImg(obj);
+				var childMenuObj = document.getElementById("childMenuDiv_"+childMenuNum); 
+				if(childMenuObj!=null){
+					$(childMenuObj).slideToggle();
+				}			
+				var childMenuDivItem = document.getElementsByTagName("div");
+				for(var jj in childMenuDivItem){
+					if(childMenuDivItem[jj].id != null && childMenuDivItem[jj].id.indexOf("childMenuDiv_") != -1){
+						var menuDivID = childMenuDivItem[jj].id.replace("childMenuDiv_","menuDiv_");
+						if(menuDivID != obj.id){
+							if($(childMenuDivItem[jj]).css("display") == "block"){
+								changeShowImg(document.getElementById(menuDivID));
+								$(childMenuDivItem[jj]).slideToggle();
+								break;
+							}
+						}
+					} 
+				}
+			}
+			/**
+			 * 改变一级菜单后面的伸缩图片
+			 * @obj 一级菜单所在的div对象 
+			 */
+			function changeShowImg(obj){
+				var childNodesItem = obj.childNodes;
+				for(var i in childNodesItem){
+					if(childNodesItem[i].className=="menu_yincang_show"){
+						if(childNodesItem[i].src.indexOf("s_01.png") != -1){
+							childNodesItem[i].src=childNodesItem[i].src.replace("s_01.png","s_02.png");
+						}else if(childNodesItem[i].src.indexOf("s_02.png") != -1){
+							childNodesItem[i].src=childNodesItem[i].src.replace("s_02.png","s_01.png");
+						}
+						break;
+					}
+				}
+			}
+			/**
+			 * 子菜单选中事件
+			 * @obj 子菜单对象
+			 */
+			
+			function childMenuOnClick(pageId,pageUrl,pageText,fisrtext){
+				if(pageUrl!=null && pageUrl!=""){
+					//parent.document.getElementById("daohangLabel").innerHTML=pageText;
+					document.getElementById("main_page_iframe").src=pageUrl;
+					$("#iframediv").css("display","block");
+					$("#middle_right_index").css("display","none");
+					var texts = $(".head .head_nav input.cur").val();
+//					texts = texts.substring(1,texts.length-1);
+					$(".middle .middle_right .route span").html(texts+" <i class='fa fa-angle-right' aria-hidden='true'></i>"+fisrtext+" <i class='fa fa-angle-right' aria-hidden='true'></i>"+pageText)
+				}
+			
+			}
+			
+			function updatePwd(){
+			   
+			$.ligerDialog.open({
+				height:250,
+				width: 320,
+				title : "修改密码",
+				url:'edit_pwd.html', 
+				showMax: false,
+				showToggle: true,
+				showMin: false,
+				isResize: true,
+				slide: false
+			});
+			}
+			
+			function loginout(){
+				/*********************
+				 * 重置员工密码
+				 *********************/
+				function resetPwd(userID) {
+					$.ligerDialog.confirm('确认要退出嘛？', function(yes) {
+						if (yes) {
+							location.href="login.html";
+						}
+					});
+				}
+			   
+			}
+		</script>
+	</head>
+	<body style="overflow:hidden">
+		<div class="all">
+			  <div class="head">
+			  	    <div class="logo fl">
+			  	    	  <img src="img/logo_.png" width="200px"/>
+			  	    	  <div>
+			  	    	  	<span class="chinese">运营管理系统</span>
+			  	    	  	<span class="english">Operate Administration system</span>
+			  	    	  </div>
+			  	    	  
+			  	    </div>
+			  	    <div class="head_nav fr">
+			  	    	 <input type="button" name="menuTemp3" class="nav cur" id="" value="系统管理" />
+			  	    	 <input type="button" name="menuTemp1" class="nav" id="" value="质检系统" />
+			  	    	 <input type="button" name="menuTemp2" class="nav" id="" value="考试系统" />
+			  	    </div>
+			  	    <div class="data cb">
+			  	    	  <div class="fl">
+			  	    	  	   <ul>
+			  	    	  	   	   <li><i class="fa fa-user-circle-o" aria-hidden="true"></i>你好：<span>Admin</span></li>
+			  	    	  	   	   <li>工号：<span>A001</span></li>
+			  	    	  	   	   <li>角色：<span>系统管理</span></li>
+			  	    	  	   </ul>
+			  	    	  </div>
+			  	    	  <div class="fr">
+			  	    	  	   <ul>
+			  	    	  	   	   <li class="index"><i class="fa fa-home" aria-hidden="true" title="首页"></i></li>
+			  	    	  	   	   <li>当前时间：<span class="current_time"></span></li>
+			  	    	  	   	   <li><i class="fa fa-wrench" aria-hidden="true" title="密码修改" onclick="updatePwd()"></i></li>
+			  	    	  	   	   <li class="quit icon-quit" title="退出系统" onclick="loginout()"></li>
+			  	    	  	   </ul>
+			  	    	  </div>
+			  	    </div>
+			  </div>
+			  <div class="middle">
+			  	   <div id="div_main">
+						<div id="div_top">MENU</div>
+						<div class="div_content">
+							<h3>系统管理</h3> 
+							<div class="back_div"></div>
+							<div id="div_show"></div>
+						</div>
+						
+					</div>
+					<div class="middle_middle"><i class="fas fa fa-angle-double-left" ></i></div>
+					<div class="middle_right">
+						   <div class="route">当前位置：<span>首页</span></div>
+						   <div id="iframediv"  class="iframe" style="display:none"><iframe id="main_page_iframe" src="right_index.html" frameborder="0" width="100%" height="100%"></iframe></div> 
+						   <div id="middle_right_index"  class="middle_right_index" style="overflow:hidden;position: absolute;left: 0;right: 0;bottom: 0;top: 60px;">
+		 	  <ul style="height:100%">
+		 	  	  <li>
+		 	  	  	  <div class="title">公告栏<a href='http://localhost:8080/shkd_ks/page/system/noticeInfoListShow.html' target='_blank' style="right:51px;width: 57px;float: right;position:absolute;">更多>></a></div>
+		 	  	  	  <div class="content">
+		 	  	  	  	   	    <div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='http://localhost:8080/shkd_ks/page/system/noticeinfo.html' target='_blank'>清明假期就要到了，出去游玩注意安全 (2017-03-28)</a></div>
+					  </div>
+					 
+		 	  	  </li>
+		 	  	  <li>
+		 	  	  	  <div class="title">我的反馈单<a href='http://localhost:8080/shkd_zj/page/workPaperList.html' target='_blank' style="right:51px;width: 57px;float: right;position:absolute;">更多>></a></div>
+		 	  	  	  <div class="content">
+		 	  	  	  	   	    <div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='http://localhost:8080/shkd_zj/page/workPaperInfo.html' target='_blank'>录音反馈单</a></div>
+								<div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='http://localhost:8080/shkd_zj/page/workPaperInfo.html' target='_blank'>工单反馈单</a></div>
+					  </div>
+		 	  	  </li>
+		 	  	  <li>
+		 	  	  	  <div class="title">待考试<a href='http://localhost:8080/shkd_ks/page/examination/exam_ing.html' target='_blank' style="right:51px;width: 57px;float: right;position:absolute;">更多>></a></div>
+		 	  	  	  <div class="content">
+		 	  	  	  	   	    <div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='javascript:void(0)' onclick="beginexam(1,100,'基础技能考试')">基础技能考试</a></div>
+								<div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='javascript:void(0)' onclick="beginexam(1,100,'业务能力考试')">业务能力考试</a></div>
+					 </div>
+		 	  	  </li>
+		 	  	  <li>
+		 	  	  	  <div class="title">查看已考试卷<a href='http://localhost:8080/shkd_ks/page/examsquery/exam_query_person.html' target='_blank' style="right:51px;width: 57px;float: right;position:absolute;">更多>></a></div>
+		 	  	  	  <div class="content">
+		 	  	  	  	   	    <div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='http://localhost:8080/shkd_ks/page/examsquery/query_testpaper_score.html' target='_blank'>2017年1月1日考试</a></div>
+								<div><i class="fa fa-caret-right" aria-hidden="true"></i><a href='http://localhost:8080/shkd_ks/page/examsquery/query_testpaper_score.html' target='_blank'>2017年2月8日考试</a></div>
+					  </div>
+		 	  	  </li>
+		 	  </ul>
+		 	   </div>
+		 </div>
+						   
+			  </div>
+			  <div class="font">中国电信 ©上海理想信息产业(集团)有限公司</div>
+		</div>
+		
+	</body>
+	
+	
+	<script type="text/javascript"> 
+		     function beginexam(examId,examTimeLen,exampaperName){
+			     $.ligerDialog.open({
+	               height:560,
+	               width: 990,
+	               showMax: true,
+	               modal: false,
+	               isDrag:false,
+	               allowClose:false,
+	               title : '考试中',
+	               url: 'http://localhost:8080/shkd_ks/page/examination/begin_exam.html', 
+	               isResize: true ,
+	               data: {
+	            	   examId: examId,examTimeLen:examTimeLen,exampaperName:exampaperName
+	               },
+	               //自定义参数
+	               myDataName: "自定义参数"
+	             }); 
+			 }
+		     
+		
+		 </script> 
+	
+	
+	
+</html>

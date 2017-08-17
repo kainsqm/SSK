@@ -1,0 +1,116 @@
+*{box-sizing: border-box;font-size:12px ;margin:0;}
+html,body{
+	width: 100%;
+	height: 100%;
+	background: #f1fcff;
+	/*padding: 3px;*/ 
+	overflow: hidden;
+	}
+div.title_div{
+	margin-bottom:10px;
+}
+input[type='text'],select{
+	height: 22px;
+    text-indent: 5px;
+    border-radius:3px ;
+    border: 1px solid #D0D0D0;
+    width:140px;
+    margin-right:3px;
+}
+.disabled{
+	background:#EBEBE4 !important;
+	color:#333 !important;
+	cursor: no-drop !important;
+}
+.l-text-field{border: none !important;}
+input{
+	border-radius:3px ;
+    border: 1px solid #D0D0D0;
+}
+input[type="button"],.l-dialog-btn-inner,.l-button,input[type="reset"]{
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#01aacf,endColorStr=#0165a2); /*IE 6 7 8*/ 
+	background: -ms-linear-gradient(top, #01aacf,  #0165a2) ;        /* IE 10 */
+	background:-moz-linear-gradient(top,#01aacf,#0165a2);/*火狐*/ 
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#01aacf), to(#0165a2)) ;/*谷歌*/ 
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#01aacf), to(#0165a2)) ;      /* Safari 4-5, Chrome 1-9*/
+	background: -webkit-linear-gradient(top, #01aacf, #0165a2);   /*Safari5.1 Chrome 10+*/
+	background: -o-linear-gradient(top, #01aacf, #0165a2);  /*Opera 11.10+*/
+	color: #FFFFFF ;
+    border: 1px solid #0297bf;
+    padding: 0 15px;
+    border-radius:3px ;
+    width: initial !important;
+    height: 25px !important;
+    cursor:pointer;
+    text-indent:0;
+}
+.l-text {
+    height: 22px;
+    text-indent: 5px;
+    border-radius:3px ;
+    border: 1px solid #D0D0D0 !important;
+    width: 140px !important;
+}
+.l-grid-header{
+	background: #3b98c8 !important;
+	color: #FFFFFF;
+}
+.l-grid-body{
+	background: #f1fcff;
+}
+.l-selected .l-grid-row-cell, .l-selected {
+    background: #7ac9f1 !important;
+    color: #FFFFFF;
+}
+.l-grid-row-over .l-grid-row-cell,.l-grid-row-over{
+	background: #7ac9f1 !important;
+	color: #FFFFFF;
+}
+.l-grid-row-alt .l-grid-row-cell-rownumbers, .l-selected .l-grid-row-cell-rownumbers, .l-grid-row-over .l-grid-row-cell-rownumbers, .l-grid-row-cell-rownumbers {
+    background: #FFFFFF;
+}
+.l-grid-row-alt,.l-grid-row-alt .l-grid-row-cell{
+    background: #f1fcff ;
+}
+.l-grid-row {
+    background: #fff !important;
+}
+.l-grid-row:nth-child(even) ,.l-grid-row:nth-child(even) .l-grid-row-cell-rownumbers{
+    background: #f1fcff;
+}
+
+.l-dialog-tc {
+    background: #3b98c8 !important;
+}
+.l-dialog-title{
+	color: #FFFFFF !important;
+}
+input.date_text,input.input_text {
+    border-radius: 3px !important;
+    width:140px !important;
+    height: 22px !important;
+    line-height: 22px !important;
+    border: 1px solid #D0D0D0 !important;
+    text-indent:5px !important;
+}
+.l-bar-group select {
+    position: relative;
+    width: 50px;
+}
+
+.l-panel-bar {
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    top: 0px;
+}
+.l-bar-text {
+    line-height: 28px !important;
+}
+.l-selectorwin .l-dialog-content .l-form {
+   background: #f1fcff !important; 
+   padding-left: 10px;
+}
+.l-dialog-body{
+	background: #f1fcff !important; 
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../css/public.css" rel="stylesheet" type="text/css" />
+	<title>反馈单详情</title>
+	<style type="text/css">
+		body{ font-size:13px;}
+		body{ font-size:13px;overflow: auto !important;}
+		.head_h3{ width:100%; height:36px; line-height:36px; background:url(../img/login/toppic.jpg); margin-top:-3px;}
+		.head_h3 h3{ color:#ffffff; margin-left:70px; font-size:16px;}
+		
+		.mainDiv{ width:90%; height:auto; border:#CCCCFF 1px solid; margin:auto; padding:20px; font-size:14px; margin-top:10px;}
+		.inputText{ border:none; border-bottom:#CCCCFF 1px solid; width:120px;}
+		fieldset{ padding:10px; border:#CCCCFF 1px solid; font-size:13px; margin-top:15px;}		
+		legend{ margin-left:5px; font-size:14px;}
+		textarea{ border:#CCCCFF 1px solid;}
+		input[type='button']{ width:80px; height:30px; border: #CCCCCC 1px solid; cursor:pointer;}
+		.maginTopDiv{ margin-top:5px;}
+		body{overflow: auto;}
+	</style>
+</head>
+
+<body>
+	<div class="head_h3" style="position: relative;"><h3>质量检查管理平台</h3></div>
+	<div class="mainDiv">
+		<h2 align="center" style=" height:20px; line-height:20px; border:#0000CC 0px solid; margin-top:-10px;">质检反馈单</h2>
+		反馈单编号：xxxx&nbsp;&nbsp;&nbsp;&nbsp;反馈单时间：xxxx-xx-xx xx:xx:xx&nbsp;&nbsp;&nbsp;&nbsp;反馈单状态：xxxx
+		<fieldset>
+			<legend>质量检查信息</legend>
+				<table cellpadding="5" cellpadding="5" width="100%" border="0">
+					<tr>
+						<td>合格程度：</td><td><input /></td>
+						<td>处理结果：</td><td><input /></td>
+						<td>处理情况：</td><td><input /></td>
+						<td>是否TL9000：</td><td><input /></td>
+					</tr>
+					<tr>
+						<td>满意度：</td><td><input /></td>
+						<td>是否投诉：</td><td><input /></td>
+						<td>备注：</td><td><input /></td>
+						<td>&nbsp;</td><td>&nbsp;</td>
+					</tr>					
+				</table>
+	  	</fieldset>
+		<fieldset>
+			<legend>受理员</legend>
+				<div class="maginTopDiv">
+					<label>是否同意：</label><input name="hwyyj" id="hwyyj1" type="radio" /><label for="hwyyj1">同意</label><input name="hwyyj" id="hwyyj2" type="radio" /><label for="hwyyj2">不同意</label>	
+				</div>
+				<div>
+					<label style="float:left; margin-top:10px;">处理意见：</label><textarea rows="4" style=" overflow:auto; width:90%; margin-top:10px;"></textarea>
+				</div>
+				<div style="margin-top:10px; padding-right:40px;">
+					<div style="width:auto; float:right;">
+						<label>处理人：<input type="text" class="inputText" /></label>&nbsp;&nbsp;
+						<label>处理日期：<input type="text" class="inputText"  /></label>
+					</div>
+				</div>
+	  	</fieldset>
+		<fieldset>
+			<legend>受理员班长</legend>
+				<div class="maginTopDiv">
+					<label>是否同意：</label><input name="hwyyj" id="hwyyj1" type="radio" /><label for="hwyyj1">同意</label><input name="hwyyj" id="hwyyj2" type="radio" /><label for="hwyyj2">不同意</label>	
+				</div>
+				<div>
+					<label style="float:left; margin-top:10px;">处理意见：</label><textarea rows="4" style=" overflow:auto; width:90%; margin-top:10px;"></textarea>
+				</div>
+				<div style="margin-top:10px; padding-right:40px;">
+					<div style="width:auto; float:right;">
+						<label>处理人：<input type="text" class="inputText" /></label>&nbsp;&nbsp;
+						<label>处理日期：<input type="text" class="inputText"  /></label>
+					</div>
+				</div>
+	  	</fieldset>
+		<fieldset>
+			<legend>质检员</legend>
+				<div class="maginTopDiv">
+					<label>是否同意：</label><input name="hwyyj" id="hwyyj1" type="radio" /><label for="hwyyj1">同意</label><input name="hwyyj" id="hwyyj2" type="radio" /><label for="hwyyj2">不同意</label>	
+				</div>
+				<div>
+					<label style="float:left; margin-top:10px;">处理意见：</label><textarea rows="4" style=" overflow:auto; width:90%; margin-top:10px;"></textarea>
+				</div>
+				<div style="margin-top:10px; padding-right:40px;">
+					<div style="width:auto; float:right;">
+						<label>处理人：<input type="text" class="inputText" /></label>&nbsp;&nbsp;
+						<label>处理日期：<input type="text" class="inputText"  /></label>
+					</div>
+				</div>
+	  	</fieldset>
+		<div align="center" style="margin-top:15px;">
+			<input type="button" value="提交" />&nbsp;&nbsp;<input type="button" value="返回" />
+		</div>
+	</div>
+</body>
+</html>

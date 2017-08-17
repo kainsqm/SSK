@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.tExamExampaperExamineMapper">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tExamExampaperExamine">
+    <id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="FK_EXAM_EXAMPAPER_ID" jdbcType="INTEGER" property="fkExamExampaperId" />
+    <result column="FK_USER_ID" jdbcType="INTEGER" property="fkUserId" />
+    <result column="EXAMINEE_STATUS" jdbcType="VARCHAR" property="examineeStatus" />
+    <result column="EXAMPAPER_SCORE" jdbcType="INTEGER" property="exampaperScore" />
+    <result column="BEGIN_TIME" jdbcType="VARCHAR" property="beginTime" />
+    <result column="SUBMIT_TIME" jdbcType="VARCHAR" property="submitTime" />
+    <result column="FK_SCOREUSER_ID" jdbcType="INTEGER" property="fkScoreuserId" />
+    <result column="ISNORMAL" jdbcType="VARCHAR" property="isnormal" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+    <result column="ISREVERT" jdbcType="VARCHAR" property="isrevert" />
+    <result column="SURPLUSTIME" jdbcType="INTEGER" property="surplustime" />
+    <result column="TISFORCE" jdbcType="VARCHAR" property="tisforce" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PK_AUTO_ID, FK_EXAM_EXAMPAPER_ID, FK_USER_ID, EXAMINEE_STATUS, EXAMPAPER_SCORE, BEGIN_TIME, 
+    SUBMIT_TIME, FK_SCOREUSER_ID, ISNORMAL, ENABLED, ISREVERT, SURPLUSTIME, TISFORCE, 
+    ZUHU_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from "t_exam_exampaper_examine"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from "t_exam_exampaper_examine"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tExamExampaperExamine">
+    insert into t_exam_exampaper_examine (PK_AUTO_ID, FK_EXAM_EXAMPAPER_ID, FK_USER_ID, 
+      EXAMINEE_STATUS, EXAMPAPER_SCORE, BEGIN_TIME, 
+      SUBMIT_TIME, FK_SCOREUSER_ID, ISNORMAL, 
+      ENABLED, ISREVERT, SURPLUSTIME, 
+      TISFORCE, ZUHU_ID)
+    values (#{pkAutoId,jdbcType=INTEGER}, #{fkExamExampaperId,jdbcType=INTEGER}, #{fkUserId,jdbcType=INTEGER}, 
+      #{examineeStatus,jdbcType=VARCHAR}, #{exampaperScore,jdbcType=INTEGER}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{submitTime,jdbcType=TIMESTAMP}, #{fkScoreuserId,jdbcType=INTEGER}, #{isnormal,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=VARCHAR}, #{isrevert,jdbcType=VARCHAR}, #{surplustime,jdbcType=INTEGER}, 
+      #{tisforce,jdbcType=VARCHAR}, #{zuhuId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tExamExampaperExamine">
+    insert into t_exam_exampaper_examine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        PK_AUTO_ID,
+      </if>
+      <if test="fkExamExampaperId != null">
+        FK_EXAM_EXAMPAPER_ID,
+      </if>
+      <if test="fkUserId != null">
+        FK_USER_ID,
+      </if>
+      <if test="examineeStatus != null">
+        EXAMINEE_STATUS,
+      </if>
+      <if test="exampaperScore != null">
+        EXAMPAPER_SCORE,
+      </if>
+      <if test="beginTime != null">
+        BEGIN_TIME,
+      </if>
+      <if test="submitTime != null">
+        SUBMIT_TIME,
+      </if>
+      <if test="fkScoreuserId != null">
+        FK_SCOREUSER_ID,
+      </if>
+      <if test="isnormal != null">
+        ISNORMAL,
+      </if>
+      <if test="enabled != null">
+        ENABLED,
+      </if>
+      <if test="isrevert != null">
+        ISREVERT,
+      </if>
+      <if test="surplustime != null">
+        SURPLUSTIME,
+      </if>
+      <if test="tisforce != null">
+        TISFORCE,
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        #{pkAutoId,jdbcType=INTEGER},
+      </if>
+      <if test="fkExamExampaperId != null">
+        #{fkExamExampaperId,jdbcType=INTEGER},
+      </if>
+      <if test="fkUserId != null">
+        #{fkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="examineeStatus != null">
+        #{examineeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="exampaperScore != null">
+        #{exampaperScore,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fkScoreuserId != null">
+        #{fkScoreuserId,jdbcType=INTEGER},
+      </if>
+      <if test="isnormal != null">
+        #{isnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="isrevert != null">
+        #{isrevert,jdbcType=VARCHAR},
+      </if>
+      <if test="surplustime != null">
+        #{surplustime,jdbcType=INTEGER},
+      </if>
+      <if test="tisforce != null">
+        #{tisforce,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tExamExampaperExamine">
+    update t_exam_exampaper_examine
+    <set>
+      <if test="fkExamExampaperId != null">
+        FK_EXAM_EXAMPAPER_ID = #{fkExamExampaperId,jdbcType=INTEGER},
+      </if>
+      <if test="fkUserId != null">
+        FK_USER_ID = #{fkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="examineeStatus != null">
+        EXAMINEE_STATUS = #{examineeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="exampaperScore != null">
+        EXAMPAPER_SCORE = #{exampaperScore,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null">
+        BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitTime != null">
+        SUBMIT_TIME = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fkScoreuserId != null">
+        FK_SCOREUSER_ID = #{fkScoreuserId,jdbcType=INTEGER},
+      </if>
+      <if test="isnormal != null">
+        ISNORMAL = #{isnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        ENABLED = #{enabled,jdbcType=VARCHAR},
+      </if>
+      <if test="isrevert != null">
+        ISREVERT = #{isrevert,jdbcType=VARCHAR},
+      </if>
+      <if test="surplustime != null">
+        SURPLUSTIME = #{surplustime,jdbcType=INTEGER},
+      </if>
+      <if test="tisforce != null">
+        TISFORCE = #{tisforce,jdbcType=VARCHAR},
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tExamExampaperExamine">
+    update t_exam_exampaper_examine
+    set FK_EXAM_EXAMPAPER_ID = #{fkExamExampaperId,jdbcType=INTEGER},
+      FK_USER_ID = #{fkUserId,jdbcType=INTEGER},
+      EXAMINEE_STATUS = #{examineeStatus,jdbcType=VARCHAR},
+      EXAMPAPER_SCORE = #{exampaperScore,jdbcType=INTEGER},
+      BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP},
+      SUBMIT_TIME = #{submitTime,jdbcType=TIMESTAMP},
+      FK_SCOREUSER_ID = #{fkScoreuserId,jdbcType=INTEGER},
+      ISNORMAL = #{isnormal,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=VARCHAR},
+      ISREVERT = #{isrevert,jdbcType=VARCHAR},
+      SURPLUSTIME = #{surplustime,jdbcType=INTEGER},
+      TISFORCE = #{tisforce,jdbcType=VARCHAR},
+      ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+</mapper>

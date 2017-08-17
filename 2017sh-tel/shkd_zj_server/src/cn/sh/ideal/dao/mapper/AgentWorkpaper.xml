@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.IAgentWorkpaperDao" >
+  
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.AgentWorkpaper" >
+    <id column="AGENT_WORKPAPER_ID" property="agentworkpaperid" jdbcType="INTEGER" />
+    <result column="QC_USER_ID" property="qc_user_id" jdbcType="INTEGER" />
+    <result column="QC_WORKPAPER_TIME" property="qcworkpapertime" jdbcType="VARCHAR" />
+    <result column="QC_FEEDBACK" property="qcfeedback" jdbcType="VARCHAR" />
+    <result column="AGENT_USERID" property="agentuserid" jdbcType="INTEGER" />
+    <result column="AGENT_FEEDBACK" property="agentfeedback" jdbcType="VARCHAR" />
+    <result column="AGENT_VALIDATE" property="agentvalidate" jdbcType="VARCHAR" />
+    <result column="AGENT_FEEDBACK_TIME" property="agentfeedbacktime" jdbcType="VARCHAR" />
+    <result column="SEATMONITOR_USERID" property="seatmonitoruserid" jdbcType="INTEGER" />
+    <result column="SEATMONITOR_FEEDBACK" property="seatmonitorfeedback" jdbcType="VARCHAR" />
+    <result column="SEATMONITOR_TIME" property="seatmonitortime" jdbcType="VARCHAR" />
+    <result column="DEAL_STATE" property="dealstate" jdbcType="VARCHAR" />
+    <result column="startqcworkpapertime" property="startqcworkpapertime" />
+    <result column="stopqcworkpapertime" property="stopqcworkpapertime" />
+    <result column="agentworkid"  property="agentworkid" />
+    <result column="AGENT_TIME"  property="agenttime" />
+    <result column="agentusername"  property="agentusername" />
+    <result column="qcusername"  property="qcusername"/>
+    <result column="seatmoniusername"  property="seatmoniusername" />
+    <result column="seatmoniusername"  property="seatmoniusername" />
+    <result column="QC_ID"  property="qcid" jdbcType="VARCHAR" />
+    <result column="qcworkid"  property="qcworkid" />
+    <result column="groupName"  property="groupName" />
+    <result column="QC_TYPE" property="qc_type" />
+    
+  </resultMap>
+  
+  	 <select id="listAgentworkaper" parameterType="cn.sh.ideal.model.AgentWorkpaper" resultMap="BaseResultMap">
+    select 
+    		AGENT_WORKPAPER_ID,
+    		(select  WORK_ID  from t_sys_user t where t.user_id=taw.QC_USER_ID) as qcworkid,
+    		date_format(QC_WORKPAPER_TIME,'%Y-%m-%d %H:%m:%s') QC_WORKPAPER_TIME,
+    		(select  Smail_workid  from t_sys_user t where t.user_id=taw.AGENT_USERID) as agentworkid,
+    		t.GROUP_NAME as groupName,
+    		DEAL_STATE,
+    		tq.QC_TYPE,
+    		tq.QC_ID
+    from t_agent_workpaper taw
+    left  join t_qc tq on tq.T_AGENT_WORKPAPERID=taw.AGENT_WORKPAPER_ID
+    inner join t_sys_user t on taw.QC_USER_ID=t.user_id
+    where 1=1 and t.ENABLED='1'
+    
+     <if test="agentworkpaperid != null and agentworkpaperid != ''">
+       and  AGENT_WORKPAPER_ID = #{agentworkpaperid,jdbcType=INTEGER}
+      </if>
+      <if test="qcworkid != null and qcworkid != ''">
+       and taw.QC_USER_ID = (select t.user_id  from t_sys_user t where t.WORK_ID=#{qcworkid,jdbcType=VARCHAR})
+      </if>
+      <if test="startqcworkpapertime != null and startqcworkpapertime != ''" >
+       and QC_WORKPAPER_TIME between #{startqcworkpapertime,jdbcType=VARCHAR} 
+      </if>
+      <if test="stopqcworkpapertime != null and stopqcworkpapertime != ''" >
+   	 			and #{stopqcworkpapertime,jdbcType=VARCHAR}
+      </if>
+      <if test="agentworkid != null and  agentworkid !='' ">
+        and AGENT_USERID = (select t.user_id  from t_sys_user t where t.Smail_workid=#{agentworkid,jdbcType=VARCHAR})
+      </if>
+        <if test="groupName != null and  groupName !='' ">
+  		and	t.GROUP_NAME= #{groupName,jdbcType=VARCHAR}
+      </if>     
+      <if test="dealstate != null and dealstate != ''">
+        and DEAL_STATE = #{dealstate,jdbcType=VARCHAR}
+      </if>
+      <if test="qc_type != null and qc_type != ''">
+        and tq.QC_TYPE = #{qc_type,jdbcType=VARCHAR}
+      </if>
+        <if test="qcid != null and qcid != '' and qcid !=0  ">
+        and tq.QC_ID = #{qcid,jdbcType=VARCHAR}
+      </if>
+     order by AGENT_WORKPAPER_ID desc
+  </select>
+  <!-- 坐席列表查询 -->
+  		 <select id="listzcAgentworkaper" parameterType="cn.sh.ideal.model.AgentWorkpaper" resultMap="BaseResultMap">
+    select 
+    		AGENT_WORKPAPER_ID,
+    		(select  WORK_ID  from t_sys_user t where t.user_id=taw.QC_USER_ID) as qcworkid,
+    		(select  Smail_workid  from t_sys_user t where t.user_id=taw.AGENT_USERID) as agentworkid,
+    		date_format(QC_WORKPAPER_TIME,'%Y-%m-%d %H:%m:%s') QC_WORKPAPER_TIME,
+    		t.GROUP_NAME as groupName,
+    		DEAL_STATE ,
+    		tq.QC_TYPE,
+    		tq.QC_ID
+    from t_agent_workpaper taw
+    left  join t_qc tq on tq.T_AGENT_WORKPAPERID=taw.AGENT_WORKPAPER_ID
+    inner join t_sys_user t on t.user_id=taw.AGENT_USERID
+    where 1=1  and t.ENABLED='1'
+     <if test="agentworkpaperid != null and agentworkpaperid != ''">
+       and  AGENT_WORKPAPER_ID = #{agentworkpaperid,jdbcType=INTEGER}
+      </if>
+      <if test="startqcworkpapertime != null and startqcworkpapertime != ''" >
+       and QC_WORKPAPER_TIME between #{startqcworkpapertime,jdbcType=VARCHAR} 
+      </if>
+      <if test="stopqcworkpapertime != null and stopqcworkpapertime != ''" >
+   	 			and #{stopqcworkpapertime,jdbcType=VARCHAR}
+      </if> 
+       <if test="groupName != null and  groupName !='' ">
+  		and	t.GROUP_NAME= #{groupName,jdbcType=VARCHAR}
+      </if>  
+      <if test="agentworkid != null and  agentworkid!='' ">
+        and AGENT_USERID in((select ts.USER_ID from t_sys_user ts where ts.pid=(SELECT t.USER_ID FROM t_sys_user t WHERE t.work_id = #{agentworkid,jdbcType=VARCHAR} and t.ENABLED='1')))
+      </if>
+      <if test="dealstate != null and dealstate != ''">
+        and DEAL_STATE = #{dealstate,jdbcType=VARCHAR}
+      </if>
+      <if test="qc_type != null and qc_type != ''">
+        and tq.QC_TYPE = #{qc_type,jdbcType=VARCHAR}
+      </if>
+       <if test="qcid != null and qcid != '' and qcid !=0 ">
+        and tq.QC_ID = #{qcid,jdbcType=VARCHAR}
+      </if>
+     order by AGENT_WORKPAPER_ID desc
+  </select>
+   <select id="agentzccount" parameterType="cn.sh.ideal.model.AgentWorkpaper" resultType="java.lang.Integer" > 
+   select 
+    count(*)
+    from t_agent_workpaper taw
+     left  join t_qc tq on tq.T_AGENT_WORKPAPERID=taw.AGENT_WORKPAPER_ID
+    inner join t_sys_user t on t.user_id=taw.AGENT_USERID
+    where 1=1  
+    and t.ENABLED='1'
+     <if test="agentworkpaperid != null and agentworkpaperid != ''">
+       and  AGENT_WORKPAPER_ID = #{agentworkpaperid,jdbcType=INTEGER}
+      </if>
+      <if test="startqcworkpapertime != null and startqcworkpapertime != ''" >
+       and QC_WORKPAPER_TIME between #{startqcworkpapertime,jdbcType=VARCHAR} 
+      </if>
+      <if test="stopqcworkpapertime != null and stopqcworkpapertime != ''" >
+   	 		and #{stopqcworkpapertime,jdbcType=VARCHAR}
+      </if> 
+       <if test="groupName != null and  groupName !='' ">
+  		and	t.GROUP_NAME= #{groupName,jdbcType=VARCHAR}
+      </if>  
+       <if test="agentworkid != null and  agentworkid!='' ">
+       and AGENT_USERID in((select ts.USER_ID from t_sys_user ts where ts.pid=(SELECT t.USER_ID FROM t_sys_user t WHERE t.work_id = #{agentworkid,jdbcType=VARCHAR} and t.ENABLED='1')))
+      </if>
+      <if test="dealstate != null and dealstate != ''">
+        and DEAL_STATE = #{dealstate,jdbcType=VARCHAR}
+      </if>
+ 	  <if test="qc_type != null and qc_type != ''">
+        and tq.QC_TYPE = #{qc_type,jdbcType=VARCHAR}
+      </if>
+       <if test="qcid != null and qcid != '' and qcid !=0 ">
+        and tq.QC_ID = #{qcid,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  
+  
+   <select id="agentcount" parameterType="cn.sh.ideal.model.AgentWorkpaper" resultType="java.lang.Integer" >
+  
+   select 
+    count(1)
+    from t_agent_workpaper taw
+    left  join t_qc tq on tq.T_AGENT_WORKPAPERID=taw.AGENT_WORKPAPER_ID
+    inner join t_sys_user t on taw.QC_USER_ID=t.user_id
+    where 1=1
+    and t.ENABLED='1'
+     <if test="agentworkpaperid != null and agentworkpaperid != ''">
+       and  AGENT_WORKPAPER_ID = #{agentworkpaperid,jdbcType=INTEGER}
+      </if>
+      <if test="qcworkid != null and qcworkid != ''">
+        and taw.QC_USER_ID = (select t.user_id  from t_sys_user t where t.WORK_ID=#{qcworkid,jdbcType=VARCHAR})
+      </if>
+      <if test="startqcworkpapertime != null and startqcworkpapertime != ''" >
+       and QC_WORKPAPER_TIME between #{startqcworkpapertime,jdbcType=VARCHAR} 
+      </if>
+      <if test="stopqcworkpapertime != null and stopqcworkpapertime != ''" >
+   	 		and #{stopqcworkpapertime,jdbcType=VARCHAR}
+      </if> 
+       <if test="groupName != null and  groupName !='' ">
+  		and	t.GROUP_NAME= #{groupName,jdbcType=VARCHAR}
+      </if> 
+      <if test="agentworkid != null and  agentworkid !='' ">
+         and AGENT_USERID = (select t.user_id  from t_sys_user t where t.Smail_workid=#{agentworkid,jdbcType=VARCHAR})
+      </if>
+      <if test="dealstate != null and dealstate != ''">
+        and DEAL_STATE = #{dealstate,jdbcType=VARCHAR}
+      </if>
+  	  <if test="qc_type != null and qc_type != ''">
+        and tq.QC_TYPE = #{qc_type,jdbcType=VARCHAR}
+      </if>
+       <if test="qcid != null and qcid != '' and qcid !=0 ">
+        and tq.QC_ID = #{qcid,jdbcType=VARCHAR}
+      </if>
+  </select>
+  				<insert id="addagentWorkpaper" parameterType="cn.sh.ideal.model.AgentWorkpaper" useGeneratedKeys="true" keyProperty="agentworkpaperid">
+  					insert into t_agent_workpaper(
+  													QC_USER_ID,				
+  													QC_WORKPAPER_TIME,
+  													AGENT_USERID,
+  													DEAL_STATE
+  													) values(
+  																#{qc_user_id,jdbcType=INTEGER},
+  																	now(),
+  																	 #{agentuserid,jdbcType=INTEGER},
+  																	 1
+  																							)
+  													
+  				</insert>
+  
+
+		<update id="delagentWorkpaper" parameterType="java.lang.Integer">		
+		delete from t_agent_workpaper where AGENT_WORKPAPER_ID= #{agentid,jdbcType=INTEGER}
+	</update>
+
+  <update id="updQC" parameterType="java.lang.Integer">
+  	update t_qc set T_AGENT_WORKPAPERID=null where T_AGENT_WORKPAPERID= #{agentid,jdbcType=INTEGER}
+	  
+  </update>
+  
+  	   <select id="agentByid"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    		AGENT_WORKPAPER_ID,
+    		(select t.user_name from t_sys_user t where t.user_id=QC_USER_ID) as qcusername,
+    		date_format(QC_WORKPAPER_TIME,'%Y-%m-%d %H:%m:%s') QC_WORKPAPER_TIME,
+    		QC_FEEDBACK,
+    		(select user_name from t_sys_user ts where ts.user_id=(select t.Pid from t_sys_user t where t.user_id=AGENT_USERID))as agentusername,
+    		AGENT_FEEDBACK,
+    		AGENT_VALIDATE,
+    		 date_format(AGENT_FEEDBACK_TIME,'%Y-%m-%d %H:%m:%s') AGENT_FEEDBACK_TIME,
+    		(select t.user_name from t_sys_user t where t.user_id=SEATMONITOR_USERID) as seatmoniusername,
+    		SEATMONITOR_FEEDBACK,
+    		 date_format(SEATMONITOR_TIME,'%Y-%m-%d %H:%m:%s') SEATMONITOR_TIME,
+    		  date_format(AGENT_TIME,'%Y-%m-%d %H:%m:%s') AGENT_TIME,
+    		DEAL_STATE
+    from t_agent_workpaper
+    where AGENT_WORKPAPER_ID=#{agentid,jdbcType=INTEGER}
+    </select>  
+    
+  	<update id="updateagentWorkpaper" parameterType="cn.sh.ideal.model.AgentWorkpaper">
+  			update t_agent_workpaper set 
+  		<if test="agentvalidate != null and agentvalidate != ''">
+         AGENT_VALIDATE = #{agentvalidate,jdbcType=VARCHAR}
+      </if>
+      <if test="agentfeedback != null and agentfeedback != ''">
+        , AGENT_FEEDBACK = #{agentfeedback,jdbcType=VARCHAR}
+      </if>
+      <if test="agentfeedbacktime != null and agentfeedbacktime != ''" >
+       , AGENT_FEEDBACK_TIME = #{agentfeedbacktime,jdbcType=VARCHAR} 
+      </if>
+      <if test="seatmonitorfeedback != null and  seatmonitorfeedback !='' ">
+        , SEATMONITOR_FEEDBACK = #{seatmonitorfeedback,jdbcType=INTEGER}
+      </if>
+      <if test="seatmonitortime != null and seatmonitortime != ''">
+        , SEATMONITOR_TIME = #{seatmonitortime,jdbcType=VARCHAR}
+      </if> 
+         <if test="agenttime != null and  agenttime !='' ">
+       , AGENT_TIME = #{agenttime,jdbcType=VARCHAR}
+      </if>
+      <if test="seatmonitoruserid != null and  seatmonitoruserid !='' ">
+        , SEATMONITOR_USERID = #{seatmonitoruserid,jdbcType=VARCHAR}
+      </if>
+      <if test="qcfeedback != null and qcfeedback != ''">
+        , QC_FEEDBACK = #{qcfeedback,jdbcType=VARCHAR}
+      </if> 
+      <if test="dealstate != null and dealstate != ''">
+        , DEAL_STATE = #{dealstate,jdbcType=VARCHAR}
+      </if> 
+       	where AGENT_WORKPAPER_ID=#{agentworkpaperid,jdbcType=INTEGER}
+  	</update>
+  <select id="qcidbyagent"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  select QC_ID from t_qc  where  T_AGENT_WORKPAPERID=#{agentworkpaperid,jdbcType=INTEGER}
+  
+  </select>
+ <!--  <select id="selectagentworkpaperbydate" parameterType="cn.sh.ideal.model.AgentWorkpaper" resultMap="BaseResultMap">
+   select 
+    		AGENT_WORKPAPER_ID,
+    		QC_USER_ID,
+    		QC_WORKPAPER_TIME,
+    		AGENT_USERID,
+    		DEAL_STATE
+    from t_agent_workpaper
+    where 1=1
+      <if test="qcworkpapertime == null or qcworkpapertime == ''" >
+       and QC_WORKPAPER_TIME  #{qcworkpapertime,jdbcType=VARCHAR} 
+      </if>
+  </select> -->
+  
+</mapper>

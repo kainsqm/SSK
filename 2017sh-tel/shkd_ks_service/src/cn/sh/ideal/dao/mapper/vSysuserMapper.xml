@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.IvSysuserDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.vSysuser" >
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="WORK_ID" property="workId" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="Job" property="job" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap id="roleMap" type="cn.sh.ideal.model.SysRole" >
+    <result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_FLAG" property="roleFlag" jdbcType="VARCHAR" />
+    <result column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    USER_ID, 
+    WORK_ID, 
+    USER_NAME, 
+    GROUP_NAME, 
+    Job
+  </sql>
+  <delete id="deleteByExample" parameterType="cn.sh.ideal.model.vSysuser" >
+    delete from v_sysuser
+  </delete>
+  <select id="countByExample" parameterType="cn.sh.ideal.model.vSysuser" resultType="java.lang.Integer" >
+    select count(*) from v_sysuser
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_sysuser
+    <set >
+      <if test="record.userId != null" >
+         USER_ID = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.workId != null" >
+         WORK_ID = #{record.workId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+         USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupName != null" >
+         GROUP_NAME = #{record.groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.job != null" >
+         Job = #{record.job,jdbcType=VARCHAR},
+      </if>
+    </set>
+  </update>
+  
+  <select id="selectSysusers" resultMap="BaseResultMap" parameterType="cn.sh.ideal.model.vSysuser" >
+    	SELECT
+			su.USER_ID,
+			su.WORK_ID,
+			su.USER_NAME,
+			su.GROUP_NAME,
+			(
+				SELECT
+					GROUP_CONCAT(r.ROLE_NAME)
+				FROM
+					sh_kd_zj_test1.v_sysroleuser ur,
+					sh_kd_zj_test1.v_sysrole r
+				WHERE
+					ur.USER_ID = su.USER_ID
+				AND ur.ROLE_ID = r.ROLE_ID
+			) ROLE_NAME,
+			su.Job
+		FROM
+			sh_kd_zj_test1.v_sysuser  su
+		where su.WORK_ID IS NOT NULL
+      <if test="workId != null and workId !=''">
+          And su.WORK_ID  like'%${workId}%'
+      </if>
+      <if test="userName != null and userName !=''">
+          And su.USER_NAME like'%${userName}%'
+      </if>
+      <if test="groupName != null and groupName !=''">
+          And su.GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+      </if>
+      <if test="roleId != null and roleId !=''">
+          And su.USER_ID in (select USER_ID from sh_kd_zj_test1.v_sysroleuser where ROLE_ID = #{roleId,jdbcType=INTEGER})
+      </if>
+  </select>
+  
+  <select id="getGroups" resultMap="BaseResultMap">
+     select DISTINCT group_name from  sh_kd_zj_test1.v_sysuser where group_name is not null
+  </select>
+  
+  
+  <select id="getExamUsers" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+     select <include refid="Base_Column_List" />
+  		from sh_kd_zj_test1.v_sysuser
+ 		where USER_ID in (select ep.FK_USER_ID
+                     from t_exam_exampaper t, t_exam_exampaper_examine ep
+                    where t.PK_AUTO_ID = ep.FK_EXAM_EXAMPAPER_ID
+                      and t.FK_EXAM_ID = #{examId,jdbcType=INTEGER}
+                      and ep.ENABLED = 1)
+  </select>
+  
+  <select id="getRoles" resultMap="roleMap">
+     SELECT * FROM sh_kd_zj_test1.v_sysrole s               
+  </select>
+</mapper>

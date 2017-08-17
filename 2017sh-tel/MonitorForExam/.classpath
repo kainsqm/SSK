@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_79"/>
+	<classpathentry exported="true" kind="con" path="com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.springframework.MYECLIPSE_SPRING12_CORE"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.springframework.MYECLIPSE_SPRING12_WEB"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.springframework.MYECLIPSE_SPRING12_AOP"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.springframework.MYECLIPSE_SPRING12_DAO"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.springframework.MYECLIPSE_SPRING12_SUPPORT"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.springframework.MYECLIPSE_SPRING12_TESTING"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/classes12-ora.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-dbcp.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-digester.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-fileupload.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-pool.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-validator.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jakarta-oro.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jdbc2_0-stdext.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/quartz-1.6.0.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/spring-beans.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/spring-context.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/spring-core.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/spring-jdbc.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/spring.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/sqljdbc2005.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/struts.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mysql-connector-java-5.1.29.jar"/>
+	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
+</classpath>

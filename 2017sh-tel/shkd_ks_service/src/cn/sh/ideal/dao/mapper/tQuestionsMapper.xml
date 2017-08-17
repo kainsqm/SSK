@@ -1,0 +1,993 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItQuestionsDao">
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.tQuestions">
+		<id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+		<result column="QUES_CONTENT" jdbcType="VARCHAR" property="quesContent" />
+		<result column="QUES_SCORE" jdbcType="INTEGER" property="quesScore" />
+		<result column="QUES_TYPE" jdbcType="INTEGER" property="quesType" />
+		<result column="QUES_PICK" jdbcType="VARCHAR" property="quesPick" />
+		<result column="QUES_ANSWER" jdbcType="VARCHAR" property="quesAnswer" />
+		<result column="QUES_CORRECT_ANSWER" jdbcType="VARCHAR"
+			property="quesCorrectAnswer" />
+		<result column="FK_CODETYPE_ID" jdbcType="INTEGER" property="fkCodetypeId" />
+		<result column="QUES_STATUS" jdbcType="VARCHAR" property="quesStatus" />
+		<result column="QUES_ERROR_NUM" jdbcType="INTEGER" property="quesErrorNum" />
+		<result column="QUES_NANDU" jdbcType="VARCHAR" property="quesNandu" />
+		<result column="FK_INSERT_USER_ID" jdbcType="INTEGER" property="fkInsertUserId" />
+		<result column="INSERT_TIME" jdbcType="VARCHAR" property="insertTime" />
+		<result column="FK_UPDATE_USER_ID" jdbcType="INTEGER" property="fkUpdateUserId" />
+		<result column="fkInsertUserName" property="fkInsertUserName" />
+		<result column="startInsertTime" property="startInsertTime" />
+		<result column="endInsertTime" property="endInsertTime" />
+		<result column="businessType" property="businessType" />
+		<result column="businessId" property="businessId" />
+		<result column="exampaperId" property="exampaperId" />
+		
+		<result column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+		<result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+		
+		
+	</resultMap>
+	<sql id="Base_Column_List">
+		PK_AUTO_ID, QUES_CONTENT, QUES_SCORE, QUES_TYPE, QUES_PICK,
+		QUES_ANSWER,
+		QUES_CORRECT_ANSWER,
+		FK_CODETYPE_ID, QUES_STATUS,
+		QUES_ERROR_NUM, QUES_NANDU, FK_INSERT_USER_ID,
+		DATE_FORMAT(INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		FK_UPDATE_USER_ID, UPDATE_TIME, ZUHU_ID
+	</sql>
+
+	<sql id="Join_Column_List">
+		t.PK_AUTO_ID, t.QUES_CONTENT, t.QUES_SCORE, t.QUES_TYPE,
+		t.QUES_PICK, t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, t.QUES_ERROR_NUM, t.QUES_NANDU, t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, t.UPDATE_TIME, t.ZUHU_ID,c.NAME
+		businessType,c.ITEM_FLAG businessId
+	</sql>
+
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_questions
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByPrimaryCodeName" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT
+		t.PK_AUTO_ID, t.QUES_CONTENT, t.QUES_SCORE,
+		t.QUES_TYPE,
+		t.QUES_PICK, t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, t.QUES_ERROR_NUM, t.QUES_NANDU,
+		t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s')
+		INSERT_TIME,
+		t.FK_UPDATE_USER_ID, t.UPDATE_TIME, t.ZUHU_ID,c.NAME
+		businessType,c.PK_AUTO_ID businessId,u.user_name fkInsertUserName
+		FROM t_questions t LEFT JOIN
+		t_sys_code c
+		ON(t.FK_CODETYPE_ID=c.PK_AUTO_ID)
+		LEFT JOIN sh_kd_zj_test1.v_sysuser u ON(t.FK_INSERT_USER_ID=u.USER_ID)
+		WHERE t.PK_AUTO_ID= #{pkAutoId,jdbcType=INTEGER}
+	</select>
+
+	<!-- 获取考题列表集合 -->
+	<select id="getQuestionList" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select
+		t.PK_AUTO_ID, t.QUES_CONTENT, t.QUES_SCORE, t.QUES_TYPE,
+		t.QUES_PICK, t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, t.QUES_ERROR_NUM, t.QUES_NANDU, 
+	  	(select user_name from sh_kd_zj_test1.v_sysuser WHERE  user_id = t.FK_INSERT_USER_ID) fkInsertUserName,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, t.UPDATE_TIME, t.ZUHU_ID,c.NAME
+		businessType
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID)
+		where 1=1 and t.QUES_STATUS='1'
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		 <if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_questions
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="cn.sh.ideal.model.tQuestions">
+		insert into t_questions (
+		QUES_CONTENT, QUES_SCORE,
+		QUES_TYPE, QUES_PICK, QUES_ANSWER,
+		QUES_CORRECT_ANSWER, FK_CODETYPE_ID, QUES_STATUS,
+		QUES_ERROR_NUM,
+		QUES_NANDU, FK_INSERT_USER_ID,
+		INSERT_TIME, FK_UPDATE_USER_ID,
+		UPDATE_TIME,
+		ZUHU_ID)
+		values (#{quesContent,jdbcType=VARCHAR},
+		#{quesScore,jdbcType=INTEGER},
+		#{quesType,jdbcType=INTEGER},
+		#{quesPick,jdbcType=VARCHAR}, #{quesAnswer,jdbcType=VARCHAR},
+		#{quesCorrectAnswer,jdbcType=VARCHAR},
+		#{fkCodetypeId,jdbcType=INTEGER}, #{quesStatus,jdbcType=VARCHAR},
+		#{quesErrorNum,jdbcType=INTEGER}, #{quesNandu,jdbcType=VARCHAR},
+		#{fkInsertUserId,jdbcType=INTEGER},
+		#{insertTime,jdbcType=TIMESTAMP},
+		#{fkUpdateUserId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+		#{zuhuId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="cn.sh.ideal.model.tQuestions"
+		useGeneratedKeys="true" keyProperty="pkAutoId">
+		insert into t_questions
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="quesContent != null">
+				QUES_CONTENT,
+			</if>
+			<if test="quesScore != null">
+				QUES_SCORE,
+			</if>
+			<if test="quesType != null">
+				QUES_TYPE,
+			</if>
+			<if test="quesPick != null">
+				QUES_PICK,
+			</if>
+			<if test="quesAnswer != null">
+				QUES_ANSWER,
+			</if>
+			<if test="quesCorrectAnswer != null">
+				QUES_CORRECT_ANSWER,
+			</if>
+			<if test="fkCodetypeId != null">
+				FK_CODETYPE_ID,
+			</if>
+			<if test="quesStatus != null">
+				QUES_STATUS,
+			</if>
+			<if test="quesErrorNum != null">
+				QUES_ERROR_NUM,
+			</if>
+			<if test="quesNandu != null">
+				QUES_NANDU,
+			</if>
+			<if test="fkInsertUserId != null">
+				FK_INSERT_USER_ID,
+			</if>
+			<if test="insertTime != null">
+				INSERT_TIME,
+			</if>
+			<if test="fkUpdateUserId != null">
+				FK_UPDATE_USER_ID,
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME,
+			</if>
+			<if test="zuhuId != null">
+				ZUHU_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="quesContent != null">
+				#{quesContent,jdbcType=VARCHAR},
+			</if>
+			<if test="quesScore != null">
+				#{quesScore,jdbcType=INTEGER},
+			</if>
+			<if test="quesType != null">
+				#{quesType,jdbcType=INTEGER},
+			</if>
+			<if test="quesPick != null">
+				#{quesPick,jdbcType=VARCHAR},
+			</if>
+			<if test="quesAnswer != null">
+				#{quesAnswer,jdbcType=VARCHAR},
+			</if>
+			<if test="quesCorrectAnswer != null">
+				#{quesCorrectAnswer,jdbcType=VARCHAR},
+			</if>
+			<if test="fkCodetypeId != null">
+				#{fkCodetypeId,jdbcType=INTEGER},
+			</if>
+			<if test="quesStatus != null">
+				#{quesStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="quesErrorNum != null">
+				#{quesErrorNum,jdbcType=INTEGER},
+			</if>
+			<if test="quesNandu != null">
+				#{quesNandu,jdbcType=VARCHAR},
+			</if>
+			<if test="fkInsertUserId != null">
+				#{fkInsertUserId,jdbcType=INTEGER},
+			</if>
+			<if test="insertTime != null">
+				#{insertTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fkUpdateUserId != null">
+				#{fkUpdateUserId,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="zuhuId != null">
+				#{zuhuId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tQuestions">
+		update t_questions
+		<set>
+			<if test="quesContent != null">
+				QUES_CONTENT = #{quesContent,jdbcType=VARCHAR},
+			</if>
+			<if test="quesScore != null">
+				QUES_SCORE = #{quesScore,jdbcType=INTEGER},
+			</if>
+			<if test="quesType != null">
+				QUES_TYPE = #{quesType,jdbcType=INTEGER},
+			</if>
+			<if test="quesPick != null">
+				QUES_PICK = #{quesPick,jdbcType=VARCHAR},
+			</if>
+			<if test="quesAnswer != null">
+				QUES_ANSWER = #{quesAnswer,jdbcType=VARCHAR},
+			</if>
+			<if test="quesCorrectAnswer != null">
+				QUES_CORRECT_ANSWER =
+				#{quesCorrectAnswer,jdbcType=VARCHAR},
+			</if>
+			<if test="fkCodetypeId != null">
+				FK_CODETYPE_ID = #{fkCodetypeId,jdbcType=INTEGER},
+			</if>
+			<if test="quesStatus != null">
+				QUES_STATUS = #{quesStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="quesErrorNum != null">
+				QUES_ERROR_NUM = #{quesErrorNum,jdbcType=INTEGER},
+			</if>
+			<if test="quesNandu != null">
+				QUES_NANDU = #{quesNandu,jdbcType=VARCHAR},
+			</if>
+			<if test="fkInsertUserId != null">
+				FK_INSERT_USER_ID = #{fkInsertUserId,jdbcType=INTEGER},
+			</if>
+			<if test="insertTime != null">
+				INSERT_TIME = #{insertTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fkUpdateUserId != null">
+				FK_UPDATE_USER_ID = #{fkUpdateUserId,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="zuhuId != null">
+				ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tQuestions">
+		update t_questions
+		set QUES_CONTENT = #{quesContent,jdbcType=VARCHAR},
+		QUES_SCORE =
+		#{quesScore,jdbcType=INTEGER},
+		QUES_TYPE =
+		#{quesType,jdbcType=INTEGER},
+		QUES_PICK = #{quesPick,jdbcType=VARCHAR},
+		QUES_ANSWER = #{quesAnswer,jdbcType=VARCHAR},
+		QUES_CORRECT_ANSWER =
+		#{quesCorrectAnswer,jdbcType=VARCHAR},
+		FK_CODETYPE_ID =
+		#{fkCodetypeId,jdbcType=INTEGER},
+		QUES_STATUS =
+		#{quesStatus,jdbcType=VARCHAR},
+		QUES_ERROR_NUM =
+		#{quesErrorNum,jdbcType=INTEGER},
+		QUES_NANDU =
+		#{quesNandu,jdbcType=VARCHAR},
+		FK_INSERT_USER_ID =
+		#{fkInsertUserId,jdbcType=INTEGER},
+		INSERT_TIME =
+		#{insertTime,jdbcType=TIMESTAMP},
+		FK_UPDATE_USER_ID =
+		#{fkUpdateUserId,jdbcType=INTEGER},
+		UPDATE_TIME =
+		#{updateTime,jdbcType=TIMESTAMP},
+		ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+		where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+	</update>
+	<!-- 根据条件返回考题获取页数 -->
+	<select id="getQuestionCount" parameterType="cn.sh.ideal.model.tQuestions"
+		resultType="java.lang.Integer">
+		select
+		count(1)
+		from t_questions
+		where 1=1 and QUES_STATUS='1'
+		<if test="quesContent !=null  and quesContent !='' ">
+			and QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="countQuestion" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select
+		count(1)
+		from t_exampaper_questions
+		where FK_QUESTIONS_ID
+		=#{pkAutoId,jdbcType=INTEGER}
+	</select>
+
+
+	<select id="querExampaperId" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select FK_EXAMPAPER_ID
+		from t_exampaper_questions
+		where
+		PK_AUTO_ID
+		=#{pkAutoId,jdbcType=INTEGER}
+	</select>
+
+	<select id="queryQuesSelected" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from t_questions where PK_AUTO_ID in
+		<foreach item="questionId" index="index" collection="array"
+			open="(" separator="," close=")">
+			#{questionId}
+		</foreach>
+	</select>
+
+	<select id="queryNoAnswerByExampaperId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_questions
+		where pk_auto_id in
+		(select FK_QUESTIONS_ID
+		from t_exampaper_questions
+		where FK_EXAMPAPER_ID =
+		(select FK_EXAMPAPER_ID
+		from t_exam_exampaper
+		where pk_auto_id = (select FK_EXAM_EXAMPAPER_ID
+		from t_exam_exampaper_examine
+		where pk_auto_id =#{pkAutoId,jdbcType=INTEGER})) and ENABLED = 1)
+		and pk_auto_id not in (select FK_QUESTIONS_ID
+		from t_exam_results
+		where FK_E_EP_EXAMINEE_ID =#{pkAutoId,jdbcType=INTEGER})
+	</select>
+
+
+	<select id="selectQuestionsByEEUId" parameterType="cn.sh.ideal.model.tExampaperQuestions"
+		resultMap="BaseResultMap">
+		select a.ques_type,
+		a.ques_answer,
+		a.ques_correct_answer,
+		b.ques_score
+		from t_questions a, t_exampaper_questions b
+		where a.pk_auto_id = #{fkQuestionsId,jdbcType=INTEGER}
+		and b.FK_QUESTIONS_ID = a.pk_auto_id
+		and b.FK_EXAMPAPER_ID = #{fkExampaperId,jdbcType=INTEGER}
+		and b.ENABLED = 1
+		<if test="fkExamId != null and fkExamId !=''">
+			and b.FK_EXAM_ID = #{fkExamId,jdbcType=INTEGER}
+		</if>
+		<if test="fkUserId != null and fkUserId !=''">
+			and b.FK_USER_ID = #{fkUserId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+
+	<update id="updateErrorNum" parameterType="java.lang.Integer">
+		update t_questions
+		set QUES_ERROR_NUM = QUES_ERROR_NUM + 1
+		where pk_auto_id = #{pkAutoId,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectRandomQuestion" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select
+		t.PK_AUTO_ID, t.QUES_CONTENT, t.QUES_SCORE, t.QUES_TYPE,
+		t.QUES_PICK, t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, t.QUES_ERROR_NUM, t.QUES_NANDU, t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, t.UPDATE_TIME, t.ZUHU_ID,c.NAME
+		businessType,c.ITEM_FLAG businessId
+		from t_questions t left join
+		t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) where t.PK_AUTO_ID in
+		<foreach item="questionId" index="index" collection="array"
+			open="(" separator="," close=")">
+			#{questionId}
+		</foreach>
+	</select>
+	<select id="selectQuestionCount" parameterType="cn.sh.ideal.model.tQuestions"
+		resultType="java.lang.Integer">
+		select count(1) from t_questions where
+		<if test="quesType !=null  and quesType !='' ">
+			QUES_TYPE=#{quesType,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		and PK_AUTO_ID in
+		<foreach item="questIds" index="index" collection="questIds"
+			open="(" separator="," close=")">
+			#{questIds}
+		</foreach>
+	</select>
+
+
+	<select id="selectByCodeId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_questions
+		where FK_CODETYPE_ID = #{pkAutoId,jdbcType=INTEGER}
+	</select>
+
+	<select id="getQuesByExampaperId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT
+		Q.PK_AUTO_ID,
+		Q.QUES_CONTENT,
+		T.QUES_SCORE,
+		Q.QUES_TYPE,
+		Q.QUES_PICK,
+		Q.QUES_ANSWER,
+		Q.QUES_CORRECT_ANSWER,
+		Q.FK_CODETYPE_ID,
+		Q.QUES_STATUS,
+		Q.QUES_ERROR_NUM,
+		Q.QUES_NANDU,
+		Q.FK_INSERT_USER_ID,
+		DATE_FORMAT(Q.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		Q.FK_UPDATE_USER_ID,
+		Q.UPDATE_TIME,
+		(SELECT S.NAME FROM t_sys_code S WHERE S.PK_AUTO_ID=Q.FK_CODETYPE_ID) AS
+		businessType
+		FROM t_questions Q,t_exampaper_questions T
+		WHERE T.FK_QUESTIONS_ID=Q.PK_AUTO_ID
+		AND T.FK_EXAMPAPER_ID=#{pkAutoId,jdbcType=INTEGER}
+		AND T.ENABLED = 1
+	</select>
+
+
+	<select id="queryQeusByExamId" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select
+		t.PK_AUTO_ID, 
+		t.QUES_CONTENT,
+		t.QUES_SCORE, 
+		t.QUES_TYPE,
+		t.QUES_PICK,
+		t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, 
+		t.QUES_ERROR_NUM, 
+		t.QUES_NANDU, 
+		t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, 
+		t.UPDATE_TIME, 
+		t.ZUHU_ID,
+		c.NAME businessType,
+		u.USER_NAME fkInsertUserName,
+		c.PK_AUTO_ID businessId
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) left join t_exampaper_questions b on (b.FK_QUESTIONS_ID=t.PK_AUTO_ID) 
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1 and b.ENABLED!='0'
+		<if test="exampaperId!=null  and exampaperId !='' ">
+			and b.FK_EXAMPAPER_ID=#{exampaperId,jdbcType=INTEGER}
+		</if>
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	
+	<select id="queryQeusByExamIdCount" parameterType="cn.sh.ideal.model.tQuestions" resultType="java.lang.Integer">
+		select
+			count(1)
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) left join t_exampaper_questions b on (b.FK_QUESTIONS_ID=t.PK_AUTO_ID) 
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1 and b.ENABLED!='0'
+		<if test="exampaperId!=null  and exampaperId !='' ">
+			and b.FK_EXAMPAPER_ID=#{exampaperId,jdbcType=INTEGER}
+		</if>
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	
+	
+		<select id="queryQuestionList" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select  DISTINCT
+		t.PK_AUTO_ID, 
+		t.QUES_CONTENT,
+		t.QUES_SCORE, 
+		t.QUES_TYPE,
+		t.QUES_PICK,
+		t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, 
+		t.QUES_ERROR_NUM, 
+		t.QUES_NANDU, 
+		t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, 
+		t.UPDATE_TIME, 
+		t.ZUHU_ID,
+		c.NAME businessType,
+		u.USER_NAME fkInsertUserName,
+		c.PK_AUTO_ID businessId
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID)
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	
+	<select id="getQuestionListCount" parameterType="cn.sh.ideal.model.tQuestions" resultType="java.lang.Integer">
+		select  DISTINCT 
+			count(1)
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID)
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1 and t.QUES_STATUS='1'
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	
+<select id="getQuesTionbyExamIdList" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select DISTINCT
+		t.PK_AUTO_ID, 
+		t.QUES_CONTENT,
+		t.QUES_SCORE, 
+		t.QUES_TYPE,
+		t.QUES_PICK,
+		t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, 
+		t.QUES_ERROR_NUM, 
+		t.QUES_NANDU, 
+		t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, 
+		t.UPDATE_TIME, 
+		t.ZUHU_ID,
+		c.NAME businessType,
+		u.USER_NAME fkInsertUserName,
+		c.PK_AUTO_ID businessId
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) left join t_exampaper_questions b on (b.FK_QUESTIONS_ID=t.PK_AUTO_ID) 
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1
+		<if test="exampaperId!=null  and exampaperId !='' ">
+			and b.FK_EXAMPAPER_ID=#{exampaperId,jdbcType=INTEGER}
+		</if>
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+		
+<select id="getQuesTionbyExamIdCount" parameterType="cn.sh.ideal.model.tQuestions"
+		resultType="java.lang.Integer">
+		select DISTINCT
+		count(1)
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) left join t_exampaper_questions b on (b.FK_QUESTIONS_ID=t.PK_AUTO_ID) 
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1
+		<if test="exampaperId!=null  and exampaperId !='' ">
+			and b.FK_EXAMPAPER_ID=#{exampaperId,jdbcType=INTEGER}
+		</if>
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	<select id="getQUestionByRandomList" parameterType="cn.sh.ideal.model.tQuestions"
+		resultMap="BaseResultMap">
+		select DISTINCT
+		t.PK_AUTO_ID, 
+		t.QUES_CONTENT,
+		t.QUES_SCORE, 
+		t.QUES_TYPE,
+		t.QUES_PICK,
+		t.QUES_ANSWER,
+		t.QUES_CORRECT_ANSWER,
+		t.FK_CODETYPE_ID,
+		t.QUES_STATUS, 
+		t.QUES_ERROR_NUM, 
+		t.QUES_NANDU, 
+		t.FK_INSERT_USER_ID,
+		DATE_FORMAT(t.INSERT_TIME,'%Y-%m-%d %H:%m:%s') INSERT_TIME,
+		t.FK_UPDATE_USER_ID, 
+		t.UPDATE_TIME, 
+		t.ZUHU_ID,
+		c.NAME businessType,
+		u.USER_NAME fkInsertUserName,
+		c.PK_AUTO_ID businessId
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) left join t_questions_randomsel b on (b.FK_QUESTIONID=t.PK_AUTO_ID) 
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1
+		<if test="exampaperId!=null  and exampaperId !='' ">
+			and b.FK_EXAMPAPERID=#{exampaperId,jdbcType=INTEGER}
+		</if>
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	
+	<select id="getQUestionByRandomCount" parameterType="cn.sh.ideal.model.tQuestions"
+		resultType="java.lang.Integer">
+		select DISTINCT
+		count(1)
+		from t_questions t left join t_sys_code c
+		on(t.FK_CODETYPE_ID=c.PK_AUTO_ID) left join t_questions_randomsel b on (b.FK_QUESTIONID=t.PK_AUTO_ID) 
+		left join sh_kd_zj_test1.v_sysuser u on (t.FK_INSERT_USER_ID=u.USER_ID)
+		where 1=1
+		<if test="exampaperId!=null  and exampaperId !='' ">
+			and b.FK_EXAMPAPERID=#{exampaperId,jdbcType=INTEGER}
+		</if>
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT like '%${quesContent}%'
+		</if>
+		<if test="fkInsertUserId !=null  and fkInsertUserId !='' ">
+			and t.FK_INSERT_USER_ID=#{fkInsertUserId,jdbcType=INTEGER}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.ques_type=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesStatus !=null  and quesStatus !='' ">
+			and t.ques_status=#{quesStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="startInsertTime != null and startInsertTime != ''">
+			and t.INSERT_TIME &gt;=
+			#{startInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endInsertTime != null and endInsertTime != ''">
+			and t.INSERT_TIME &lt;=
+			#{endInsertTime,jdbcType=VARCHAR}
+		</if>
+		<if test="zuhuId !=null  and zuhuId !='' ">
+			and t.ZUHU_ID=#{zuhuId,jdbcType=VARCHAR}
+		</if>
+		order by t.PK_AUTO_ID desc
+	</select>
+	
+	<select id="checkQuestions" parameterType="cn.sh.ideal.model.tQuestions" resultType="java.lang.Integer" >
+	 select DISTINCT
+		count(1)
+		from t_questions t
+		where t.QUES_STATUS!=0
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT = #{quesContent,jdbcType=VARCHAR}
+		</if>
+		<if test="quesScore !=null  and quesScore !='' ">
+			and t.QUES_SCORE=#{quesScore,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.QUES_TYPE=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesPick !=null  and quesPick !='' ">
+			and t.QUES_PICK=#{quesPick,jdbcType=VARCHAR}
+		</if>
+		<if test="quesAnswer !=null  and quesAnswer !='' ">
+			and t.QUES_ANSWER=#{quesAnswer,jdbcType=VARCHAR}
+		</if>
+		<if test="quesCorrectAnswer !=null  and quesCorrectAnswer !='' ">
+			and t.QUES_CORRECT_ANSWER=#{quesCorrectAnswer,jdbcType=VARCHAR}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="checkQuestion" parameterType="cn.sh.ideal.model.tQuestions" resultType="java.lang.Integer" >
+	 select DISTINCT
+		t.PK_AUTO_ID
+		from t_questions t
+		where t.QUES_STATUS!=0
+		<if test="quesContent !=null  and quesContent !='' ">
+			and t.QUES_CONTENT = #{quesContent,jdbcType=VARCHAR}
+		</if>
+		<if test="quesScore !=null  and quesScore !='' ">
+			and t.QUES_SCORE=#{quesScore,jdbcType=INTEGER}
+		</if>
+		<if test="quesNandu !=null  and quesNandu !='' ">
+			and t.QUES_NANDU=#{quesNandu,jdbcType=VARCHAR}
+		</if>
+		<if test="quesType !=null  and quesType !='' ">
+			and t.QUES_TYPE=#{quesType,jdbcType=VARCHAR}
+		</if>
+		<if test="quesPick !=null  and quesPick !='' ">
+			and t.QUES_PICK=#{quesPick,jdbcType=VARCHAR}
+		</if>
+		<if test="quesAnswer !=null  and quesAnswer !='' ">
+			and t.QUES_ANSWER=#{quesAnswer,jdbcType=VARCHAR}
+		</if>
+		<if test="quesCorrectAnswer !=null  and quesCorrectAnswer !='' ">
+			and t.QUES_CORRECT_ANSWER=#{quesCorrectAnswer,jdbcType=VARCHAR}
+		</if>
+		<if test="fkCodetypeId !=null  and fkCodetypeId !='' ">
+			and t.FK_CODETYPE_ID=#{fkCodetypeId,jdbcType=INTEGER}
+		</if>
+		 LIMIT 1 
+	</select>
+</mapper>

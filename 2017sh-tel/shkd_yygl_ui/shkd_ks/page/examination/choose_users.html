@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>考试维护管理-新增选择考生</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px; background-image:url(../../img/login/title_bg.jpg);border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		table td{ height:30px; line-height:30px;}
+		table .search_table td.td_lable{ text-align:right;}
+		table .search_table td.td_value{ text-align:left;}
+		a{text-decoration : none;color:blue;}
+		red{color: red;}
+	</style>
+	<script type="text/javascript"> 
+	 	var maingrid_gd;
+	 	var dialog = frameElement.dialog;
+		var dialogData = dialog.get('data');//获取data参数
+		var inputName = dialogData.name; 
+	    var beginexam = {Rows: [
+				{
+					"examId":"3843301",
+					"examName":"张三",
+					"rolename":"admin",
+					"area":"园区",
+					"classname":"园区组",
+					"queuename":"队列1",
+					"intime":"2016-05-09 08:08:08",
+					"formaltime":"2017-05-09 08:08:08"
+				},
+				{
+					"examId":"3843302",
+					"examName":"张灵",
+					"rolename":"话务员",
+					"area":"园区",
+					"classname":"园区组",
+					"queuename":"队列2",
+					"intime":"2016-05-09 08:08:08",
+					"formaltime":"2017-05-09 08:08:08"
+				},
+				{
+					"examId":"3843303",
+					"examName":"刘婷",
+					"rolename":"话务员",
+					"area":"园区",
+					"classname":"园区组",
+					"queuename":"队列3",
+					"intime":"2016-05-09 08:08:08",
+					"formaltime":"2017-05-09 08:08:08"
+				},
+				{
+					"examId":"3843304",
+					"examName":"王涛",
+					"rolename":"超级管理园",
+					"area":"园区",
+					"classname":"园区组",
+					"queuename":"队列4",
+					"intime":"2016-05-09 08:08:08",
+					"formaltime":"2017-05-09 08:08:08"
+				}
+			],
+			Total: 4
+		};
+		$(function () {
+            	maingrid_gd= $("#record_list").ligerGrid({
+                columns: [                
+				{ display: '工号', name: 'examId', align: 'left', minWidth :60,isSort:false},
+				{ display: '姓名', name: 'examName', align: 'left', minWidth :60,isSort:false},
+				{ display: '角色', name: 'rolename', align: 'left', maxWidth :60,isSort:false},
+				{ display: '所属区域', name: 'area', align: 'left', minWidth :60,isSort:false},
+				{ display: '所属班组', name: 'classname', align: 'left', minWidth :60,isSort:false},
+                { display: '所属队列', name: 'queuename', align: 'left', width :100,isSort:false},
+				{ display: '入职时间', name: 'intime', align: 'left', minWidth :100,isSort:false},
+				{ display: '转正时间', name: 'formaltime', align: 'left', minWidth :100,isSort:false}
+                ], 
+                data:beginexam, sortName: 'examId',height:'100%', pageSize:10 ,width:"auto",rownumbers :true,checkbox:true
+            });
+            $("#pageloading").hide(); 
+        });
+		
+		function sumbitUsers(){
+			var selecteds = maingrid_gd.getSelecteds();
+			var alluser = "",txt = "[";
+			for (var i in selecteds) { 
+				alluser+= selecteds[i].examName+",";
+	            txt = txt + "{\"text\":\""+selecteds[i].examName+"\",\"id\":\""+i+"\"},";
+			} ;
+			window.parent.document.getElementById("chooseAllUsers").value = txt.substring(0,txt.length-1) +"]";
+			window.parent.document.getElementById(inputName).value = alluser.substring(0,alluser.length-1); 
+        	frameElement.dialog.close();
+		}
+		
+		function resetbutton(){
+			$("#userId").val("");
+			$("#userName").val("");
+			$("#rolecheck").val("0");
+			$("#classcheck").val("0");
+			$("#intime").val("");
+			$("#formaltime").val("");
+		}
+    </script> 
+</head>
+<body> 
+	<div style="">
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td class="td_lable">工号：</td><td class="td_value"><input type="text" id="userId"/></td>
+					<td class="td_lable">姓名：</td><td class="td_value"><input type="text" id="userName"/></td>
+				</tr>
+				<tr>
+					<td class="td_lable">角色：</td><td class="td_value">
+						<select name="rolecheck" id="rolecheck" style="width: 135px">
+			                <option value="0">---请选择角色---</option>
+			                <option value="超级管理员">超级管理员</option>
+			                <option value="话务员">话务员</option>
+			                <option value="admin">admin</option>
+			            </select> 
+					</td>
+					<td class="td_lable">组室：</td><td class="td_value">
+						<select name="classcheck" id="classcheck" style="width: 135px">
+			                <option value="0">---请选择组室---</option>
+			                <option value="opt1">组室1</option>
+			                <option value="opt2">组室2</option>
+			                <option value="opt3">组室3</option>
+			                <option value="opt4">组室4</option>
+			            </select> 
+					</td>
+				</tr>
+				<tr>
+					<td class="td_lable">入职时间：</td><td class="td_value"><input id="intime" class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+					<td class="td_lable">转正时间：</td><td class="td_value"><input id="formaltime" class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+				</tr>
+				<tr>
+					<td colspan="8" align="center">
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="提交" onclick="sumbitUsers()"/>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" id="resetbutton" onclick="resetbutton()"/></td>
+					</td>
+				</tr>
+			</table>			
+		</div>
+		
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

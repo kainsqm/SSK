@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IQCDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.QC">
+    <id column="QC_ID" jdbcType="INTEGER" property="qcId" />
+    <result column="RECORD_ID" jdbcType="INTEGER" property="recordId" />
+    <result column="WORKORDER_ID" jdbcType="INTEGER" property="workorderId" />
+    <result column="TEMPLATE_ID" jdbcType="INTEGER" property="templateId" />
+    <result column="QC_SUM" jdbcType="VARCHAR" property="qcSum" />
+    <result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+    <result column="QC_USER_ID" jdbcType="INTEGER" property="qcUserId" />
+    <result column="QC_USER_WORKID" jdbcType="VARCHAR" property="qcWorkid" />
+    <result column="QC_TIME" jdbcType="TIMESTAMP" property="qcTime" />
+    <result column="T_AGENT_WORKPAPERID" jdbcType="INTEGER" property="agentWorkPaperId" />
+    <result column="TELSUM_ID" jdbcType="INTEGER" property="telsumId" />
+    <result column="QC_TYPE" jdbcType="INTEGER" property="qc_type" />
+    <result column="AGENTWORKID" jdbcType="VARCHAR" property="agentWorkid" />
+    
+    
+    
+  </resultMap>
+  <sql id="Base_Column_List">
+    QC_ID, RECORD_ID, WORKORDER_ID, TEMPLATE_ID, QC_SUM, ENABLED, QC_USER_ID, QC_TIME,
+    T_AGENT_WORKPAPERID,QC_USER_WORKID,TELSUM_ID,QC_TYPE,AGENTWORKID
+  </sql>
+  <select id="selectByRecordId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_qc
+    where ENABLED='1' and RECORD_ID = #{recordId,jdbcType=INTEGER} 
+  </select>
+  
+  <select id="selectByWorkOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_qc
+    where ENABLED='1' and WORKORDER_ID = #{workOrderId,jdbcType=INTEGER} 
+  </select>
+  
+  <select id="selectByQcid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  select 
+  <include refid="Base_Column_List" />
+  from t_qc
+  where ENABLED='1' and QC_ID = #{qcId,jdbcType=INTEGER} 
+  </select>
+  
+  <select id="selectBytelsumId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  select 
+  <include refid="Base_Column_List" />
+  from t_qc
+   where ENABLED='1' and TELSUM_ID = #{telsumId,jdbcType=INTEGER} 
+  </select>
+  
+  <update id="deleteByRecordid" parameterType="java.lang.Integer" >
+    update  t_qc set ENABLED='0' 
+      where RECORD_ID = #{recordId,jdbcType=INTEGER}
+    
+  </update>
+  <!-- 删除质检信息 -->
+  <update id="deleteByqcid" parameterType="java.lang.Integer" >
+    update  t_qc set ENABLED='0' 
+      where QC_ID = #{qcId,jdbcType=INTEGER} 
+  </update>
+  
+  
+  <insert id="insert" parameterType="cn.sh.ideal.model.QC" useGeneratedKeys="true" keyProperty="qcId">
+    insert into t_qc ( RECORD_ID, WORKORDER_ID, 
+      TEMPLATE_ID, QC_SUM, ENABLED, 
+      QC_USER_ID, QC_USER_WORKID,QC_TIME,T_AGENT_WORKPAPERID,QC_TYPE,TELSUM_ID,AGENTWORKID)
+    values ( #{recordId,jdbcType=INTEGER}, #{workorderId,jdbcType=INTEGER}, 
+      #{templateId,jdbcType=INTEGER}, #{qcSum,jdbcType=VARCHAR}, '1', 
+      #{qcUserId,jdbcType=INTEGER},#{qcWorkid,jdbcType=VARCHAR}, now(), #{agentWorkPaperId,jdbcType=INTEGER}, 
+      #{qc_type,jdbcType=INTEGER}, #{telsumId,jdbcType=INTEGER},#{agentWorkid,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.QC">
+    update t_qc
+    set  QC_TIME =now(),  ENABLED = '1'
+      <if test="recordId != null and recordId != ''">
+      	,RECORD_ID = #{recordId,jdbcType=INTEGER}
+     </if>
+   	 <if test="workorderId != null and workorderId != ''">
+		,WORKORDER_ID = #{workorderId,jdbcType=INTEGER}
+	</if>
+	<if test="templateId != null and templateId != ''">
+		, TEMPLATE_ID = #{templateId,jdbcType=INTEGER}
+	</if>
+	<if test="qcSum != null and qcSum != ''">
+		, QC_SUM = #{qcSum,jdbcType=VARCHAR}
+	</if>
+
+	<if test="qcUserId != null and qcUserId != ''">
+		, QC_USER_ID = #{qcUserId,jdbcType=INTEGER}
+	</if>
+	<if test="qcWorkid != null and qcWorkid != ''">
+		, QC_USER_WORKID = #{qcWorkid,jdbcType=VARCHAR}
+	</if>
+    <if test="agentWorkPaperId != null and agentWorkPaperId != ''">
+		, T_AGENT_WORKPAPERID = #{agentWorkPaperId,jdbcType=INTEGER}
+	</if>
+    where QC_ID = #{qcId,jdbcType=INTEGER}
+  </update>
+</mapper>

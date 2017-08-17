@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IUserInfoDao">
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.UserInfo">
+		<id column="USER_ID" jdbcType="INTEGER" property="userId" />
+		<result column="WORK_ID" jdbcType="VARCHAR" property="workId" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="PASSWD" jdbcType="VARCHAR" property="passwd" />
+		<result column="DATA_FROM" jdbcType="VARCHAR" property="dataFrom" />
+		<result column="Pid" jdbcType="INTEGER" property="pid" />
+		<result column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+		<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+		<result column="IS_DISPLAY" jdbcType="VARCHAR" property="isDisplay" />
+		<result column="CREATE_USER_ID" jdbcType="INTEGER" property="createUserId" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_USER_ID" jdbcType="INTEGER" property="updateUserId" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="Job" jdbcType="VARCHAR" property="job" />
+		<result column="rolename" jdbcType="VARCHAR" property="rolename" />
+		<result column="role_flag" jdbcType="VARCHAR" property="role_flag" />
+		<result column="Smail_workid" jdbcType="VARCHAR" property="smailWorkid" />
+		<result column="role_id" jdbcType="INTEGER" property="role_id" />
+		<result column="autoid" jdbcType="INTEGER" property="autoid" />
+
+
+	</resultMap>
+	<resultMap id="UserBaseResultMap" type="cn.sh.ideal.model.UserInfo">
+		<result column="WORK_ID" jdbcType="VARCHAR" property="workId" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		tsu.USER_ID, tsu.WORK_ID, tsu.USER_NAME, tsu.PASSWD, tsu.DATA_FROM, tsu.Pid,
+		tsu.ENABLED, tsu.GROUP_NAME, tsu.IS_DISPLAY,
+		tsu.CREATE_USER_ID, tsu.CREATE_TIME, tsu.UPDATE_USER_ID, tsu.UPDATE_TIME, tsu.Job,
+		tsu.Smail_workid
+  </sql>
+
+
+	<insert id="insert" parameterType="cn.sh.ideal.model.UserInfo"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into t_sys_user (WORK_ID, USER_NAME,
+		PASSWD, DATA_FROM, Pid,
+		ENABLED, GROUP_NAME, IS_DISPLAY,
+		CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID,
+		UPDATE_TIME, Job, Smail_workid
+		)
+		values (#{workId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+		#{passwd,jdbcType=VARCHAR}, #{dataFrom,jdbcType=VARCHAR},
+		#{pid,jdbcType=INTEGER},
+		'1', #{groupName,jdbcType=VARCHAR}, '1',
+		#{createUserId,jdbcType=INTEGER}, now(), #{updateUserId,jdbcType=INTEGER},
+		#{updateTime,jdbcType=TIMESTAMP}, #{job,jdbcType=VARCHAR},
+		#{smailWorkid,jdbcType=VARCHAR}
+		)
+  </insert>
+
+	<insert id="insertroleuser" parameterType="cn.sh.ideal.model.UserInfo"
+		useGeneratedKeys="true" keyProperty="autoid">
+		insert into
+		t_sys_roleuser(USER_ID,ROLE_ID,ENABLED,CREATE_USER_ID,CREATE_TIME)
+		values(#{userId,jdbcType=INTEGER}, #{role_id,jdbcType=INTEGER},'1',
+		#{createUserId,jdbcType=INTEGER},now())
+  </insert>
+
+	<select id="getUserInfo" resultMap="BaseResultMap"
+		parameterType="cn.sh.ideal.model.UserInfo">
+		select
+		t.ROLE_ID as role_id,
+		t.ROLE_NAME as rolename,
+		t.ROLE_FLAG as role_flag,
+		<include refid="Base_Column_List" />
+		from t_sys_user tsu
+		inner join t_sys_roleuser ts ON ts.USER_ID=tsu.USER_ID
+		left join t_sys_role t on t.ROLE_ID=ts.ROLE_ID
+		where 1=1
+		<if test="workId != null and workId !=''">
+			and WORK_ID = #{workId,jdbcType=VARCHAR}
+      </if>
+		<if test="passwd != null">
+			and PASSWD = #{passwd,jdbcType=VARCHAR}
+      </if>
+		<if test="userName != null and userName !=''">
+			and USER_NAME like '%${userName}%'
+      </if>
+      <if test="groupName != null and groupName !=''">
+			and GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+      </if>
+      <if test="role_flag != null and role_flag !=''">
+			and t.role_flag = #{role_flag,jdbcType=VARCHAR}
+      </if>	
+		and tsu.ENABLED='1'
+		and tsu.Pid='1'
+	</select>
+
+	<select id="getsmailworid" resultMap="BaseResultMap"
+		parameterType="cn.sh.ideal.model.UserInfo">
+		select
+		tsu.USER_ID, tsu.USER_NAME, tsu.PASSWD, tsu.DATA_FROM, tsu.Pid,
+		tsu.ENABLED, tsu.GROUP_NAME, tsu.IS_DISPLAY,
+		tsu.CREATE_USER_ID, tsu.CREATE_TIME, tsu.UPDATE_USER_ID, tsu.UPDATE_TIME, tsu.Job,
+		tsu.Smail_workid as workId
+		from t_sys_user tsu
+		where 1=1
+		<if test="userId != null and userId!=''">
+			and Pid= #{userId,jdbcType=VARCHAR}
+      </if>
+		and tsu.ENABLED='1'
+	</select>
+	
+	
+	<!-- by nwq 根据小工号查询相关信息 -->
+	<select id="getUserBySmallworkid" resultMap="UserBaseResultMap"
+		parameterType="cn.sh.ideal.model.UserInfo">
+		select
+		tsu.USER_NAME,
+	    tsu.GROUP_NAME,
+		tsu.WORK_ID 
+		from t_sys_user tsu
+		where 1=1
+		<if test="smailWorkid != null and smailWorkid!=''">
+			and tsu.user_id=(select Pid from t_sys_user where Smail_workid= #{smailWorkid,jdbcType=VARCHAR} and ENABLED='1')
+      </if>
+		and tsu.ENABLED='1'
+	</select>
+	
+	
+	
+	
+	<select id="selectSmailWorkId" resultMap="BaseResultMap"
+		parameterType="cn.sh.ideal.model.UserInfo">
+		select
+		tsu.USER_ID, tsu.USER_NAME, tsu.PASSWD, tsu.DATA_FROM, tsu.Pid,
+		tsu.ENABLED, tsu.GROUP_NAME, tsu.IS_DISPLAY,
+		tsu.CREATE_USER_ID, tsu.CREATE_TIME, tsu.UPDATE_USER_ID, tsu.UPDATE_TIME, tsu.Job,
+		tsu.Smail_workid 
+		from t_sys_user tsu
+		
+		where 1=1
+		<if test="userId != null and userId!=''">
+			and Pid= #{userId,jdbcType=VARCHAR}
+      </if>
+      <if test="dataFrom != null and dataFrom!=''">
+			and DATA_FROM= #{dataFrom,jdbcType=VARCHAR}
+      </if>
+		and tsu.ENABLED='1'
+	</select>
+
+
+
+	<select id="countuser" resultType="java.lang.Integer"
+		parameterType="cn.sh.ideal.model.UserInfo">
+		select
+		count(*)
+		from t_sys_user tsu
+		inner join t_sys_roleuser ts ON ts.USER_ID=tsu.USER_ID
+		left join t_sys_role t on t.ROLE_ID=ts.ROLE_ID
+		where 1=1
+		<if test="workId != null and workId!='' ">
+			and WORK_ID = #{workId,jdbcType=VARCHAR}
+      </if>
+		<if test="passwd != null">
+			and PASSWD = #{passwd,jdbcType=VARCHAR}
+      </if>
+		<if test="userName != null and userName !=''">
+			and USER_NAME like '%${userName}%'
+      </if>
+      <if test="role_flag != null and role_flag !=''">
+			and t.role_flag = #{role_flag,jdbcType=VARCHAR}
+      </if>
+		and tsu.ENABLED='1'
+		and tsu.Pid ='1'
+	</select>
+	<select id="userinfoByworkid" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		t.ROLE_NAME as rolename,
+		t.ROLE_FLAG role_flag,
+		t.ROLE_ID as role_id,
+		<include refid="Base_Column_List" />
+		from t_sys_user tsu
+		inner join t_sys_roleuser ts ON ts.USER_ID=tsu.USER_ID
+		left join t_sys_role t on t.ROLE_ID=ts.ROLE_ID
+		where WORK_ID= #{workId,jdbcType=VARCHAR} and tsu.ENABLED='1'
+	</select>
+
+	<update id="resetPasswd" parameterType="cn.sh.ideal.model.UserInfo">
+		update t_sys_user set PASSWD=#{passwd,jdbcType=VARCHAR} where
+		WORK_ID=#{workId,jdbcType=VARCHAR}
+  </update>
+
+	<update id="deluserInfo" parameterType="java.lang.String">
+		update t_sys_user set ENABLED='0' where WORK_ID=#{workId,jdbcType=VARCHAR}
+	</update>
+	<update id="delsmailWorkid" parameterType="java.lang.Integer">
+		update t_sys_user set ENABLED='0' where Pid=#{userId,jdbcType=INTEGER}
+	</update>
+
+	<update id="upduserRole" parameterType="java.lang.Integer">
+		update t_sys_roleuser set ENABLED='0' where
+		USER_ID=#{userId,jdbcType=VARCHAR}
+  </update>
+
+	<update id="updUserInfo" parameterType="cn.sh.ideal.model.UserInfo">
+		update t_sys_user 
+		<set>
+		<if test="workId != null and workId!=''">
+			WORK_ID= #{workId,jdbcType=VARCHAR},
+      </if>
+		<if test="userName != null and userName!=''">
+			USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+		<if test="passwd != null and passwd!=''">
+			PASSWD = #{passwd,jdbcType=VARCHAR},
+      </if>
+		<if test="pid != null and pid!=''">
+			Pid = #{pid,jdbcType=INTEGER},
+      </if>
+		<if test="enabled != null and enabled!=''">
+			ENABLED = #{enabled,jdbcType=VARCHAR},
+      </if>
+		<if test="groupName != null and groupName!=''">
+			GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+      </if>
+		<if test="isDisplay != null and isDisplay!=''">
+			IS_DISPLAY = #{isDisplay,jdbcType=VARCHAR},
+      </if>
+		<if test="updateUserId != null and updateUserId!=''">
+			UPDATE_USER_ID = #{updateUserId,jdbcType=INTEGER},
+      </if>
+		<if test="job != null and job!=''">
+			Job = #{job,jdbcType=VARCHAR},
+      </if>
+		<if test="smailWorkid != null and smailWorkid!=''">
+			Smail_workid = #{smailWorkid,jdbcType=VARCHAR},
+      </if>
+      		UPDATE_TIME = now()
+      </set>	
+		where USER_ID = #{userId,jdbcType=INTEGER}
+
+	</update>
+
+	<update id="updateuserRolebyuserid" parameterType="cn.sh.ideal.model.UserInfo">
+		update t_sys_roleuser set
+		ROLE_ID=#{role_id,jdbcType=INTEGER},UPDATE_TIME=now(),UPDATE_USER_ID=#{updateUserId,jdbcType=INTEGER}
+		where USER_ID=#{userId,jdbcType=VARCHAR}
+  </update>
+
+
+	<select id="userinfoByuserid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		t.ROLE_ID as role_id,
+		<include refid="Base_Column_List" />
+		from t_sys_user tsu
+		inner join t_sys_roleuser ts ON ts.USER_ID=tsu.USER_ID
+		left join t_sys_role t on t.ROLE_ID=ts.ROLE_ID
+		where tsu.USER_ID = #{userId,jdbcType=INTEGER}
+	</select>
+
+	<select id="rolelist" resultMap="BaseResultMap">
+		select
+		ROLE_ID as role_id,ROLE_NAME as rolename
+		from t_sys_role where ENABLED='1'
+  </select>
+  
+  <select id="selectByBigWorkid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select <include refid="Base_Column_List" />
+		from t_sys_user  tsu where ENABLED='1' and DATA_FROM='1'
+		and tsu.WORK_ID=#{workId,jdbcType=VARCHAR}
+  </select>
+  
+ <select id="selectUserId"  resultType ="java.lang.Integer"  parameterType="cn.sh.ideal.model.UserInfo">
+			SELECT  t2.USER_ID  FROM  t_sys_user t1, t_sys_user t2  WHERE
+		t1.USER_ID=t2.Pid
+		and t1.ENABLED='1'
+	  <if test="smailWorkid != null and smailWorkid!=''">
+			and t2.Smail_workid= #{smailWorkid,jdbcType=VARCHAR}
+      </if>
+      <if test="workId != null and workId!=''">
+			and t1.WORK_ID= #{workId,jdbcType=VARCHAR}
+      </if>
+  </select>
+	
+	<select id="selectgroupName" resultMap="BaseResultMap">
+	select distinct  GROUP_NAME from t_sys_user where ENABLED='1'
+	</select>
+	
+	<update id="deleteBigWorkid" >     
+	    update  t_sys_user set ENABLED='0',
+	     UPDATE_TIME=now()
+	     where DATA_FROM='1' 
+	     and WORK_ID not in
+	     <foreach collection="userlist" item="user"  open="(" separator="," close=")">     
+	        #{user}      
+	     </foreach>  
+	</update>
+	<update id="deleteSmallWorkid" >     
+	    update  t_sys_user set ENABLED='0',
+	     UPDATE_TIME=now()
+	     where DATA_FROM='1'
+	     and Smail_workid not in
+	     <foreach collection="userlist" item="user"  open="(" separator="," close=")">     
+	        #{user}      
+	     </foreach>
+	     and pid=#{pid,jdbcType=INTEGER}
+	</update>
+
+</mapper>

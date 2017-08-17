@@ -1,0 +1,507 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>用户管理</title>
+<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css"
+	rel="stylesheet" type="text/css" />
+<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+<link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet"
+	type="text/css" />
+<script src="../../lib/jquery/jquery-1.9.0.min.js"
+	type="text/javascript"></script>
+<script src="../../lib/ligerUI/js/ligerui.all.js" type="text/javascript"></script>
+<script src="../../lib/ligerUI/js/plugins/ligerPopupEdit.js"></script>
+<script src="../../lib/jquery-validation/jquery.validate.min.js"></script>
+
+<script language="javascript" type="text/javascript"
+	src="../../js/My97DatePicker/WdatePicker.js"></script>
+
+<style type="text/css">
+div.title_div {
+	border-radius: 5px;
+	text-align: left;
+	margin-top: 5px;
+	border: solid 1px #D7D7D7;
+	width: 90%;
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+	font-size: 14px;
+	font-family: "黑体";
+}
+
+input.input_text {
+	border-radius: 5px;
+	width: 130px;
+	height: 18px;
+	line-height: 18px;
+	padding-left: 3px;
+}
+
+input[type='button'] {
+	border: #d3d3d3 1px solid;
+	width: 80px;
+	height: 25px;
+	cursor: pointer;
+}
+
+input.date_text {
+	border-radius: 5px;
+	width: 135px;
+	height: 18px;
+	line-height: 18px;
+}
+
+table td {
+	height: 30px;
+	line-height: 30px;
+}
+
+table .search_table td.td_lable {
+	text-align: right;
+}
+
+table .search_table td.td_value {
+	text-align: left;
+}
+
+a {
+	text-decoration: none;
+	color: blue;
+}
+
+red {
+	color: red;
+}
+</style>
+<SCRIPT type="text/javascript">
+	/*	$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			$("#selectAll").bind("click", selectAll);
+		});*/
+//-->
+</SCRIPT>
+<script type="text/javascript">
+	$(function() {
+		$("#form1").ligerForm({
+			validate : true
+		});
+		$("#layout1").ligerLayout({
+			leftWidth : 200,
+			height : '99%'
+		});
+	});
+</script>
+<script type="text/javascript">
+	var TreeDeptData = {
+		Rows : [ {
+			id : '01',
+			username : "宋微微",
+			workId : "AKZ0001",
+			role : "话务员",
+			bumen : "质检班组",
+			data1 : "20150215",
+			data2 : "20150705"
+		}, {
+			id : '01',
+			username : "宋微微",
+			workId : "AKZ0001",
+			role : "话务员",
+			bumen : "质检班组",
+			data1 : "20150215",
+			data2 : "20150705"
+		}, {
+			id : '01',
+			username : "宋微微",
+			workId : "AKZ0001",
+			role : "话务员",
+			bumen : "质检班组",
+			data1 : "20150215",
+			data2 : "20150705"
+		}, {
+			id : '01',
+			username : "宋微微",
+			workId : "AKZ0001",
+			role : "话务员",
+			bumen : "质检班组",
+			data1 : "20150215",
+			data2 : "20150705"
+		}, {
+			id : '01',
+			username : "宋微微",
+			workId : "AKZ0001",
+			role : "话务员",
+			bumen : "质检班组",
+			data1 : "20150215",
+			data2 : "20150705"
+		}, {
+			id : '01',
+			username : "宋微微",
+			workId : "AKZ0001",
+			role : "话务员",
+			bumen : "质检班组",
+			data1 : "20150215",
+			data2 : "20150705"
+		}
+
+		]
+	};
+
+	var manager;
+	$(function() {
+		manager = $("#workpaper_list")
+				.ligerGrid(
+						{
+							columns : [
+									{
+										display : '操作',
+										isSort : false,
+										minWidth : 180,
+										align : 'centen',
+										isSort : false,
+										render : function(rowdata, rowindex,
+												value) {
+											var h = "";
+											h += "<a href='javascript:void(0);' onclick='eidt_user(\"update\",\""+rowindex+"\");'>编辑</a> ";
+											h += "<a href='javascript:void(0);' onclick='deleteUser(\""
+													+ rowdata.username
+													+ "\");'>删除</a> ";
+											h += "<a href='javascript:void(0);' onclick='resetPwd(\""
+													+ rowdata.username
+													+ "\");'>重置密码</a> ";
+											h += "<a href='javascript:void(0);' onclick='changeRoleInfo(\""
+													+ rowdata.username
+													+ "\");'>角色分配</a> ";
+											return h;
+										}
+									}, {
+										display : '工号',
+										name : 'workId',
+										minWidth : 150,
+										align : 'left',
+										isSort : false
+									}, {
+										display : '姓名',
+										name : 'username',
+										id : 'id1',
+										minWidth : 100,
+										align : 'left',
+										isSort : false
+									}, {
+										display : '角色',
+										name : 'role',
+										minWidth : 100,
+										align : 'left',
+										isSort : false
+									}, {
+										display : '所属组室',
+										name : 'bumen',
+										minWidth : 200,
+										align : 'left',
+										isSort : false
+									}, {
+										display : '入职时间',
+										name : 'data1',
+										minWidth : 100,
+										align : 'left',
+										isSort : false
+									}, {
+										display : '转正时间',
+										name : 'data2',
+										minWidth : 100,
+										align : 'left',
+										isSort : false
+									} ],
+							data : TreeDeptData,
+							width : 'auto',
+							height : '99%'
+						});
+		//collapseAll();
+		$("#pageloading").hide();
+	});
+	function collapseAll() {
+		manager.collapseAll();
+	}
+	function expandAll() {
+		manager.expandAll();
+	}
+	function itemclick(item) {
+		alert(item.text);
+	}
+	/*********************
+	 * 员工信息编辑
+	 *********************/
+	function eidt_user(editType) {
+		var titleInfo = "弹出窗口";
+		if (editType == "add") {
+			titleInfo = "员工信息新增";
+		}
+		if (editType == "update") {
+			titleInfo = "员工信息修改";
+		}
+		$.ligerDialog.open({
+			target : $("#insertdiv"),
+			/* url:"insertdiv.htm" */
+			height : 350,
+			width : 500,
+			title : titleInfo,
+			showMax : false,
+			showToggle : false,
+			showMin : false,
+			isResize : true,
+			slide : false
+		});
+		
+		function checkIsNull(ids, warns) {
+		if (ids == '' || ids.length == 0) {
+			$.ligerDialog.warn(warns);
+			return false;
+		} else {
+			return true;
+		}
+	}
+		$("#insertForm").click(function() {
+				var in_number = $("#in_number").val();
+				var in_passwd = $("#in_passwd").val();
+				var in_passwds = $("#in_passwds").val();
+				var in_username = $("#in_username").val();
+				var in_group = $("#in_group").val();
+				var in_role = $("#in_role").val();
+
+				if (!checkIsNull(in_number, "工号不能为空")
+						|| !checkIsNull(in_passwd, "密码不能为空")
+						|| !checkIsNull(in_passwds, "重复密码不能为空")
+						|| !checkIsNull(in_username, "姓名不能为空")
+						|| !checkIsNull(in_group, "组室不能为空")
+						|| !checkIsNull(in_role, "角色不能为空"))
+					return;
+				alert('提交数据')
+				//window.location.reload();
+			});
+	}
+	
+
+	/*********************
+	 * 删除员工信息
+	 *********************/
+	function deleteUser(userID) {
+		$.ligerDialog.confirm('确认要删除员工[' + userID + ']吗？', function(yes) {
+			if (yes) {
+				alert("开始删除...");
+			}
+		});
+	}
+
+	function insert_user() {
+
+		$.ligerDialog.open({
+			target : $("#treeDemo"),
+			height : 330,
+			width : 340,
+			title : '批量导入',
+			showMax : false,
+			showToggle : false,
+			showMin : false,
+			isResize : true,
+			slide : false
+		});
+		
+	
+	}
+	
+		function insert_impor() {
+
+		$.ligerDialog.open({
+			url:"userInfo_import.html",
+			height : 260,
+			width : 600,
+			title : '批量导入',
+			showMax : false,
+			showToggle : false,
+			showMin : false,
+			isResize : true,
+			slide : false
+		});
+		
+	
+	}
+	/*********************
+	 * 重置员工密码
+	 *********************/
+	function resetPwd(userID) {
+		$.ligerDialog.confirm('确认要重置员工[' + userID + ']的密码吗？', function(yes) {
+			if (yes) {
+				alert("开始重置...");
+			}
+		});
+	}
+	/*********************
+	 * 角色信息分配
+	 *********************/
+	function changeRoleInfo(userID) {
+		$.ligerDialog.open({
+			height : 400,
+			width : 220,
+			title : '角色信息分配',
+			url : 'roleInfoChose.html',
+			showMax : false,
+			showToggle : false,
+			showMin : false,
+			isResize : true,
+			slide : false
+		});
+	}
+</script>
+
+</head>
+<body>
+	<div class="title_div"
+		style="width:100%; margin-top:0px; display:none;">
+		<label style="margin-left:15px;">查询条件</label>
+	</div>
+	<div align="left"
+		style="margin-top:10px; margin-left:5px; padding-left:10px;">
+		<table class="search_table" cellpadding="3" cellspacing="3"
+			width="100%">
+			<tr>
+				<td class="td_lable">工号：</td>
+				<td class="td_value"><input id="number1" name="number1"
+					validate="{required:true}" style="width: 135px;" />
+				</td>
+				<td class="td_lable">姓名：</td>
+				<td class="td_value"><input style="width: 135px;" />
+				</td>
+				<td class="td_lable">入职时间</td>
+				<td class="td_value"><input class="Wdate date_text" type="text"
+					onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" style="width: 135px;" />
+				</td>
+				<td class="td_lable">转正时间：</td>
+				<td class="td_value"><input class="Wdate date_text" type="text"
+					onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" style="width: 135px;" />
+				</td>
+			</tr>
+			<tr>
+				<td class="td_lable">组室：</td>
+				<td class="td_value"><select name="examtype" id="examtype"
+					style="width:135px;">
+						<option value="opt1">请选择</option>
+						<option value="opt2">南汇</option>
+						<option value="opt3">北泰</option>
+				</select></td>
+				<td class="td_lable">角色：</td>
+				<td class="td_value"><select name="examtype" id="角色选择"
+					style="width:135px;">
+						<option value="opt1">请选择</option>
+						<option value="opt2">考试管理员</option>
+						<option value="opt3">话务员</option>
+						<option value="opt4">超级管理员</option>
+						<option value="opt5">运营管理</option>
+				</select></td>
+
+			</tr>
+
+			<tr style="padding-top: 20px;">
+
+				<td colspan="8" align="center"><input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="新增" id="insertOpen"
+					onclick="eidt_user('add')" />&nbsp;&nbsp;&nbsp;&nbsp; <input
+					type="button" value="导入模板下载" id="deleteTest" style="width:100px;" />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="批量导入" id="deleteTest"
+					onclick="insert_impor()" /></td>
+			</tr>
+		</table>
+	</div>
+	<br>
+		<div id="workpaper_list"></div>
+
+		<div id="addusers" style="width:98%; margin:5px; padding-right:20px;display:none;">
+			<div id="insertdiv"
+				style="width:98%; margin:5px; padding-right:20px;display:none;"
+				title="sss">
+				<table class="search_table" cellpadding="3" cellspacing="3"
+					width="100%">
+					<tr>
+						<td class="td_lable">工号：</td>
+						<td class="td_value"><input id="in_number" />&nbsp;<red>*</red>
+						</td>
+						<td class="td_value">工号不能为空</td>
+					</tr>
+					<tr>
+						<td class="td_lable">密码：</td>
+						<td class="td_value"><input id="in_passwd" type="password" />&nbsp;<red>*</red>
+							<td class="td_value">密码不能为空</td>
+					</tr>
+					<tr>
+						<td class="td_lable">确认密码：</td>
+						<td class="td_value"><input id="in_passwds" type="password"
+							onclick="openChooseTestpaper('insertTestpaper')" />&nbsp;<red>*</red>
+						</td>
+						<td class="td_value">确认密码不能为空</td>
+					</tr>
+					<tr>
+						<td class="td_lable">姓名：</td>
+						<td class="td_value"><input id="in_username" />&nbsp;<red>*</red>&nbsp;&nbsp;</td>
+						<td class="td_value">姓名不能为空</td>
+					</tr>
+					<tr>
+						<td class="td_lable">角色：</td>
+						<td class="td_value"><select name="ddlDepart" id="in_role" ltype="select" style="width:135px;">
+                    <option value="1">考试管理员</option>
+                    <option value="2">客调管理员</option>
+                    <option value="3">系统管理员</option>
+                </select>&nbsp;<red>*</red>
+						</td>
+						<td class="td_value">角色不能为空</td>
+					</tr>
+					<tr>
+						<td class="td_lable">组室：</td>
+						<td class="td_value">
+						<select name="ddlDepart" id="in_group" ltype="select" style="width:135px;">
+                    <option value="1">南汇</option>
+                    <option value="2">北泰</option>
+                    <option value="3">园区</option>
+                </select>&nbsp;<red>*</red>
+						</td>
+						<td class="td_value">组室不能为空</td>
+					</tr>
+					<tr>
+						<td class="td_lable">入职日期：</td>
+						<td class="td_value"><input id="in_startDate"
+							class="Wdate date_text" style="width: 141px;" type="text"
+							onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />&nbsp;
+					</tr>
+					<tr>
+						<td class="td_lable">转正日期：</td>
+						<td class="td_value"><input id="in_offDate"
+							class="Wdate date_text" style="width: 141px;" type="text"
+							onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />&nbsp;
+					</tr>
+					<tr>
+						<td colspan="8" align="center"><input id="insertForm"
+							type="button" value="提交" />&nbsp;<input id="insertForm"
+							type="button" value="重置" /></td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="inseruser"
+				style="width:98%; margin:5px; padding-right:20px;display:none;"
+				title="sss">
+				<table class="search_table" cellpadding="3" cellspacing="3"
+					width="100%">
+					<tr>
+						<td><input style="margin-left:50px;margin-top: 50px;"
+							type="file" name="" value="选择文件">
+						</td>
+					</tr>
+					<tr>
+						<td><input style="margin-left: 100px;margin-top: 50px;"
+							type="button" name="" value="执行导入">
+						</td>
+					</tr>
+				</table>
+			</div>
+</body>
+</html>
+

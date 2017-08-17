@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.IWorkOrder112Dao">
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.WorkOrder112">
+
+		<id column="WORKORDER_ID" jdbcType="INTEGER" property="workorderId" />
+		<result column="ERROR_NO" jdbcType="VARCHAR" property="errorNo" />
+		<result column="IS_GW" jdbcType="VARCHAR" property="isGw" />
+		<result column="RC" jdbcType="VARCHAR" property="rc" />
+		<result column="BRANCH" jdbcType="VARCHAR" property="branch" />
+		<result column="SITES" jdbcType="VARCHAR" property="sites" />
+		<result column="DECLARATION_TIME" jdbcType="DATE" property="declarationTime" />
+		<result column="BUSINESS_TYPE" jdbcType="VARCHAR" property="businessType" />
+		<result column="DECLARATION_BIG_TYPE" jdbcType="VARCHAR"
+			property="declarationBigType" />
+		<result column="DECLARATION_DESCRIPTION" jdbcType="VARCHAR"
+			property="declarationDescription" />
+		<result column="DECLARATION_REMARK" jdbcType="VARCHAR"
+			property="declarationRemark" />
+		<result column="TEST_CODE" jdbcType="VARCHAR" property="testCode" />
+		<result column="TEST_RESULT" jdbcType="VARCHAR" property="testResult" />
+		<result column="DECLARATION_LINKINFO" jdbcType="VARCHAR"
+			property="declarationLinkinfo" />
+		<result column="IS_SECOND_REDEAL" jdbcType="VARCHAR" property="isSecondRedeal" />
+		<result column="CLOSEED_WAY" jdbcType="VARCHAR" property="closeedWay" />
+		<result column="CLOSEED_TIMELENGTH" jdbcType="INTEGER"
+			property="closeedTimelength" />
+		<result column="ACCEPTED_SOURCE" jdbcType="VARCHAR" property="acceptedSource" />
+		<result column="FIRST_AGENT_USERID" jdbcType="VARCHAR"
+			property="firstAgentUserid" />
+		<result column="FIRST_REDEAL_WORKID" jdbcType="VARCHAR"
+			property="firstRedealWorkid" />
+		<result column="FIRST_REDEAL_SUGGEST" jdbcType="VARCHAR"
+			property="firstRedealSuggest" />
+		<result column="FIRST_REDEAL_CLOSEDCODE" jdbcType="VARCHAR"
+			property="firstRedealClosedcode" />
+		<result column="SECOND_REDEAL_CLOSEDCODE" jdbcType="VARCHAR"
+			property="secondRedealClosedcode" />
+		<result column="SECOND_REDEAL_REMARK" jdbcType="VARCHAR"
+			property="secondRedealRemark" />
+		<result column="SECOND_WORKID" jdbcType="VARCHAR" property="secondWorkid" />
+		<result column="SECOND_CLOSETIME" jdbcType="VARCHAR" property="secondClosetime" />
+		<result column="REPAIR_TIME" jdbcType="VARCHAR" property="repairTime" />
+		<result column="REPAIR_WORKID" jdbcType="VARCHAR" property="repairWorkid" />
+		<result column="REPAIR_DIRECTION" jdbcType="VARCHAR" property="repairDirection" />
+		<result column="REPAIR_CENTER" jdbcType="VARCHAR" property="repairCenter" />
+		<result column="THREE_ERROR_TYPE" jdbcType="VARCHAR" property="threeErrorType" />
+		<result column="THREE_ERROR_REPAIR_CODE" jdbcType="VARCHAR"
+			property="threeErrorRepairCode" />
+		<result column="THREE_WORKID" jdbcType="VARCHAR" property="threeWorkid" />
+		<result column="THREE_REPAIR_TIME" jdbcType="VARCHAR" property="threeRepairTime" />
+		<result column="IS_QC" jdbcType="INTEGER" property="isQC" />
+	</resultMap>
+
+	<resultMap id="112XJMap" type="cn.sh.ideal.model.WorkTelSum112">
+		<result column="AUTO_ID" jdbcType="VARCHAR" property="autoId" />
+		<result column="WORKORDER_ID" jdbcType="VARCHAR" property="workorderId" />
+		<result column="BUSINESS_TYPE" jdbcType="VARCHAR" property="businessType" />
+		<result column="TELSUM_TYPE" jdbcType="VARCHAR" property="telsumType" />
+		<result column="ERROR_SOURCE" jdbcType="VARCHAR" property="errorSource" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="DECLARATION_NO" jdbcType="VARCHAR" property="declarationNo" />
+		<result column="LOGIC_NO" jdbcType="VARCHAR" property="logicNo" />
+		<result column="TELSUM_ID" jdbcType="VARCHAR" property="telsumId" />
+		<result column="TELSUM_TIME" jdbcType="VARCHAR" property="telsumTime" />
+		<result column="TELSUM_WORKID" jdbcType="VARCHAR" property="telsumWorkid" />
+	</resultMap>
+
+
+	<resultMap id="getNoGLRecordMap" type="cn.sh.ideal.model.RecordInfo">
+		<result column="RESERVED_THREE" jdbcType="VARCHAR" property="reservedThree" />
+		<result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+		<result column="STOP_TIME" jdbcType="VARCHAR" property="stopTime" />
+		<result column="CALLERID" jdbcType="VARCHAR" property="callerid" />
+		<result column="CALLEDID" jdbcType="VARCHAR" property="calledid" />
+		<result column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
+		<result column="BIG_WORKID" jdbcType="VARCHAR" property="bigWorkid" />
+		<result column="AGENT_NAME" jdbcType="VARCHAR" property="agentName" />
+		<result column="DIRECTION_FLAG" jdbcType="VARCHAR" property="directionFlag" />
+		<result column="RECORD_LENGTH" jdbcType="VARCHAR" property="recordLength" />
+		<result column="RECORD_FILENAME" jdbcType="VARCHAR" property="recordFilename" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		WORKORDER_ID, ERROR_NO, IS_GW, RC, BRANCH, SITES,
+		date_format(DECLARATION_TIME,'%Y-%m-%d %H:%i:%s') DECLARATION_TIME,
+		BUSINESS_TYPE,
+		DECLARATION_BIG_TYPE, DECLARATION_DESCRIPTION, DECLARATION_REMARK, TEST_CODE, TEST_RESULT,
+		DECLARATION_LINKINFO, IS_SECOND_REDEAL, CLOSEED_WAY,
+		CLOSEED_TIMELENGTH, ACCEPTED_SOURCE,
+		FIRST_AGENT_USERID, FIRST_REDEAL_WORKID, FIRST_REDEAL_SUGGEST, FIRST_REDEAL_CLOSEDCODE,
+		SECOND_REDEAL_CLOSEDCODE, SECOND_REDEAL_REMARK, SECOND_WORKID,
+		date_format(SECOND_CLOSETIME,'%Y-%m-%d %H:%i:%s') SECOND_CLOSETIME,
+		date_format(REPAIR_TIME,'%Y-%m-%d %H:%i:%s') REPAIR_TIME,
+		REPAIR_WORKID, REPAIR_DIRECTION, REPAIR_CENTER, THREE_ERROR_TYPE,
+		THREE_ERROR_REPAIR_CODE,
+		THREE_WORKID,
+		date_format(THREE_REPAIR_TIME,'%Y-%m-%d %H:%i:%s') THREE_REPAIR_TIME
+  </sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_workorder_info_112
+		where WORKORDER_ID = #{workorderId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getDeclarationBigType" resultType="java.lang.String">
+		select distinct(DECLARATION_BIG_TYPE)
+		from t_workorder_info_112 
+	</select>
+
+	<select id="selectWorkOrder112" parameterType="cn.sh.ideal.model.WorkOrder112"
+		resultMap="BaseResultMap">
+		select
+		t.WORKORDER_ID, t.ERROR_NO, t.IS_GW, t.RC, t.BRANCH, t.SITES,
+		date_format(t.DECLARATION_TIME,'%Y-%m-%d %H:%i:%s') DECLARATION_TIME,
+		t.BUSINESS_TYPE,
+		t.DECLARATION_BIG_TYPE, t.DECLARATION_DESCRIPTION, t.DECLARATION_REMARK, t.TEST_CODE, t.TEST_RESULT,
+		t.DECLARATION_LINKINFO, t.IS_SECOND_REDEAL, t.CLOSEED_WAY,
+		t.CLOSEED_TIMELENGTH, t.ACCEPTED_SOURCE,
+		t.FIRST_AGENT_USERID, t.FIRST_REDEAL_WORKID, t.FIRST_REDEAL_SUGGEST, t.FIRST_REDEAL_CLOSEDCODE,
+		t.SECOND_REDEAL_CLOSEDCODE, t.SECOND_REDEAL_REMARK, t.SECOND_WORKID,
+		date_format(t.SECOND_CLOSETIME,'%Y-%m-%d %H:%i:%s') SECOND_CLOSETIME,
+		date_format(t.REPAIR_TIME,'%Y-%m-%d %H:%i:%s') REPAIR_TIME,
+		t.REPAIR_WORKID, t.REPAIR_DIRECTION, t.REPAIR_CENTER, t.THREE_ERROR_TYPE,
+		t.THREE_ERROR_REPAIR_CODE,
+		t.THREE_WORKID,
+		date_format(t.THREE_REPAIR_TIME,'%Y-%m-%d %H:%i:%s') THREE_REPAIR_TIME,
+		q.WORKORDER_ID IS_QC
+		
+		from t_workorder_info_112  t
+		LEFT JOIN t_qc q ON t.WORKORDER_ID = q.WORKORDER_ID
+		where 1=1
+		<if test="isGl != null and isGl!=''">
+			and t.WORKORDER_ID not in (select WORKORDER_ID from t_qc where
+			ENABLED='1')
+    </if>
+		<if test="workorderId != null and workorderId!=''">
+			and t.WORKORDER_ID LIKE CONCAT ('%', #{workorderId,jdbcType=VARCHAR},'%')
+    </if>
+		<if test="declarationBigType != null and declarationBigType!=''">
+			and t.DECLARATION_BIG_TYPE = #{declarationBigType,jdbcType=VARCHAR}
+    </if>
+		<if test="firstAgentUserid != null and firstAgentUserid!=''">
+			and t.FIRST_AGENT_USERID LIKE CONCAT ('%', #{firstAgentUserid,jdbcType=VARCHAR},'%')
+      </if>
+		<if test="declarationTimestart != null and declarationTimestart!=''">
+			and t.DECLARATION_TIME >= #{declarationTimestart,jdbcType=VARCHAR} 
+      </if>
+		<if test="declarationTimeend != null and declarationTimeend!=''">
+			and t.DECLARATION_TIME &lt;= #{declarationTimeend,jdbcType=VARCHAR} 
+      </if>
+order by t.DECLARATION_TIME desc
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="cn.sh.ideal.model.WorkOrder112">
+		select
+		count(1)
+		from t_workorder_info_112 t
+		LEFT JOIN t_qc q ON t.WORKORDER_ID = q.WORKORDER_ID
+		where 1=1
+		<if test="isGl != null and isGl!=''">
+			and t.WORKORDER_ID not in (select WORKORDER_ID from t_qc where
+			ENABLED='1')
+    </if>
+		<if test="workorderId != null and workorderId!=''">
+			and t.WORKORDER_ID LIKE CONCAT ('%', #{workorderId,jdbcType=VARCHAR},'%')
+    </if>
+		<if test="declarationBigType != null and declarationBigType!=''">
+			and t.DECLARATION_BIG_TYPE = #{declarationBigType,jdbcType=VARCHAR}
+    </if>
+		<if test="firstAgentUserid != null and firstAgentUserid!=''">
+			and t.FIRST_AGENT_USERID LIKE CONCAT ('%', #{firstAgentUserid,jdbcType=VARCHAR},'%')
+      </if>
+		<if test="declarationTimestart != null and declarationTimestart!=''">
+			and t.DECLARATION_TIME >= #{declarationTimestart,jdbcType=VARCHAR} 
+      </if>
+		<if test="declarationTimeend != null and declarationTimeend!=''">
+			and t.DECLARATION_TIME &lt;= #{declarationTimeend,jdbcType=VARCHAR} 
+      </if>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_workorder_info_112
+		where WORKORDER_ID = #{workorderId,jdbcType=INTEGER}
+  </delete>
+	<insert id="insert" parameterType="cn.sh.ideal.model.WorkOrder112">
+		insert into t_workorder_info_112 (WORKORDER_ID, ERROR_NO, IS_GW,
+		RC, BRANCH, SITES,
+		DECLARATION_TIME, BUSINESS_TYPE, DECLARATION_BIG_TYPE,
+		DECLARATION_DESCRIPTION, DECLARATION_REMARK,
+		TEST_CODE, TEST_RESULT, DECLARATION_LINKINFO,
+		IS_SECOND_REDEAL, CLOSEED_WAY, CLOSEED_TIMELENGTH,
+		ACCEPTED_SOURCE, FIRST_AGENT_USERID, FIRST_REDEAL_WORKID,
+		FIRST_REDEAL_SUGGEST, FIRST_REDEAL_CLOSEDCODE,
+		SECOND_REDEAL_CLOSEDCODE, SECOND_REDEAL_REMARK,
+		SECOND_WORKID, SECOND_CLOSETIME, REPAIR_TIME,
+		REPAIR_WORKID, REPAIR_DIRECTION, REPAIR_CENTER,
+		THREE_ERROR_TYPE, THREE_ERROR_REPAIR_CODE, THREE_WORKID,
+		THREE_REPAIR_TIME)
+		values (#{workorderId,jdbcType=INTEGER}, #{errorNo,jdbcType=VARCHAR},
+		#{isGw,jdbcType=VARCHAR},
+		#{rc,jdbcType=VARCHAR}, #{branch,jdbcType=VARCHAR}, #{sites,jdbcType=VARCHAR},
+		#{declarationTime,jdbcType=DATE}, #{businessType,jdbcType=VARCHAR},
+		#{declarationBigType,jdbcType=VARCHAR},
+		#{declarationDescription,jdbcType=VARCHAR},
+		#{declarationRemark,jdbcType=VARCHAR},
+		#{testCode,jdbcType=VARCHAR}, #{testResult,jdbcType=VARCHAR},
+		#{declarationLinkinfo,jdbcType=VARCHAR},
+		#{isSecondRedeal,jdbcType=VARCHAR}, #{closeedWay,jdbcType=VARCHAR},
+		#{closeedTimelength,jdbcType=INTEGER},
+		#{acceptedSource,jdbcType=VARCHAR},
+		#{firstAgentUserid,jdbcType=VARCHAR},
+		#{firstRedealWorkid,jdbcType=VARCHAR},
+		#{firstRedealSuggest,jdbcType=VARCHAR},
+		#{firstRedealClosedcode,jdbcType=VARCHAR},
+		#{secondRedealClosedcode,jdbcType=VARCHAR},
+		#{secondRedealRemark,jdbcType=VARCHAR},
+		#{secondWorkid,jdbcType=VARCHAR}, #{secondClosetime,jdbcType=VARCHAR},
+		#{repairTime,jdbcType=VARCHAR},
+		#{repairWorkid,jdbcType=VARCHAR}, #{repairDirection,jdbcType=VARCHAR},
+		#{repairCenter,jdbcType=VARCHAR},
+		#{threeErrorType,jdbcType=VARCHAR}, #{threeErrorRepairCode,jdbcType=VARCHAR},
+		#{threeWorkid,jdbcType=VARCHAR},
+		#{threeRepairTime,jdbcType=VARCHAR})
+  </insert>
+	<insert id="insertSelective" parameterType="cn.sh.ideal.model.WorkOrder112">
+		insert into t_workorder_info_112
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="workorderId != null">
+				WORKORDER_ID,
+      </if>
+			<if test="errorNo != null">
+				ERROR_NO,
+      </if>
+			<if test="isGw != null">
+				IS_GW,
+      </if>
+			<if test="rc != null">
+				RC,
+      </if>
+			<if test="branch != null">
+				BRANCH,
+      </if>
+			<if test="sites != null">
+				SITES,
+      </if>
+			<if test="declarationTime != null">
+				DECLARATION_TIME,
+      </if>
+			<if test="businessType != null">
+				BUSINESS_TYPE,
+      </if>
+			<if test="declarationBigType != null">
+				DECLARATION_BIG_TYPE,
+      </if>
+			<if test="declarationDescription != null">
+				DECLARATION_DESCRIPTION,
+      </if>
+			<if test="declarationRemark != null">
+				DECLARATION_REMARK,
+      </if>
+			<if test="testCode != null">
+				TEST_CODE,
+      </if>
+			<if test="testResult != null">
+				TEST_RESULT,
+      </if>
+			<if test="declarationLinkinfo != null">
+				DECLARATION_LINKINFO,
+      </if>
+			<if test="isSecondRedeal != null">
+				IS_SECOND_REDEAL,
+      </if>
+			<if test="closeedWay != null">
+				CLOSEED_WAY,
+      </if>
+			<if test="closeedTimelength != null">
+				CLOSEED_TIMELENGTH,
+      </if>
+			<if test="acceptedSource != null">
+				ACCEPTED_SOURCE,
+      </if>
+			<if test="firstAgentUserid != null">
+				FIRST_AGENT_USERID,
+      </if>
+			<if test="firstRedealWorkid != null">
+				FIRST_REDEAL_WORKID,
+      </if>
+			<if test="firstRedealSuggest != null">
+				FIRST_REDEAL_SUGGEST,
+      </if>
+			<if test="firstRedealClosedcode != null">
+				FIRST_REDEAL_CLOSEDCODE,
+      </if>
+			<if test="secondRedealClosedcode != null">
+				SECOND_REDEAL_CLOSEDCODE,
+      </if>
+			<if test="secondRedealRemark != null">
+				SECOND_REDEAL_REMARK,
+      </if>
+			<if test="secondWorkid != null">
+				SECOND_WORKID,
+      </if>
+			<if test="secondClosetime != null">
+				SECOND_CLOSETIME,
+      </if>
+			<if test="repairTime != null">
+				REPAIR_TIME,
+      </if>
+			<if test="repairWorkid != null">
+				REPAIR_WORKID,
+      </if>
+			<if test="repairDirection != null">
+				REPAIR_DIRECTION,
+      </if>
+			<if test="repairCenter != null">
+				REPAIR_CENTER,
+      </if>
+			<if test="threeErrorType != null">
+				THREE_ERROR_TYPE,
+      </if>
+			<if test="threeErrorRepairCode != null">
+				THREE_ERROR_REPAIR_CODE,
+      </if>
+			<if test="threeWorkid != null">
+				THREE_WORKID,
+      </if>
+			<if test="threeRepairTime != null">
+				THREE_REPAIR_TIME,
+      </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="workorderId != null">
+				#{workorderId,jdbcType=INTEGER},
+      </if>
+			<if test="errorNo != null">
+				#{errorNo,jdbcType=VARCHAR},
+      </if>
+			<if test="isGw != null">
+				#{isGw,jdbcType=VARCHAR},
+      </if>
+			<if test="rc != null">
+				#{rc,jdbcType=VARCHAR},
+      </if>
+			<if test="branch != null">
+				#{branch,jdbcType=VARCHAR},
+      </if>
+			<if test="sites != null">
+				#{sites,jdbcType=VARCHAR},
+      </if>
+			<if test="declarationTime != null">
+				#{declarationTime,jdbcType=DATE},
+      </if>
+			<if test="businessType != null">
+				#{businessType,jdbcType=VARCHAR},
+      </if>
+			<if test="declarationBigType != null">
+				#{declarationBigType,jdbcType=VARCHAR},
+      </if>
+			<if test="declarationDescription != null">
+				#{declarationDescription,jdbcType=VARCHAR},
+      </if>
+			<if test="declarationRemark != null">
+				#{declarationRemark,jdbcType=VARCHAR},
+      </if>
+			<if test="testCode != null">
+				#{testCode,jdbcType=VARCHAR},
+      </if>
+			<if test="testResult != null">
+				#{testResult,jdbcType=VARCHAR},
+      </if>
+			<if test="declarationLinkinfo != null">
+				#{declarationLinkinfo,jdbcType=VARCHAR},
+      </if>
+			<if test="isSecondRedeal != null">
+				#{isSecondRedeal,jdbcType=VARCHAR},
+      </if>
+			<if test="closeedWay != null">
+				#{closeedWay,jdbcType=VARCHAR},
+      </if>
+			<if test="closeedTimelength != null">
+				#{closeedTimelength,jdbcType=INTEGER},
+      </if>
+			<if test="acceptedSource != null">
+				#{acceptedSource,jdbcType=VARCHAR},
+      </if>
+			<if test="firstAgentUserid != null">
+				#{firstAgentUserid,jdbcType=VARCHAR},
+      </if>
+			<if test="firstRedealWorkid != null">
+				#{firstRedealWorkid,jdbcType=VARCHAR},
+      </if>
+			<if test="firstRedealSuggest != null">
+				#{firstRedealSuggest,jdbcType=VARCHAR},
+      </if>
+			<if test="firstRedealClosedcode != null">
+				#{firstRedealClosedcode,jdbcType=VARCHAR},
+      </if>
+			<if test="secondRedealClosedcode != null">
+				#{secondRedealClosedcode,jdbcType=VARCHAR},
+      </if>
+			<if test="secondRedealRemark != null">
+				#{secondRedealRemark,jdbcType=VARCHAR},
+      </if>
+			<if test="secondWorkid != null">
+				#{secondWorkid,jdbcType=VARCHAR},
+      </if>
+			<if test="secondClosetime != null">
+				#{secondClosetime,jdbcType=VARCHAR},
+      </if>
+			<if test="repairTime != null">
+				#{repairTime,jdbcType=VARCHAR},
+      </if>
+			<if test="repairWorkid != null">
+				#{repairWorkid,jdbcType=VARCHAR},
+      </if>
+			<if test="repairDirection != null">
+				#{repairDirection,jdbcType=VARCHAR},
+      </if>
+			<if test="repairCenter != null">
+				#{repairCenter,jdbcType=VARCHAR},
+      </if>
+			<if test="threeErrorType != null">
+				#{threeErrorType,jdbcType=VARCHAR},
+      </if>
+			<if test="threeErrorRepairCode != null">
+				#{threeErrorRepairCode,jdbcType=VARCHAR},
+      </if>
+			<if test="threeWorkid != null">
+				#{threeWorkid,jdbcType=VARCHAR},
+      </if>
+			<if test="threeRepairTime != null">
+				#{threeRepairTime,jdbcType=VARCHAR},
+      </if>
+		</trim>
+	</insert>
+
+
+	<select id="selectOrder112" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_workorder_info_112
+		where 1=1
+		<if test="isGl != null and isGl!=''">
+			and WORKORDER_ID not in (select WORKORDER_ID from t_qc where
+			ENABLED='1')
+    </if>
+		<if test="workorderId != null and workorderId!=''">
+			and WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+    </if>
+		<if test="declarationBigType != null and declarationBigType!=''">
+			and DECLARATION_BIG_TYPE = #{declarationBigType,jdbcType=VARCHAR}
+    </if>
+		<if test="firstAgentUserid != null and firstAgentUserid!=''">
+			and FIRST_AGENT_USERID = #{firstAgentUserid,jdbcType=VARCHAR}
+      </if>
+		<if test="declarationTimestart != null and declarationTimestart!=''">
+			and DECLARATION_TIME >= #{declarationTimestart,jdbcType=VARCHAR} 
+      </if>
+		<if test="declarationTimeend != null and declarationTimeend!=''">
+			and DECLARATION_TIME &lt;= #{declarationTimeend,jdbcType=VARCHAR} 
+      </if>
+		<if test="start != null and start!=''">
+			limit ${start},${end}
+		 </if>
+
+	</select>
+
+	<select id="selectOrder112Count" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select
+		count(1)
+		from t_workorder_info_112
+		where 1=1
+
+		<if test="isGl != null and isGl!=''">
+			and WORKORDER_ID not in (select WORKORDER_ID from t_qc where
+			ENABLED='1')
+    </if>
+		<if test="workorderId != null and workorderId!=''">
+			and WORKORDER_ID = #{workorderId,jdbcType=VARCHAR}
+    </if>
+		<if test="declarationBigType != null and declarationBigType!=''">
+			and DECLARATION_BIG_TYPE = #{declarationBigType,jdbcType=VARCHAR}
+    </if>
+		<if test="firstAgentUserid != null and firstAgentUserid!=''">
+			and FIRST_AGENT_USERID = #{firstAgentUserid,jdbcType=VARCHAR}
+      </if>
+		<if test="declarationTimestart != null and declarationTimestart!=''">
+			and DECLARATION_TIME >= #{declarationTimestart,jdbcType=VARCHAR} 
+      </if>
+		<if test="declarationTimeend != null and declarationTimeend!=''">
+			and DECLARATION_TIME &lt;= #{declarationTimeend,jdbcType=VARCHAR} 
+      </if>
+	</select>
+
+
+	<select id="select112Xj" parameterType="cn.sh.ideal.model.WorkTelSum112"
+		resultMap="112XJMap">
+		select AUTO_ID,WORKORDER_ID,BUSINESS_TYPE,TELSUM_TYPE,ERROR_SOURCE,REMARK
+		,DECLARATION_NO,LOGIC_NO,TELSUM_ID,
+		date_format(TELSUM_TIME,'%Y-%m-%d %H:%i:%s') TELSUM_TIME,
+		TELSUM_WORKID
+		from T_WORK_TELSUM_112
+		
+		where 1=1  
+		<if test="workorderId != null and workorderId!=''">
+			and WORKORDER_ID=#{workorderId,jdbcType=INTEGER}
+		</if>
+  </select>
+
+	<select id="select112XjCount" resultType="java.lang.Integer"
+		parameterType="cn.sh.ideal.model.WorkTelSum112">
+		select count(*) from T_WORK_TELSUM_112
+		where 1=1  
+		<if test="workorderId != null and workorderId!=''">
+			and WORKORDER_ID=#{workorderId,jdbcType=INTEGER}
+		</if>
+   </select>
+
+
+	<!-- 获取未关联的录音 -->
+	<select id="getNoGLRecord" resultMap="getNoGLRecordMap"
+		parameterType="cn.sh.ideal.model.RecordInfo">
+		select t.RESERVED_THREE,
+		t.CALLERID,
+		t.CALLEDID,
+		date_format(t.START_TIME,'%Y-%m-%d %H:%i:%s') START_TIME,
+		date_format(t.STOP_TIME,'%Y-%m-%d %H:%i:%s') STOP_TIME,
+		t.RECORD_ID,
+        t.BIG_WORKID,
+        t.AGENT_NAME,
+        t.DIRECTION_FLAG,
+        t.RECORD_LENGTH,
+        t.RECORD_FILENAME
+		from T_RECORD_INFO t where 1=1
+		and t.RECORD_ID not in (select RECORD_ID from t_qc where ENABLED='1')
+		and t.IS_TASK='0'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(t.START_TIME,'%Y-%m-%d %H:%i:%s')
+			&gt;=DATE_FORMAT(#{startTime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+		</if>
+		<if test="agentName != null and agentName!=''">
+			and t.SMALL_WORKID=#{agentName,jdbcType=VARCHAR}
+      </if>
+		<if test="stopTime != null and stopTime!=''">
+			and DATE_FORMAT(t.STOP_TIME,'%Y-%m-%d %H:%i:%s')
+			&lt;=DATE_FORMAT(#{stopTime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+		</if>
+	</select>
+
+	<!-- 获取未关联的录音数量 -->
+	<select id="getNoGLRecordCount" resultType="java.lang.Integer"
+		parameterType="cn.sh.ideal.model.RecordInfo">
+		select count(*)
+		from T_RECORD_INFO t where 1=1
+		and t.RECORD_ID not in (select RECORD_ID from t_qc where ENABLED='1')
+		and t.IS_TASK='0'
+		<if test="startTime != null and startTime!=''">
+			and DATE_FORMAT(t.START_TIME,'%Y-%m-%d %H:%i:%s')
+			&gt;=DATE_FORMAT(#{startTime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+		</if>
+		<if test="agentName != null and agentName!=''">
+			and t.SMALL_WORKID=#{agentName,jdbcType=VARCHAR}
+      </if>
+		<if test="stopTime != null and stopTime!=''">
+			and DATE_FORMAT(t.STOP_TIME,'%Y-%m-%d %H:%i:%s')
+			&lt;=DATE_FORMAT(#{stopTime,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+		</if>
+	</select>
+
+	 <insert id="insert112sum" parameterType="cn.sh.ideal.model.WorkTelSum112">
+	    insert into t_work_telsum_112 (WORKORDER_ID, BUSINESS_TYPE, 
+	      TELSUM_TYPE, ERROR_SOURCE, REMARK, 
+	      DECLARATION_NO, LOGIC_NO, TELSUM_ID, 
+	      TELSUM_TIME, TELSUM_WORKID)
+	    values ( #{workorderId,jdbcType=INTEGER}, #{businessType,jdbcType=VARCHAR}, 
+	      #{telsumType,jdbcType=VARCHAR}, #{errorSource,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+	      #{declarationNo,jdbcType=VARCHAR}, #{logicNo,jdbcType=VARCHAR}, #{telsumId,jdbcType=VARCHAR}, 
+	      #{telsumTime,jdbcType=TIMESTAMP}, #{telsumWorkid,jdbcType=VARCHAR})
+	  </insert>
+
+</mapper>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.IFunctionDao">
+
+	<resultMap id="BaseResultMap" type="cn.sh.ideal.model.Function">
+		<result column="FUNCTION_ID" property="functionId" jdbcType="INTEGER" />
+		<result column="FUNCTION_TYPE" property="functionType"
+			jdbcType="VARCHAR" />
+		<result column="PERMISSION" jdbcType="VARCHAR" property="permission" />
+		<result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="PID" property="pId" jdbcType="INTEGER" />
+		<result column="FUNCTION_NAME" property="funtionName" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="FUNCTION_ORDER" property="functionOrder"
+			jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		f.FUNCTION_ID,
+		FUNCTION_TYPE,
+		IMG_URL,
+		PID,
+		FUNCTION_NAME,
+		f.REMARK,
+		URL,
+		FUNCTION_ORDER,
+		CODE
+	</sql>
+
+	<select id="getFunctionByUserid" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_sys_roleuser t,
+		t_sys_rolefunction t1,
+		t_sys_function f
+		WHERE
+		t.ROLE_ID = t1.ROLE_ID
+		AND t1.FUNCTION_ID = f.FUNCTION_ID
+		AND t.ENABLED
+		= '1'
+		AND t1.ENABLED = '1'
+		AND f.ENABLED = '1'
+		AND t.USER_ID =
+		#{userId,jdbcType=INTEGER}
+		and f.PID IN (
+		SELECT FUNCTION_ID
+		FROM
+		t_sys_function f
+		WHERE
+		f.code=#{code,jdbcType=VARCHAR}
+		) ORDER BY
+		FUNCTION_ORDER
+	</select>
+
+
+	<select id="getChildFunByParam" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_sys_roleuser t,
+		t_sys_rolefunction t1,
+		t_sys_function f
+		WHERE
+		t.ROLE_ID = t1.ROLE_ID
+		AND t1.FUNCTION_ID = f.FUNCTION_ID
+		AND t.ENABLED
+		= '1'
+		AND t1.ENABLED = '1'
+		AND f.ENABLED = '1'
+		AND t.USER_ID =
+		#{userId,jdbcType=INTEGER}
+		and f.PID=#{pId,jdbcType=INTEGER}
+		ORDER BY FUNCTION_ORDER
+	</select>
+
+	<select id="querySysRoleByUserId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_sys_function f
+		WHERE
+		FUNCTION_ID IN (
+		SELECT DISTINCT
+		(f.PID)
+		FROM
+		t_sys_roleuser t,
+		t_sys_rolefunction t1,
+		t_sys_function f
+		WHERE
+		t.ROLE_ID
+		= t1.ROLE_ID
+		AND t1.FUNCTION_ID = f.FUNCTION_ID
+		AND t.ENABLED = '1'
+		AND
+		t1.ENABLED = '1'
+		AND f.ENABLED = '1'
+		and f.FUNCTION_TYPE='m'
+		AND
+		t.USER_ID = #{userId,jdbcType=INTEGER}
+		) and ENABLED='1' ORDER BY
+		FUNCTION_ORDER
+	</select>
+
+
+	<!-- 查询用户按钮权限 -->
+	<select id="getPermissionByUser" resultMap="BaseResultMap">
+		select
+		s.PERMISSION
+		from
+		t_sys_function s
+		where s.ENABLED = '1'
+		AND s.permission IS NOT NULL
+		and s.FUNCTION_ID in
+		(select
+		rf.FUNCTION_ID
+		from
+		t_sys_rolefunction rf
+		where rf.ENABLED = '1'
+		and rf.ROLE_ID in
+		(select
+		ru.ROLE_ID
+		from
+		t_sys_roleuser ru
+		where ru.ENABLED = '1'
+		and ru.USER_ID = #{userId}))
+		and s.remark=#{syscode}
+	</select>
+
+
+	<!-- 获取用户对应的报表权限 -->
+	<select id="getReportRoleByUser" resultMap="BaseResultMap">
+		select
+		s.PERMISSION
+		from
+		t_sys_function s
+		where s.ENABLED = '1'
+		AND s.permission IS NOT NULL
+		and s.FUNCTION_ID in
+		(select
+		rf.FUNCTION_ID
+		from
+		t_sys_rolefunction rf
+		where rf.ENABLED = '1'
+		and rf.ROLE_ID in
+		(select
+		ru.ROLE_ID
+		from
+		t_sys_roleuser ru
+		where ru.ENABLED = '1'
+		and ru.USER_ID = #{userId}))
+		AND s.remark = 'report'
+	</select>
+
+</mapper>

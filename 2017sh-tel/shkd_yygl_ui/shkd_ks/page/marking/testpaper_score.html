@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>试卷评分</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTab.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px;border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		table#search_table td{ height:30px; line-height:30px;}
+		table#search_table td.td_lable{ text-align:right;}
+		table#search_table td.td_value{ text-align:left;}
+		table#search_table td.td_hide{display: none;}
+		a{text-decoration : none;color:blue;}
+	</style>
+	<script type="text/javascript"> 
+		var beginexam = {Rows: [
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"刘婷",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"国立"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"王思龙",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"国立"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"手动评分中",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"国立"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			}
+			,
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			},
+			{
+				"exampaperId":"94889392",
+				"exampaperName":"2015年岗位技能认证理论卷",
+				"examName":"国立技能鉴定理论考试",
+				"workName":"赵武",
+				"examineeStatusDesc":"已自动评分",
+				"beginTimeStr":"2015-07-21 15:32:37",
+				"examEndTime":"2015-07-21 16:14:20",
+				"examdesk":"南泰"
+			}
+		],
+			Total: 2
+		};
+		
+	 $(function () {
+ 	   var maingrid_gd= $("#record_list").ligerGrid({
+             columns: [                
+           	{ display: '操作', isSort: false, minWidth : 80, render: function (rowdata, rowindex, value){
+				return "<a href='javascript:void(0);' onclick='manualScore(\""+rowdata+"\",\""+rowindex+"\")'>手动评分</a> ";
+            }},
+			{ display: '试卷编号', name: 'exampaperId', align: 'left', minWidth :80,isSort:false},
+			{ display: '试卷名称', name: 'exampaperName', align: 'left', minWidth :160,isSort:false},
+			{ display: '考试名称', name: 'examName', align: 'left', minWidth :160,isSort:false},
+			{ display: '考生姓名', name: 'workName', align: 'left', minWidth :80,isSort:false},
+			{ display: '当前状态', name: 'examineeStatusDesc', align: 'left', minWidth :80,isSort:false},
+            { display: '开考时间', name: 'beginTimeStr', align: 'left', width :140,isSort:false},
+			{ display: '交卷时间', name: 'examEndTime', align: 'left', minWidth :140,isSort:false},
+			{ display: '台式', name: 'examdesk', align: 'left', width :100,isSort:false}
+			], 
+             data:beginexam, sortName: 'examId',height:'100%', pageSize:10 ,width:"100%",rownumbers :true
+         });
+         $("#pageloading").hide(); 
+     });
+
+	    function openChooseUser(){
+			 $.ligerDialog.open({
+	                height:450,
+	                width: 800,
+	                title : '用户管理',
+	                url: '../examination/choose_user.html', 
+	                showMax: false,
+	                showToggle: true,
+	                showMin: false,
+	                isResize: true,
+	                slide: false,
+	                data: {
+	                    name: "username"
+	                },
+	                //自定义参数
+	                myDataName: "自定义参数"
+	         });
+		}
+		
+		function manualScore(rowdata, rowindex){
+			/*$.ligerDialog.open({
+	               height:500,
+	               width: 920,
+	               showMax: true,
+	               modal: false,
+	               isDrag:false,
+	               title : '手动评分',
+	               url: 'begin_manual_score.html', 
+	               isResize: true ,
+	               data: {
+	            	   
+	               },
+	               //自定义参数
+	               myDataName: "自定义参数"
+	        });
+			*/
+			 if(navigator.userAgent.indexOf("Chrome") >0 ){
+	        	window.open("begin_manual_score.html",null,"status=no,top=50,left=200,height=600,width=1000,toolbar =no, menubar=no, scrollbars=yes, resizable=yes, location=no, status=no,location=no");
+	        }else{
+	        	window.showModalDialog("begin_manual_score.html",null,"status:no;dialogTop:50px;dialogLeft:200px;dialogHeight:600px;dialogwidth:1000px;scroll=yes");
+	        }
+		}
+		
+		function resetbutton(){
+			$("#exampaperId").val("");
+			$("#exampaperName").val("");
+			$("#examName").val("");
+			$("#userName").val("");
+			$("#examineBegintime").val("");
+			$("#examEndTime").val("");
+			$("#scoreForm").val("0");
+			$("#stuStatusForm").val("0");
+		}
+    </script> 
+</head>
+<!-- 
+<body style="margin:0 auto; background-color:#FFFFFF; padding:5px;">
+ -->
+ 
+<body> 
+        <div style="display:none"></div>
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table id="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td class="td_lable">试卷编号：</td><td class="td_value"><input type="text" id="exampaperId"/></td>
+					<td class="td_lable">试卷名称：</td><td class="td_value"><input type="text" id="exampaperName"/></td>
+					<td class="td_lable">考试名称：</td><td class="td_value"><input type="text" id="examName"/></td>
+					<td class="td_lable">包含考生：</td><td class="td_value"><input type="text" id="userName" onclick="openChooseUser()" readonly="readonly"/>
+					<a style="cursor: pointer;"><img src="../../img/icon/delete.gif" height="14" onclick='$("#userName").val("")' alt="编辑"></a></td>
+				</tr>
+				<tr>
+					<td class="td_lable">开考时间：</td><td class="td_value"><input id="examineBegintime" name="examineBegintime" class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+					<td class="td_lable">交卷时间：</td><td class="td_value"><input id="examEndTime" name="scoreForm" class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+					<td class="td_lable" >考生台式：</td><td class="td_value">
+						<select name="scoreForm" id="scoreForm" style="width:135px;">
+			                <option value="0">---请选择---</option>
+			                <option value="opt2">国立</option>
+			                <option value="opt3">梅南</option>
+			                <option value="opt4">园区</option>
+			                <option value="opt5">南泰</option>
+			            </select> 
+					</td>
+					<td class="td_lable">考生状态：</td><td class="td_value">
+						<select name="scoreForm" id="stuStatusForm" style="width:135px;">
+			                <option value="0">---请选择---</option>
+			                <option value="opt2">已自动评分</option>
+			                <option value="opt3">手动评分中</option>
+			            </select> 
+					</td>
+				</tr>
+				<tr>
+					<td colspan="8" align="center">
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" id="resetbutton" onclick="resetbutton()"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

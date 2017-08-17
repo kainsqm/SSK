@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>考试维护管理</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerListBox.js" type="text/javascript"></script>
+    
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px;border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		.search_table td{ height:30px; line-height:30px;}
+		.search_table td.td_lable{ text-align:right;}
+		.search_table td.td_value{ text-align:left;}
+		a{text-decoration : none;color:blue;}
+		red{color: red;}
+		.middle input { display: block;width:30px; margin:2px;}
+		.listbox {margin:4px;float:left;}
+		.listbox td{height:15px; line-height:15px; }
+	</style>
+	<script type="text/javascript"> 
+	 var maingrid_gd ;
+	 var chooseAllUsers;
+	 var jsonArray;
+	 var beginexam = {Rows: [
+		{
+			"examName":"商客日考12月23日",
+			"listPaperName":"商客日考12月考",
+			"to_exam_begin_time":"2015-12-23 08:30:00",
+			"to_exam_end_time":"2015-12-29 08:30:00",
+			"examTimeLen":"20",
+			"examNormalScore":"90",
+			"to_exam_query":"是"
+		},
+		{
+			"examName":"2017年综合技能大赛初赛",
+			"listPaperName":"2017年综合技能大赛初赛",
+			"to_exam_begin_time":"2017-03-05 08:00:00",
+			"to_exam_end_time":"2017-03-12 17:00:00",
+			"examTimeLen":"30",
+			"examNormalScore":"90",
+			"to_exam_query":"否"
+		}],Total: 2
+	};
+	
+	$(function () {
+          maingrid_gd= $("#record_list").ligerGrid({
+              columns: [  
+				{ display: '操作', isSort: false, minWidth : 80,  render: function (rowdata, rowindex, value){
+					var u = [];
+					u.push("<a href='javascript:void(0);' onclick='updateRow(\""+rowindex+"\")'>修改</a>");
+					u.push("&nbsp;&nbsp;&nbsp;&nbsp;");
+					u.push("<a href='javascript:void(0);' onclick='deleteRow(\""+rowdata+"\",\""+rowindex+"\")'>删除</a>");
+					return u.join("");
+				}},
+				{ display: '考试名称', name: 'examName', align: 'left', minWidth :100,isSort:false},
+				{ display: '试卷名称', name: 'listPaperName', align: 'left', minWidth :140,isSort:false},
+				{ display: '开始考试时间', name: 'to_exam_begin_time', align: 'left', minWidth :120,isSort:false},
+				{ display: '结束考试时间', name: 'to_exam_end_time', align: 'left', minWidth :120,isSort:false},
+		        { display: '考试时长', name: 'examTimeLen', align: 'center', width :100,isSort:false},
+				{ display: '合格分数', name: 'examNormalScore', align: 'center', minWidth :40,isSort:false},
+				{ display: '是否允许查询', name: 'to_exam_query', align: 'center', minWidth :30,isSort:false}
+              ], 
+              data:beginexam, sortName: 'examId',height:'100%', pageSize:10 ,width:"auto",checkbox:true,rownumbers :true
+        });
+        $("#pageloading").hide();
+		
+        $("#deleteTest").click(function(){
+       		var selected = maingrid_gd.getSelected();
+       		if(selected!=null){
+    		   	$.ligerDialog.confirm('确认删除所选？', function (flag) { //for (var i in rows) 
+    	       		if(flag){
+    	       			maingrid_gd.deleteSelectedRow();
+    	       		}
+    	        }); 
+    	   	} else{
+    	   		$.ligerDialog.warn('请先选择记录，再进行操作');
+    	   	}
+        });
+        $("#listbox1,#listbox2").ligerListBox({
+            isShowCheckBox: true,
+            isMultiSelect: true,
+            height: 110,
+            width:120
+        });
+    });
+	
+	function insertRow(){
+		 /*$.ligerDialog.open({
+	   		 	target: $("#insertdiv"),
+	   	        title: '考试管理',
+	   	        width: 630,
+	   	        height: 420,
+	   	        isResize: true,
+	   	        modal: true
+	   	 });*/
+		 
+		 window.location.href="addexam_manage.html";
+	};
+	
+	
+	function updateRow(rowindex){
+		 var uprow = maingrid_gd.getRow(rowindex);
+		 $("#up_examName").val(uprow.examName);
+		 $("#up_examStartTime").val(uprow.to_exam_begin_time);
+		 $("#up_examEndTime").val(uprow.to_exam_end_time);
+		 $("#up_examTimeLen").val(uprow.examTimeLen);
+		 $("#up_testPaperName").val(uprow.listPaperName);
+		 $("#up_testperson").val("张三，李四");
+		 $("#up_normalScore").val(uprow.examNormalScore);
+		 $("#up_examType").val("日考");
+		 $("#up_examObject").val("公客");
+		 if(uprow.to_exam_query=="是"){
+			 $("input[name='up_isQuery']:eq(0)").attr("checked",'checked'); 
+		 } else {
+			 $("input[name='up_isQuery']:eq(1)").attr("checked",'checked'); 
+		 }
+		window.location.href="updateexam_manage.html";
+	};
+	
+	
+	function deleteRow(rowdata, rowindex){
+		$.ligerDialog.success('删除');
+	};
+	
+	function openChooseUser(){
+		 $.ligerDialog.open({
+               height:420,
+               width: 820,
+               title : '用户管理',
+               url: 'choose_user.html', 
+               showMax: false,
+               showToggle: true,
+               showMin: false,
+               isResize: true,
+               slide: false,
+               data: {
+                   name: "userName"
+               },
+               //自定义参数
+               myDataName: "自定义参数"
+        });
+	}
+	
+	function openChooseTestpaper(inputname){
+		 $.ligerDialog.open({
+              height:420,
+              width: 820,
+              title : '试卷管理',
+              url: 'choose_testpaper.html', 
+              showMax: false,
+              showToggle: true,
+              showMin: false,
+              isResize: true,
+              slide: false,
+              data: {
+                  name: inputname
+              },
+              //自定义参数
+              myDataName: "自定义参数"
+       });
+	}
+	
+	function openChooseUsers(inputname){
+		 $("#chooseUser").hide(); 
+		 $.ligerDialog.open({
+               height:420,
+               width: 820,
+               title : '用户管理',
+               url: 'choose_users.html', 
+               showMax: false,
+               showToggle: true,
+               showMin: false,
+               isResize: true,
+               slide: false,
+               data: {
+                   name: inputname
+               },
+               //自定义参数
+               myDataName: "自定义参数"
+        });
+	}
+	
+	//重置数据
+	function resetbutton(){
+		$("#examName").val("");
+		$("#examTimeLen").val("");
+		$("#begin_time").val("");
+		$("#end_time").val("");
+		$("#testpaper").val("");
+		$("#userName").val("");
+		$("#examtype").val("0");
+		$("#examobject").val("0");
+		$("#examNormalScore").val("");
+	}
+	
+	//查询是否为空
+	function checkIsNull(ids,warns){
+		 if(ids=='' || ids.length==0){
+			 $.ligerDialog.warn(warns);
+			 return false;
+		 }else{
+			 return true;
+		 }
+	}
+	
+	// 编辑已选用户
+	function editUsers(){
+	   if(!$("#chooseUser").is(":hidden")){
+			   $("#chooseUser").hide();
+			   return;
+	   }
+	   if($("#insertTestperson").val().length<1){
+		   $.ligerDialog.error('请先选择参考人员');
+    	   return;
+	   }
+	   var txt = $("#chooseAllUsers").val();
+       if(txt.length>3){
+    	   jsonArray = $.parseJSON(txt);
+    	   liger.get("listbox1").setData(jsonArray);
+       }
+       $("#chooseUser").show();
+	}
+	
+	// 保存编辑
+	function saveUsers(){
+		jsonArray = liger.get("listbox1").data;
+		var insertTestperson = "";
+		for(var i in jsonArray){
+			insertTestperson = insertTestperson + jsonArray[i].text + ",";
+		}
+		$("#insertTestperson").val(insertTestperson.substring(0,insertTestperson.length-1));
+        $("#chooseUser").hide(); 
+        $("#chooseAllUsers").val('');
+	}
+	
+	function moveToLeft()
+    {
+        var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+        var selecteds = box2.getSelectedItems();
+        if (!selecteds || !selecteds.length) return;
+        box2.removeItems(selecteds);
+        box1.addItems(selecteds);
+    }
+    function moveToRight()
+    {
+        var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+        var selecteds = box1.getSelectedItems();
+        if (!selecteds || !selecteds.length) return;
+        box1.removeItems(selecteds);
+        box2.addItems(selecteds);
+    }
+    function moveAllToLeft()
+    { 
+        var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+        var selecteds = box2.data;
+        if (!selecteds || !selecteds.length) return;
+        box1.addItems(selecteds);
+        box2.removeItems(selecteds); 
+    }
+    function moveAllToRight()
+    { 
+        var box1 = liger.get("listbox1"), box2 = liger.get("listbox2");
+        var selecteds = box1.data;
+        if (!selecteds || !selecteds.length) return;
+        box2.addItems(selecteds);
+        box1.removeItems(selecteds);
+        
+    }
+	
+	function insertdivcancel(){
+	   $("#insertdiv").css("display","none");
+	}
+	
+	function updatedivcancel(){
+	   $("#updatediv").css("display","none");
+	}
+	function hiddenDialog(){
+		$(".l-dialog,.l-window-mask").css("display","none"); //隐藏窗口和遮罩层
+	}
+    </script> 
+</head>
+<body> 
+	<div style="">
+		<input type="text" id="chooseAllUsers" style="display: none"/>
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			<table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+				<tr>
+					<td class="td_lable">考试名称：</td><td class="td_value"><input type="text" id="examName"/></td>
+					<td class="td_lable">考试时长：</td><td class="td_value"><input type="text" id="examTimeLen"/></td>
+					<td class="td_lable">考试开始时间：</td><td class="td_value"><input id="begin_time" class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+					<td class="td_lable">考试结束时间：</td><td class="td_value"><input id="end_time"  class="Wdate date_text" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+				</tr>
+				<tr>
+					<td class="td_lable">试卷名称：</td><td class="td_value"><input type="text" id="testpaper" onclick="openChooseTestpaper('testpaper')" />
+							<a style="cursor: pointer;"><img src="../../img/icon/delete.gif" height="14" onclick='$("#testpaper").val("")' alt="编辑"></a></td>
+					<td class="td_lable">参考人员：</td><td class="td_value"><input type="text" id="userName" onclick="openChooseUser()" />
+							<a style="cursor: pointer;"><img src="../../img/icon/delete.gif" height="14" onclick='$("#userName").val("")' alt="编辑"></a></td>
+					<td class="td_lable">考试类型：</td><td class="td_value">
+						<select name="examtype" id="examtype" style="width: 135px">
+			                <option value="0">---请选择---</option>
+			                <option value="日考">日考</option>
+			                <option value="月考">月考</option>
+			            </select> 
+					</td>
+					<td class="td_lable">考试对象：</td><td class="td_value">
+						<select name="examtype" id="examobject" style="width: 135px">
+			                <option value="0">---请选择---</option>
+			                <option value="公客">公客</option>
+			                <option value="商客">商客</option>
+			            </select> 
+					</td>
+				</tr>
+				<tr>
+					<td class="td_lable">合格分数：</td><td class="td_value" id="examNormalScore"><input /></td>
+				</tr>
+				<tr>
+					<td colspan="8" align="center">
+						<input type="button" value="查询" />&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="新增" id="insertOpen" onclick="insertRow()"/>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="删除" id="deleteTest"/>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="重置" id="resetbutton" onclick="resetbutton()"/>
+					</td>
+				</tr>
+			</table>			
+		</div>
+		
+		
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:10px;"></div>
+	</div>
+</body>
+</html>

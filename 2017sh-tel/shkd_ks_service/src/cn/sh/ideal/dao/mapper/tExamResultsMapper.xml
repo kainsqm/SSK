@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sh.ideal.dao.ItExamResultsDao">
+  <resultMap id="BaseResultMap" type="cn.sh.ideal.model.tExamResults">
+    <id column="PK_AUTO_ID" jdbcType="INTEGER" property="pkAutoId" />
+    <result column="FK_E_EP_EXAMINEE_ID" jdbcType="INTEGER" property="fkEEpExamineeId" />
+    <result column="FK_QUESTIONS_ID" jdbcType="INTEGER" property="fkQuestionsId" />
+    <result column="RESULTS_ANSWER" jdbcType="VARCHAR" property="resultsAnswer" />
+    <result column="RESULTS_CORRECT_ANSWER" jdbcType="VARCHAR" property="resultsCorrectAnswer" />
+    <result column="RESULTS_SCORE" jdbcType="INTEGER" property="resultsScore" />
+    <result column="ZUHU_ID" jdbcType="INTEGER" property="zuhuId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PK_AUTO_ID, FK_E_EP_EXAMINEE_ID, FK_QUESTIONS_ID, RESULTS_ANSWER, RESULTS_CORRECT_ANSWER, 
+    RESULTS_SCORE, ZUHU_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from "t_exam_results"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from "t_exam_results"
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.sh.ideal.model.tExamResults">
+    insert into "t_exam_results" (PK_AUTO_ID, FK_E_EP_EXAMINEE_ID, FK_QUESTIONS_ID, 
+      RESULTS_ANSWER, RESULTS_CORRECT_ANSWER, RESULTS_SCORE, 
+      ZUHU_ID)
+    values (#{pkAutoId,jdbcType=INTEGER}, #{fkEEpExamineeId,jdbcType=INTEGER}, #{fkQuestionsId,jdbcType=INTEGER}, 
+      #{resultsAnswer,jdbcType=VARCHAR}, #{resultsCorrectAnswer,jdbcType=VARCHAR}, #{resultsScore,jdbcType=DECIMAL}, 
+      #{zuhuId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.sh.ideal.model.tExamResults">
+    insert into "t_exam_results"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        PK_AUTO_ID,
+      </if>
+      <if test="fkEEpExamineeId != null">
+        FK_E_EP_EXAMINEE_ID,
+      </if>
+      <if test="fkQuestionsId != null">
+        FK_QUESTIONS_ID,
+      </if>
+      <if test="resultsAnswer != null">
+        RESULTS_ANSWER,
+      </if>
+      <if test="resultsCorrectAnswer != null">
+        RESULTS_CORRECT_ANSWER,
+      </if>
+      <if test="resultsScore != null">
+        RESULTS_SCORE,
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkAutoId != null">
+        #{pkAutoId,jdbcType=INTEGER},
+      </if>
+      <if test="fkEEpExamineeId != null">
+        #{fkEEpExamineeId,jdbcType=INTEGER},
+      </if>
+      <if test="fkQuestionsId != null">
+        #{fkQuestionsId,jdbcType=INTEGER},
+      </if>
+      <if test="resultsAnswer != null">
+        #{resultsAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="resultsCorrectAnswer != null">
+        #{resultsCorrectAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="resultsScore != null">
+        #{resultsScore,jdbcType=DECIMAL},
+      </if>
+      <if test="zuhuId != null">
+        #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sh.ideal.model.tExamResults">
+    update "t_exam_results"
+    <set>
+      <if test="fkEEpExamineeId != null">
+        FK_E_EP_EXAMINEE_ID = #{fkEEpExamineeId,jdbcType=INTEGER},
+      </if>
+      <if test="fkQuestionsId != null">
+        FK_QUESTIONS_ID = #{fkQuestionsId,jdbcType=INTEGER},
+      </if>
+      <if test="resultsAnswer != null">
+        RESULTS_ANSWER = #{resultsAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="resultsCorrectAnswer != null">
+        RESULTS_CORRECT_ANSWER = #{resultsCorrectAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="resultsScore != null">
+        RESULTS_SCORE = #{resultsScore,jdbcType=DECIMAL},
+      </if>
+      <if test="zuhuId != null">
+        ZUHU_ID = #{zuhuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.sh.ideal.model.tExamResults">
+    update "t_exam_results"
+    set FK_E_EP_EXAMINEE_ID = #{fkEEpExamineeId,jdbcType=INTEGER},
+      FK_QUESTIONS_ID = #{fkQuestionsId,jdbcType=INTEGER},
+      RESULTS_ANSWER = #{resultsAnswer,jdbcType=VARCHAR},
+      RESULTS_CORRECT_ANSWER = #{resultsCorrectAnswer,jdbcType=VARCHAR},
+      RESULTS_SCORE = #{resultsScore,jdbcType=DECIMAL},
+      ZUHU_ID = #{zuhuId,jdbcType=INTEGER}
+    where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="selectByExamineId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+	    <include refid="Base_Column_List" />
+	    from t_exam_results
+	    where FK_E_EP_EXAMINEE_ID = #{fkEEpExamineeId,jdbcType=INTEGER}
+  </select>
+  
+  <update id="updateUserScore" parameterType="cn.sh.ideal.model.tExamResults">
+   	   update t_exam_results t 
+       set t.results_score = #{resultsScore,jdbcType=DECIMAL} 
+       where PK_AUTO_ID = #{pkAutoId,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertNullAnswer" parameterType="cn.sh.ideal.model.tExamResults">
+  		insert into t_exam_results (FK_E_EP_EXAMINEE_ID,FK_QUESTIONS_ID,ZUHU_ID) 
+  		values (#{fkEEpExamineeId,jdbcType=INTEGER}, #{fkQuestionsId,jdbcType=INTEGER}, #{zuhuId,jdbcType=INTEGER})
+  </insert>
+</mapper>

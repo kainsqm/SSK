@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>进行考试</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script> 
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+	<script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+	<style type="text/css">
+		div.title_div{border-radius: 5px; text-align:left; margin-top:5px; background-image:url(../../img/login/title_bg.jpg);border: solid 1px #D7D7D7;
+			 width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+		}
+		input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+		input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+		input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+		table#search_table td{ height:30px; line-height:30px;}
+		table#search_table td.td_lable{ text-align:right;}
+		table#search_table td.td_value{ text-align:left;}
+		body{overflow: auto !important;}
+		a{text-decoration : none;color:blue;}
+	</style>
+	<script type="text/javascript"> 
+	    var beginexam = {Rows: [
+				{
+					"examId":"3843301",
+					"examName":"20170323模板测试",
+					"exampaperName":"20170323模板测试",
+					"examBeginTime":"2017-03-15 13:06:18",
+					"examEndTime":"2017-03-31 13:04:59",
+					"examTimeLen":"60",
+					"examExampaperPostUserRealName":"admin"
+				},
+				{
+					"examId":"3843302",
+					"examName":"C网业务考试A",
+					"exampaperName":"C网业务考试A",
+					"examBeginTime":"2017-03-15 13:06:18",
+					"examEndTime":"2017-03-31 13:04:59",
+					"examTimeLen":"20",
+					"examExampaperPostUserRealName":"admin"
+				},
+				{
+					"examId":"3843303",
+					"examName":"20170320模板测试",
+					"exampaperName":"20170320模板测试",
+					"examBeginTime":"2017-03-15 13:06:18",
+					"examEndTime":"2017-03-31 13:04:59",
+					"examTimeLen":"120",
+					"examExampaperPostUserRealName":"admin"
+				}
+		],Total: 2
+		};
+		$(function () {
+            var maingrid_gd= $("#record_list").ligerGrid({
+                columns: [                
+				{ display: '考试编号', name: 'examId', align: 'left', minWidth :80,isSort:false},
+				{ display: '考试名称', name: 'examName', align: 'left', minWidth :145,isSort:false},
+				{ display: '试卷名称', name: 'exampaperName', align: 'left', maxWidth :145,isSort:false},
+				{ display: '开始考试时间', name: 'examBeginTime', align: 'left', minWidth :143,isSort:false},
+				{ display: '结束考试时间', name: 'examEndTime', align: 'left', minWidth :143,isSort:false},
+                { display: '考试时长', name: 'examTimeLen', align: 'left', width :100,isSort:false},
+				{ display: '出题人', name: 'examExampaperPostUserRealName', align: 'left', minWidth :100,isSort:false},
+				{ display: '操作', isSort: false, minWidth : 80, render: function (rowdata, rowindex, value){
+					return "<a href='javascript:void(0);' onclick='openBeginExam(\""+rowdata.examId+"\",\""+rowdata.examTimeLen+"\",\""+rowdata.exampaperName+"\")')>开始考试</a> ";
+                }}
+                ], 
+                data:beginexam, sortName: 'examId',height:'100%', pageSize:10 ,width:'auto',rownumbers :true
+            });
+            $("#pageloading").hide(); 
+        });
+		
+		function openBeginExam(examId,examTimeLen,exampaperName){
+			/* $.ligerDialog.open({
+	               height:500,
+	               width: 920,
+	               showMax: true,
+	               modal: false,
+	               isDrag:false,
+	               allowClose:false,
+	               title : '考试中',
+	               url: 'begin_exam.html', 
+	               isResize: true ,
+	               data: {
+	            	   examId: examId,examTimeLen:examTimeLen,exampaperName:exampaperName
+	               },
+	               //自定义参数
+	               myDataName: "自定义参数"
+	        }); */
+			//window.showModalDialog("<%=path%>/examJoinAction.do?method=queryQuesByExampaperId&exampaperId="+exampaperId+"&examExampaperExamineId="+examExampaperExamineId+"&examId="+examId,null,"status:no;dialogTop:200px;dialogLeft:200px;dialogHeight:800px;dialogwidth:900px;scroll=yes");
+	        //var retval = window.showModalDialog("exampaper_begin.html?examTimeLen="+examTimeLen+"&exampaperName="+exampaperName,null,"status:no;dialogTop:200px;dialogLeft:200px;dialogHeight:800px;dialogwidth:900px;scroll=yes");
+	        if(navigator.userAgent.indexOf("Chrome") >0 ){
+	        	window.open("exampaper_begin.html?examTimeLen="+examTimeLen+"&exampaperName="+exampaperName,null,"status=no,top=50,left=200,height=600,width=1000,toolbar =no, menubar=no, scrollbars=yes, resizable=yes, location=no, status=no,location=no");
+	        }else{
+	        	window.showModalDialog("exampaper_begin.html?examTimeLen="+examTimeLen+"&exampaperName="+exampaperName,null,"status:no;dialogTop:50px;dialogLeft:200px;dialogHeight:600px;dialogwidth:1000px;scroll=yes");
+	        }
+		}
+    </script> 
+</head>
+<!-- 
+<body style="margin:0 auto; background-color:#FFFFFF; padding:5px;">
+ -->
+<body> 
+	<div style="">
+	    <input id="in_examId" type="text" style="display: none"/>
+	    <input id="in_examTimeLen" type="text" style="display: none"/>
+		<div class="title_div" style="width:100%; margin-top:0px; display:none;"><label style="margin-left:15px;">查询条件</label></div>
+		<div align="left" style="margin-top:10px; margin-left:5px; padding-left:10px;">
+			请选择需要参加的考试：	
+		</div>
+		<div class="l-loading" style="display:block" id="pageloading"></div>
+		<div id="record_list" style="margin-top:6px;"></div>
+	</div>
+</body>
+</html>

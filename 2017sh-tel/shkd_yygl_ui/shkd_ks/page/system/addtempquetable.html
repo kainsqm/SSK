@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>题库选题</title>
+    <link rel="stylesheet" href="../../js/ztree/css/demo.css" type="text/css">
+    <link rel="stylesheet" href="../../js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../js/ztree/js/jquery-1.4.4.min.js"></script>
+    <script src="../../lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../js/ztree/js/jquery.ztree.core-3.5.js"></script>
+    <script type="text/javascript" src="../../js/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+    <script type="text/javascript" src="../../js/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+    <script src="../../lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../lib/jquery-validation/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-validation/messages_cn.js"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../CustomersData.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="../../js/My97DatePicker/WdatePicker.js"></script>
+
+    <link href="../../lib/ligerUI/skins/Gray2014/css/all.css" rel="stylesheet" />
+    <script src="../../lib/ligerUI/js/ligerui.all.js"></script>
+    <style type="text/css"> 
+        body{ margin:0;}
+        #layout1{  width:100%;margin:0;}  
+        .l-page-top{ height:80px; background:#f8f8f8; margin-bottom:3px;}
+        h4{ margin:20px;}
+        div.l-layout-header-toggle{ display:none;}
+    </style>
+    <style type="text/css">
+        .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+        .ztree li{ margin-top:5px;}
+    </style>
+    <style type="text/css">
+        div.title_div{border-radius: 5px; text-align:left; margin-top:5px;border: solid 1px #D7D7D7;
+           width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+       }
+       input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+       input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+       input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+       
+       table#search_table td{ height:30px; line-height:30px;}
+       table#search_table td.td_lable{ text-align:right;}
+       table#search_table td.td_value{ text-align:left;}
+       div.l-panel-topbar{ height:30px !important; }
+       
+       div.l-layout-header1 { padding-left:15px; height: 20px; line-height: 20px; font-size:14px; font-family:"黑体"; border-bottom:#f0f0dc 1px solid;}
+   </style>
+   <style type="text/css">
+    div.title_div{border-radius: 5px; text-align:left; margin-top:5px; border: solid 1px #D7D7D7;
+       width:90%; height:30px; line-height:30px; vertical-align:middle; font-size:14px; font-family:"黑体";
+   }
+   input.input_text{border-radius:5px; width:130px; height:18px; line-height:18px; padding-left:3px;}
+   input[type='button']{ border:#d3d3d3 1px solid; width:80px; height:25px; cursor:pointer;}
+   input.date_text{border-radius:5px; width:135px; height:18px; line-height:18px;}
+   table td{ height:30px; line-height:30px;}
+   table .search_table td.td_lable{ text-align:right;}
+   table .search_table td.td_value{ text-align:left;}
+   a{text-decoration : none;color:blue;}
+   red{color: red;}
+   body{overflow: auto !important;}
+</style>
+<SCRIPT type="text/javascript">
+    
+    
+    /*  $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            $("#selectAll").bind("click", selectAll);
+        });*/
+        //-->
+    </SCRIPT>
+    <script type="text/javascript">
+
+        $(function ()
+        {
+           $("#form1").ligerForm({
+            validate: true
+        });
+           $("#layout1").ligerLayout({ leftWidth: 200,height:'99%'});
+       });
+   </script>
+   <script type="text/javascript"> 
+    var TreeDeptData = { Rows : [
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'填空题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'填空题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'填空题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'填空题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+        { workId: 'CDMA用户通过11808拨打台港澳电话无需具有国际长途直拨功能',username:"2",SupplierID:'选择题'},
+  
+        
+        
+        
+        ]};
+        
+        var manager;
+        $(function ()
+        {
+            manager = $("#workpaper_list").ligerGrid({
+                checkbox: true,
+                columns: [
+                { display: '考题', name: 'workId',  minWidth: 150, align: 'left' , isSort: false},
+                { display: '分数', name: 'username',id: 'id1', minWidth: 100, align: 'left', isSort: false },     
+                ], data: TreeDeptData,width: 'auto', height: '99%', groupColumnName:'SupplierID', groupColumnDisplay:'',
+                 usePager:false,checkbox:true,pageSize:15
+            }
+            );
+            //collapseAll();
+            $("#pageloading").hide(); 
+        });
+        function collapseAll()
+        {
+            manager.collapseAll();
+        }
+        function expandAll()
+        {
+            manager.expandAll();
+        }
+        function itemclick(item)
+        {
+            alert(item.text);
+        }
+        /*********************
+         * 员工信息编辑
+         *********************/
+         function eidt_user(editType){
+           location.href="sys_tempmoban.htm";
+              /* var titleInfo="新增试卷页面";
+          $.ligerDialog.open({
+               target:$('#addque'),
+               height:'400',
+               width: '600',
+               title : titleInfo,
+               showMax: false,
+               showToggle: false,
+               showMin: false,
+               isResize: true,
+               slide: false 
+           });*/
+        }
+        /*********************
+         * 删除员工信息
+         *********************/
+         function deleteUser(userID){
+            $.ligerDialog.confirm('确认要删除员工['+userID+']吗？', function (yes) { 
+                if(yes){
+                    alert("开始删除...");
+                } 
+            });
+        }
+        /*********************
+         * 重置员工密码
+         *********************/
+         function resetPwd(userID){
+            $.ligerDialog.confirm('确认要重置员工['+userID+']的密码吗？', function (yes) { 
+                if(yes){
+                    alert("开始重置...");
+                } 
+            });
+        }
+        /*********************
+         * 角色信息分配
+         *********************/
+         function changeRoleInfo(userID){
+            $.ligerDialog.open({
+                height:330,
+                width: 340,
+                title : '角色信息分配',
+                url:'roleInfoChose.html', 
+                showMax: false,
+                showToggle: false,
+                showMin: false,
+                isResize: true,
+                slide: false
+            });
+        }
+   
+            function valid(typeId){
+                if(typeId=='ok'){
+                    alert('正在提交');
+                }else{
+                  dialog.close();//关闭dialog 
+              }
+
+
+          }
+      </script> 
+      <script type="text/javascript">
+       
+        function f_search()
+        {
+            manager.options.data = $.extend(true, {}, TreeDeptData);
+            manager.loadData(f_getWhere());
+        }
+        function f_getWhere()
+        {
+            if (!manager) return null;
+            var clause = function (rowdata, rowindex)
+            {
+                var key = $("#bumen").val();
+                return rowdata.bumen.indexOf(key) > -1;
+            };
+            return clause; 
+        }
+    </script>
+
+</head>
+<div>
+   <body> 
+
+    <div align="left" style="margin-top:20px; margin-left:5px; padding-left:10px;">
+        <table class="search_table" cellpadding="3" cellspacing="3" width="100%" >
+      <div style="margin-top:20px;">
+    <tr >
+        <td colspan="8" align="center">
+            <input type="button" value="删除选中试卷" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="生成模板" id="insertOpen" onclick="eidt_user('add')" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="返回" onclick="window.history.back();" id="insertOpen"  />&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+    </tr>
+</div>
+</table>
+</div>
+</div>
+
+<br>
+<div>
+
+</div>
+<div id="workpaper_list"></div>
+<div id="addque" style="width:98%; margin:5px; padding-right:20px;display:none;" title="sss">
+    
+</div>
+</body>
+</html>
+

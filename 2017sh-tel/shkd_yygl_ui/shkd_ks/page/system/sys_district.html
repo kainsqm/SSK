@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE>区域管理</TITLE>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../js/ztree/css/demo.css" type="text/css">
+	<link href="../../css/public.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../../js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../../js/ztree/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../../js/ztree/js/jquery.ztree.core-3.5.js"></script>
+    <script type="text/javascript" src="../../js/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+    <script type="text/javascript" src="../../js/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+    <SCRIPT type="text/javascript">
+        <!--
+        var setting = {
+            view: {
+                // addHoverDom: addHoverDom,
+                // removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            // edit: {
+            //     enable: true,
+            //     editNameSelectAll: true,
+            //     showRemoveBtn: showRemoveBtn,
+            //     showRenameBtn: showRenameBtn,
+            //     removeTitle:"删除类别",
+            //     renameTitle:"编辑名称"
+            // },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeDrag: beforeDrag,
+                beforeEditName: beforeEditName,
+                beforeRemove: beforeRemove,
+                beforeRename: beforeRename,
+                onRemove: onRemove,
+                onRename: onRename
+            }
+        };
+        var zNodes =[
+            { id:0, pId:null, name:"区域管理", open:true},
+            { id:1, pId:0, name:"上海", open:true},
+            { id:111, pId:1, name:"国立"},
+            { id:112, pId:1, name:"梅南"},
+            { id:113, pId:1, name:"园区"},
+            { id:114, pId:1, name:"南泰"},
+            
+        ];
+        var log, className = "dark";
+        function beforeDrag(treeId, treeNodes) {
+            return false;
+        }
+        function beforeEditName(treeId, treeNode) {
+            className = (className === "dark" ? "":"dark");
+            showLog("[ "+getTime()+" beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.selectNode(treeNode);
+            return true;
+        }
+        function beforeRemove(treeId, treeNode) {
+            className = (className === "dark" ? "":"dark");
+            showLog("[ "+getTime()+" beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.selectNode(treeNode);
+            return confirm("确认删除 [" + treeNode.name + "] 吗？");
+        }
+        function onRemove(e, treeId, treeNode) {
+            showLog("[ "+getTime()+" onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        }
+        function beforeRename(treeId, treeNode, newName, isCancel) {
+            className = (className === "dark" ? "":"dark");
+            showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+            if (newName.length == 0) {
+                alert("名称不能为空.");
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                setTimeout(function(){zTree.editName(treeNode)}, 10);
+                return false;
+            }
+            return true;
+        }
+        function onRename(e, treeId, treeNode, isCancel) {
+            showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+        }
+        function showRemoveBtn(treeId, treeNode) {
+            var conn=true;
+            if(treeNode.level==0 || treeNode.level==1){conn=false;}
+            return conn;
+        }
+        function showRenameBtn(treeId, treeNode) {
+            return treeNode.level!=0;
+        }
+        function showLog(str) {
+            if (!log) log = $("#log");
+            log.append("<li class='"+className+"'>"+str+"</li>");
+            if(log.children("li").length > 8) {
+                log.get(0).removeChild(log.children("li")[0]);
+            }
+        }
+        function getTime() {
+            var now= new Date(),
+            h=now.getHours(),
+            m=now.getMinutes(),
+            s=now.getSeconds(),
+            ms=now.getMilliseconds();
+            return (h+":"+m+":"+s+ " " +ms);
+        }
+
+        var newCount = 1;
+        // function addHoverDom(treeId, treeNode) {
+        //     if(treeNode.level!=3){
+        //         newCount=newCount+1;
+        //         var sObj = $("#" + treeNode.tId + "_span");
+        //         if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+        //         var addStr = "";
+        //         if(treeNode.level==0){
+        //             addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='新增工单类型' onfocus='this.blur();'></span>";
+        //         }else if(treeNode.level==1){
+        //             addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='新增业务大类' onfocus='this.blur();'></span>";
+        //         }else if(treeNode.level==2){
+        //             addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='新增业务小类' onfocus='this.blur();'></span>";
+        //         }
+        //         sObj.after(addStr);
+        //         var btn = $("#addBtn_"+treeNode.tId);
+        //         if (btn) btn.bind("click", function(){
+        //             if(confirm("确认要新增吗?")){
+        //                 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        //                 zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:""});
+        //                 var node = zTree.getNodeByParam("id", (100 + newCount), null);
+        //                 if(node!=null){
+        //                     zTree.editName(node);
+        //                 }
+        //             }               
+        //             return false;
+        //         });
+        //     }           
+        // };
+        function removeHoverDom(treeId, treeNode) {
+            $("#addBtn_"+treeNode.tId).unbind().remove();
+        };
+        function selectAll() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
+        }
+        
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            $("#selectAll").bind("click", selectAll);
+        });
+        //-->
+    </SCRIPT>
+    <style type="text/css">
+        .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+        .ztree li{ margin-top:5px;}
+    </style>
+</HEAD>
+<BODY>
+    <div class="">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+</BODY>
+</HTML>

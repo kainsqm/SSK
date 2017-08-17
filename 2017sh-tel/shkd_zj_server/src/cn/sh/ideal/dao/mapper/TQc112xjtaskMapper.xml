@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sh.ideal.dao.ItQc112xjtaskDao">
+    <resultMap id="XJTASK_MAP" type="cn.sh.ideal.model.TaskChapter">
+		<result  column="TASK_ID" javaType="INTEGER" property="taskId" />
+		<result  column="TASK_NAME" jdbcType="VARCHAR" property="taskName" />
+		<result  column="QC_USER" jdbcType="VARCHAR" property="qcUser" />
+		<result  column="QC_USER_NAME" jdbcType="VARCHAR" property="qcUserName" />
+		<result  column="TEL_USER" jdbcType="VARCHAR" property="telUser" />
+		<result  column="TEL_USER_NAME" jdbcType="VARCHAR" property="telUserName" />
+		<result  column="TASK_STATUS" jdbcType="VARCHAR" property="taskStatus" />
+		<result  column="ENABLED" jdbcType="VARCHAR" property="enabled" />
+		<result  column="IS_PUBLISH" jdbcType="VARCHAR" property="isPublish" />
+		<result column="TASK_START_TIME" property="taskStartTime" jdbcType="VARCHAR" />
+		<result column="TASK_END_TIME" property="taskEndTime" jdbcType="VARCHAR" />
+		<result column="CSR_TOP_D_COUNT" property="csrTopDCount" jdbcType="VARCHAR" />
+		<result column="CHECK_COUNT" property="checkCount" jdbcType="VARCHAR" />
+		<result column="BUSSNIESS_TYPE" property="bussniessType" jdbcType="VARCHAR" />
+		<result column="TELSUM_TYPE" property="telsumType" jdbcType="VARCHAR" />
+		<result column="GZLY_TYPE" property="gzlyType" jdbcType="VARCHAR" />
+		<result column="CREATE_USER_ID" property="createUserId" jdbcType="INTEGER" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="UPDATE_USER_ID" property="updateUserId" jdbcType="INTEGER" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+		<result column="WHICHDATEFORTASK" property="cDate" jdbcType="VARCHAR" />
+		<result column="TASKUSER_ID" property="taskuserId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <resultMap id="112ChapterMap" type="cn.sh.ideal.model.WorkTelSum112">
+		<result column="AUTO_ID" jdbcType="VARCHAR" property="autoId" />
+		<result column="WORKORDER_ID" jdbcType="VARCHAR" property="workorderId" />
+		<result column="BUSINESS_TYPE" jdbcType="VARCHAR" property="businessType" />
+		<result column="TELSUM_TYPE" jdbcType="VARCHAR" property="telsumType" />
+		<result column="ERROR_SOURCE" jdbcType="VARCHAR" property="errorSource" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="DECLARATION_NO" jdbcType="VARCHAR" property="declarationNo" />
+		<result column="LOGIC_NO" jdbcType="VARCHAR" property="logicNo" />
+		<result column="TELSUM_ID" jdbcType="VARCHAR" property="telsumId" />
+		<result column="TELSUM_TIME" jdbcType="VARCHAR" property="telsumTime" />
+		<result column="TELSUM_WORKID" jdbcType="VARCHAR" property="telsumWorkid" />
+		<result column="IS_QC" jdbcType="INTEGER" property="isQC" />
+		<result column="telsumTimestart" jdbcType="VARCHAR" property="telsumTimestart" />
+    	<result column="telsumTimeend" jdbcType="VARCHAR" property="telsumTimeend" />
+	</resultMap>
+	
+	<resultMap type="cn.sh.ideal.model.Task" id="taskCompleteInforc">
+		<result column="complete_id" property="completeID" jdbcType="VARCHAR" />
+		<result column="taskuser_id" property="taskuserId" jdbcType="VARCHAR" />
+		<result column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="cDate" property="cDate" jdbcType="VARCHAR" />
+		<result column="get_record_count" property="getRecordCount" jdbcType="VARCHAR" />
+		<result column="complete_count" property="completeCount" jdbcType="VARCHAR" />
+		<result column="each_date_status" property="eachDateStatus"  jdbcType="VARCHAR" />
+		<result column="qc_d_count" property="qcDCount" jdbcType="VARCHAR" />
+		<result column="csr_top_d_count" property="csrTopDCount" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="cn.sh.ideal.model.CdmaTaskComplete" id="taskCompleteInfo">
+		<result column="taskuser_id" property="taskuserId" jdbcType="INTEGER" />
+		<result column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="QC_NAME" property="qcUserName" jdbcType="INTEGER" />
+		<result column="USERID" property="qcUser" jdbcType="VARCHAR" />
+		<result column="get_record_count" property="getRecordCount"
+			jdbcType="VARCHAR" />
+		<result column="complete_count" property="completeCount"
+			jdbcType="VARCHAR" />
+		<result column="each_qcuser_status" property="eachQcuserStatus"
+			jdbcType="VARCHAR" />
+		<result column="TASK_TYPE" property="tasktype"
+			jdbcType="VARCHAR" />	
+	</resultMap>
+	
+    <!-- 112工单任务列表 -->
+    <select id="getTask112Chapter" parameterType="cn.sh.ideal.model.TaskChapter" resultMap="XJTASK_MAP">  
+    	SELECT
+			TASK_ID,
+			TASK_NAME,
+			QC_USER,
+			TASK_STATUS,
+			DATE_FORMAT(tq.CREATE_TIME, '%Y-%m-%d') CREATE_TIME,
+			IS_PUBLISH,
+			TASK_START_TIME,
+			TASK_END_TIME,
+		    CSR_TOP_D_COUNT,
+			( SELECT work_id FROM t_sys_user WHERE user_id = tq.CREATE_USER_ID ) AS qcworkid,
+			CREATE_USER_ID
+		FROM
+			t_qc_112xjtask tq
+		WHERE
+			1 = 1
+			AND tq.ENABLED = '1'
+    	<if test="taskId != null and taskId !=''">
+			AND tq.TASK_ID=#{taskId,jdbcType=INTEGER}  
+		</if>
+		<if test="taskName != null and taskName !=''">
+			AND tq.TASK_NAME like '%${taskName}%'
+			</if>
+		<if test="qcUser != null and qcUser !=''">
+			AND tq.QC_USER like '%${qcUser}%'
+		</if>
+		<if test="taskStatus != null and taskStatus !=''">
+			AND tq.TASK_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="createBeginTime != null and createBeginTime !=''">
+			AND DATE_FORMAT(tq.CREATE_TIME,'%Y-%m-%d') &gt;=DATE_FORMAT(#{createBeginTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="createEndTime != null and createEndTime !=''">
+			AND DATE_FORMAT(tq.CREATE_TIME,'%Y-%m-%d') &lt;=DATE_FORMAT(#{createEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		order by tq.TASK_ID desc
+    </select>
+    
+    <select id="getTask112ChapterCount" parameterType="cn.sh.ideal.model.TaskChapter" resultType="java.lang.Integer">  
+    	select count(*)
+    	FROM
+			t_qc_112xjtask tq
+		WHERE
+			1 = 1
+			AND tq.ENABLED = '1'
+    	<if test="taskId != null and taskId !=''">
+			AND tq.TASK_ID=#{taskId,jdbcType=INTEGER}  
+		</if>
+		<if test="taskName != null and taskName !=''">
+			AND tq.TASK_NAME like '%${taskName}%'
+			</if>
+		<if test="qcUser != null and qcUser !=''">
+			AND tq.QC_USER like '%${qcUser}%'
+		</if>
+		<if test="taskStatus != null and taskStatus !=''">
+			AND tq.TASK_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="createBeginTime != null and createBeginTime !=''">
+			AND DATE_FORMAT(tq.CREATE_TIME,'%Y-%m-%d') &gt;=DATE_FORMAT(#{createBeginTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="createEndTime != null and createEndTime !=''">
+			AND DATE_FORMAT(tq.CREATE_TIME,'%Y-%m-%d') &lt;=DATE_FORMAT(#{createEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		order by tq.TASK_ID desc
+    </select>
+    
+    <select id="check112ChapterName" resultType="java.lang.Integer" parameterType="java.lang.String">
+    	select count(*) from t_qc_112xjtask where TASK_NAME=#{taskName,jdbcType=VARCHAR} 
+    </select>
+    
+    <insert id="add112ChapterTask" parameterType="cn.sh.ideal.model.TaskChapter"  useGeneratedKeys="true" keyProperty="taskId">
+    	insert into t_qc_112xjtask(TASK_NAME,QC_USER,QC_USER_NAME,TEL_USER,TEL_USER_NAME,TASK_STATUS,
+			IS_PUBLISH,TASK_START_TIME,TASK_END_TIME,CSR_TOP_D_COUNT,
+			CHECK_COUNT,BUSSNIESS_TYPE,TELSUM_TYPE,GZLY_TYPE,CREATE_USER_ID,CREATE_TIME) values(	
+				#{taskName,jdbcType=VARCHAR} ,#{qcUserWorkId,jdbcType=VARCHAR},#{qcUserName,jdbcType=VARCHAR},
+				#{telUser,jdbcType=VARCHAR},#{telUserName,jdbcType=VARCHAR},#{taskStatus,jdbcType=VARCHAR},
+				#{isPublish,jdbcType=VARCHAR},DATE_FORMAT(#{taskStartTime,jdbcType=VARCHAR},'%Y-%m-%d'),DATE_FORMAT(#{taskEndTime,jdbcType=VARCHAR},'%Y-%m-%d'),
+				#{csrTopDCount,jdbcType=VARCHAR},#{checkCount,jdbcType=VARCHAR},#{bussniessType,jdbcType=VARCHAR},
+				#{telsumType,jdbcType=VARCHAR},	#{gzlyType,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},now())		
+    </insert>
+    
+    <insert id="insertChapter112User" useGeneratedKeys="true" keyProperty="taskuserId" parameterType="cn.sh.ideal.model.TaskChapter" >
+   		insert into 
+		T_QC_TASK_QCUSER(QC_USER_ID,TASK_ID,GET_RECORD_COUNT,COMPLETE_COUNT, EACH_QCUSER_STATUS,TASK_TYPE)
+		values(
+		#{qcUser,jdbcType=VARCHAR},#{taskId,jdbcType=VARCHAR},#{getRecordCount,jdbcType=VARCHAR},#{completeCount,jdbcType=VARCHAR}, #{eachQcuserStatus,jdbcType=VARCHAR},#{tasktype,jdbcType=VARCHAR}
+		)    
+    </insert>
+    
+    <insert id="insertToChapter112UserComplete" parameterType="cn.sh.ideal.model.TaskChapter">
+		insert into
+		T_QC_TASKQCUSER_COMPLETE(TASKUSER_ID,TASK_ID,GET_RECORD_COUNT,COMPLETE_COUNT,EACH_DATE_STATUS,CDATE,TASK_TYPE)
+		values(
+		#{taskuserId,jdbcType=VARCHAR},#{taskId,jdbcType=VARCHAR},#{getRecordCount,jdbcType=VARCHAR},#{completeCount,jdbcType=VARCHAR},'2',#{cDate,jdbcType=DATE},#{tasktype,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+     <select id="get112ChapterTaskbyid" parameterType="java.lang.Integer" resultMap="XJTASK_MAP">
+		 SELECT
+			 TASK_ID,TASK_NAME, QC_USER, QC_USER_NAME, TEL_USER, TEL_USER_NAME, TASK_STATUS, ENABLED,
+			 IS_PUBLISH, DATE_FORMAT(TASK_START_TIME,'%Y-%m-%d') TASK_START_TIME, DATE_FORMAT(TASK_END_TIME,'%Y-%m-%d') TASK_END_TIME, CSR_TOP_D_COUNT, CHECK_COUNT, BUSSNIESS_TYPE, TELSUM_TYPE, GZLY_TYPE, 
+			CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID, UPDATE_TIME
+			FROM
+		t_qc_112xjtask where TASK_ID=#{taskId,jdbcType=INTEGER}  
+    </select>
+    
+     <update id="update112ChapterTask" parameterType="cn.sh.ideal.model.TaskChapter">
+   		update t_qc_112xjtask set
+		  TASK_NAME=#{taskName,jdbcType=VARCHAR},
+		  QC_USER=#{qcUser,jdbcType=VARCHAR},
+		  QC_USER_NAME=#{qcUserName,jdbcType=VARCHAR},
+		  TEL_USER=#{telUser,jdbcType=VARCHAR},
+		  TEL_USER_NAME=#{telUserName,jdbcType=VARCHAR},
+		  TASK_STATUS=#{taskStatus,jdbcType=VARCHAR},
+		  IS_PUBLISH=#{taskStatus,jdbcType=VARCHAR},
+		  TASK_START_TIME=#{taskStartTime,jdbcType=DATE},
+		  TASK_END_TIME=#{taskEndTime,jdbcType=DATE},
+		  CSR_TOP_D_COUNT=#{csrTopDCount,jdbcType=VARCHAR},
+		  CHECK_COUNT=#{checkCount,jdbcType=VARCHAR},
+		  BUSSNIESS_TYPE=#{bussniessType,jdbcType=VARCHAR},
+		  TELSUM_TYPE=#{telsumType,jdbcType=VARCHAR},
+		  GZLY_TYPE=#{gzlyType,jdbcType=VARCHAR},
+		  UPDATE_USER_ID=#{createUserId,jdbcType=VARCHAR},
+		  UPDATE_TIME=now() where TASK_ID=#{taskId,jdbcType=INTEGER}
+    </update>
+    
+    <update id="del112ChapterTask" parameterType="java.lang.Integer"> 
+    	update t_qc_112xjtask set ENABLED='0' where TASK_ID=#{taskId,jdbcType=INTEGER}     
+    </update>
+    
+    <update id="upd112Chapterstatus" parameterType="cn.sh.ideal.model.TaskChapter">
+	    update t_qc_112xjtask set TASK_STATUS=#{taskStatus,jdbcType=VARCHAR} where TASK_ID=#{taskId,jdbcType=INTEGER} 
+    </update>
+    
+    <update id="release112Telsum" parameterType="java.util.Map">
+		UPDATE t_work_telsum_112 t
+		SET t.ISTASK = '0'
+		WHERE
+		t.AUTO_ID IN (
+		SELECT
+			TELNUM_ID
+		FROM
+			t_qc_taskrecord
+		WHERE 1=1
+		<if test="taskId != null and taskId!=''">
+			and TASK_ID = #{taskId,jdbcType=VARCHAR}
+  		</if>
+		)
+	</update>
+	
+	
+	<!-- 112执行工单任务列表 -->
+    <select id="getExecuteChapterList" parameterType="cn.sh.ideal.model.TaskChapter" resultMap="XJTASK_MAP">  
+    	SELECT
+			TASK_ID,
+			TASK_NAME,
+			QC_USER,
+			TASK_STATUS,
+			DATE_FORMAT(tq.CREATE_TIME, '%Y-%m-%d') CREATE_TIME,
+			IS_PUBLISH,
+			TASK_START_TIME,
+			TASK_END_TIME,
+		    CSR_TOP_D_COUNT,
+			( SELECT work_id FROM t_sys_user WHERE user_id = tq.CREATE_USER_ID ) AS qcworkid,
+			CREATE_USER_ID
+		FROM
+			t_qc_112xjtask tq
+		WHERE
+			1 = 1
+			AND tq.ENABLED = '1' and tq.TASK_STATUS !='0'
+    	<if test="taskId != null and taskId !=''">
+			AND tq.TASK_ID=#{taskId,jdbcType=INTEGER}  
+		</if>
+		<if test="taskName != null and taskName !=''">
+			AND tq.TASK_NAME like '%${taskName}%'
+			</if>
+		<if test="qcUser != null and qcUser !=''">
+			AND tq.QC_USER like '%${qcUser}%'
+		</if>
+		<if test="taskStatus != null and taskStatus !=''">
+			AND tq.TASK_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="createBeginTime != null and createBeginTime !=''">
+			AND DATE_FORMAT(tq.TASK_START_TIME,'%Y-%m-%d') &gt;=DATE_FORMAT(#{createBeginTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="createEndTime != null and createEndTime !=''">
+			AND DATE_FORMAT(tq.TASK_END_TIME,'%Y-%m-%d') &lt;=DATE_FORMAT(#{createEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		order by tq.TASK_ID desc
+    </select>
+    
+    <select id="getExecuteChapterListCount" parameterType="cn.sh.ideal.model.TaskChapter" resultType="java.lang.Integer">  
+    	select count(*)
+    	FROM
+			t_qc_112xjtask tq
+		WHERE
+			1 = 1
+			AND tq.ENABLED = '1' and tq.TASK_STATUS !='0'
+    	<if test="taskId != null and taskId !=''">
+			AND tq.TASK_ID=#{taskId,jdbcType=INTEGER}  
+		</if>
+		<if test="taskName != null and taskName !=''">
+			AND tq.TASK_NAME like '%${taskName}%'
+			</if>
+		<if test="qcUser != null and qcUser !=''">
+			AND tq.QC_USER like '%${qcUser}%'
+		</if>
+		<if test="taskStatus != null and taskStatus !=''">
+			AND tq.TASK_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="createBeginTime != null and createBeginTime !=''">
+			AND DATE_FORMAT(tq.CREATE_TIME,'%Y-%m-%d') &gt;=DATE_FORMAT(#{createBeginTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		<if test="createEndTime != null and createEndTime !=''">
+			AND DATE_FORMAT(tq.CREATE_TIME,'%Y-%m-%d') &lt;=DATE_FORMAT(#{createEndTime,jdbcType=VARCHAR},'%Y-%m-%d')
+		</if>
+		order by tq.TASK_ID desc
+    </select>
+    
+    
+    <!-- 查询112任务工单 -->
+	<select id="getReviceChapterList" parameterType="cn.sh.ideal.model.WorkTelSum112" resultMap="112ChapterMap">
+		select * from t_work_telsum_112 t
+		 where 1=1 
+		   and t.ISTASK = '0'
+		   and t.TELSUM_WORKID not in
+		       (select WORKORDER_ID
+		          from t_qc
+		         where ENABLED = '1'
+		           and WORKORDER_ID is not null) 
+		   and substring(t.TELSUM_WORKID,3) in 
+		   <!--  and t.TELSUM_WORKID in -->
+		 	<foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">  
+		  		#{item}  
+			</foreach>
+			<if test="notUserIds != null and notUserIds.size() >0 ">
+				and substring(t.TELSUM_WORKID,3) not in 
+				<!--and t.TELSUM_WORKID not in-->
+				<foreach item="notUserIds" index="index" collection="notUserIds" open="(" separator="," close=")">  
+		  			#{notUserIds}  
+				</foreach>
+			</if>
+			<if test="businessTypeList != null and businessTypeList.size() >0 ">
+				and t.BUSINESS_TYPE in  
+				<foreach item="businessTypeList" index="index" collection="businessTypeList" open="(" separator="," close=")">  
+		  			#{businessTypeList}  
+				</foreach>
+			</if>
+			<if test="telsumTypeList != null and telsumTypeList.size() >0 ">
+					and t.TELSUM_TYPE in  
+				<foreach item="telsumTypeList" index="index" collection="telsumTypeList" open="(" separator="," close=")">  
+		  			#{telsumTypeList}  
+				</foreach>
+			</if>
+			<if test="errorSourceList != null and errorSourceList.size() >0 ">
+					and t.ERROR_SOURCE in  
+				<foreach item="errorSourceList" index="index" collection="errorSourceList" open="(" separator="," close=")">  
+		  			#{errorSourceList}  
+				</foreach>
+			</if>
+		   and DATE_FORMAT(t.TELSUM_TIME, '%Y-%m-%d %H:%i:%s') BETWEEN
+		       DATE_FORMAT(#{startdate,jdbcType=VARCHAR}, '%Y-%m-%d %H:%i:%s') and
+		       DATE_FORMAT(#{stopdate,jdbcType=VARCHAR}, '%Y-%m-%d %H:%i:%s') 
+		   limit 10
+	</select>
+		
+	<!-- 查询112任务工单数量 -->
+	<select id="getReviceChapterListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from t_work_telsum_112 t
+		 where 1=1 
+		   and t.ISTASK = '0'
+		   and t.TELSUM_WORKID not in
+		       (select WORKORDER_ID
+		          from t_qc
+		         where ENABLED = '1'
+		           and WORKORDER_ID is not null) 
+		   and t.TELSUM_WORKID in
+		 	<foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">  
+		  		#{item}  
+			</foreach>
+			<if test="notUserIds != null and notUserIds.size() >0 ">
+				and t.TELSUM_WORKID not in
+				<foreach item="notUserIds" index="index" collection="notUserIds" open="(" separator="," close=")">  
+		  			#{notUserIds}  
+				</foreach>
+			</if>
+			<if test="businessTypeList != null and businessTypeList.size() >0 ">
+				and t.BUSINESS_TYPE in  
+				<foreach item="businessTypeList" index="index" collection="businessTypeList" open="(" separator="," close=")">  
+		  			#{businessTypeList}  
+				</foreach>
+			</if>
+			<if test="telsumTypeList != null and telsumTypeList.size() >0 ">
+					and t.TELSUM_TYPE in  
+				<foreach item="telsumTypeList" index="index" collection="telsumTypeList" open="(" separator="," close=")">  
+		  			#{telsumTypeList}  
+				</foreach>
+			</if>
+			<if test="errorSourceList != null and errorSourceList.size() >0 ">
+					and t.ERROR_SOURCE in  
+				<foreach item="errorSourceList" index="index" collection="errorSourceList" open="(" separator="," close=")">  
+		  			#{errorSourceList}  
+				</foreach>
+			</if>
+		   and DATE_FORMAT(t.TELSUM_TIME, '%Y-%m-%d %H:%i:%s') BETWEEN
+		       DATE_FORMAT(#{startdate,jdbcType=VARCHAR}, '%Y-%m-%d %H:%i:%s') and
+		       DATE_FORMAT(#{stopdate,jdbcType=VARCHAR}, '%Y-%m-%d %H:%i:%s') 
+	</select>
+	
+	<!-- 修改112工单问任务工单 -->
+	<update id="updTelsum112status" parameterType="java.lang.String">
+		update t_work_telsum_112 set ISTASK='1' where AUTO_ID=#{autoId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getYlChapterList"  resultMap="112ChapterMap">
+		select t.*,t.*,q.TELSUM_ID IS_QC from t_work_telsum_112  t
+				LEFT JOIN t_qc q ON t.AUTO_ID = q.TELSUM_ID  
+							and q.enabled='1' and (q.QC_TYPE=4 or q.QC_TYPE=9)
+			where t.AUTO_ID in
+	 	<foreach collection="orderlist" item="order"  open="(" separator="," close=")">     
+	        #{order}      
+	     </foreach>
+	</select>
+	
+	<select id="getYlChapterListCount"  resultType="java.lang.Integer">
+		select count(*) from t_work_telsum_112  t
+				LEFT JOIN t_qc q ON t.AUTO_ID = q.TELSUM_ID  
+							and q.enabled='1' and (q.QC_TYPE=4 or q.QC_TYPE=9)
+			where t.AUTO_ID in
+	 	<foreach collection="orderlist" item="order"  open="(" separator="," close=")">     
+	        #{order}      
+	     </foreach>
+	</select>
+	
+	
+	<!-- 质检员查询自己的完成情况 -->
+    <select id="getFinishChapterList" parameterType="java.util.Map" resultMap="taskCompleteInforc" >
+    	select t.COMPLETE_ID,
+		       t.CDATE,
+		       t.GET_RECORD_COUNT,
+		       t.COMPLETE_COUNT,
+		       t.EACH_DATE_STATUS,
+		       t.TASK_ID,
+			   tq.CSR_TOP_D_COUNT
+		  from t_qc_taskqcuser_complete t
+		  left join t_qc_112xjtask tq
+		    on t.TASK_ID = tq.TASK_ID
+		 where TASKUSER_ID =
+		       (select tu.TASKUSER_ID
+		          from t_qc_task_qcuser tu
+		         where tu.TASK_ID = #{taskId, jdbcType = VARCHAR}
+		           and tu.QC_USER_ID = #{qcUser, jdbcType = VARCHAR}
+		           and tu.TASK_TYPE = 3)
+		   and t.TASK_ID = #{taskId, jdbcType = VARCHAR}
+		   AND TASK_TYPE = 3
+		   and t.CDATE &lt; now()
+    	<if test="status !=null and status !='' ">
+			and t.EACH_DATE_STATUS=#{eachDateStatus,jdbcType=VARCHAR}
+		</if>
+    </select>
+    
+     <select id="getFinishChapterListCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+    	select count(1)
+    	from t_qc_taskqcuser_complete t
+		  left join t_qc_112xjtask tq
+		    on t.TASK_ID = tq.TASK_ID
+		 where TASKUSER_ID =
+		       (select tu.TASKUSER_ID
+		          from t_qc_task_qcuser tu
+		         where tu.TASK_ID = #{taskId, jdbcType = VARCHAR}
+		           and tu.QC_USER_ID = #{qcUser, jdbcType = VARCHAR}
+		           and tu.TASK_TYPE = 3)
+		   and t.TASK_ID = #{taskId, jdbcType = VARCHAR}
+		   AND TASK_TYPE = 3
+		   and t.CDATE &lt; now()
+    	<if test="status !=null and status !='' ">
+			and t.EACH_DATE_STATUS=#{eachDateStatus,jdbcType=VARCHAR}
+		</if>
+    </select>
+    
+    <select id="queryTaskCompleteInfo" parameterType="java.util.Map"
+		resultMap="taskCompleteInfo">
+		select
+		(select user_name from t_sys_user where USER_ID= tqu.QC_USER_ID)
+		QC_NAME,
+		tqu.taskuser_id,
+		tqu.QC_USER_ID USERID,
+		tqu.task_id,
+		tqu.get_record_count,
+		tqu.complete_count,
+		tqu.each_qcuser_status
+		from
+		t_qc_task_qcuser tqu
+		where 1=1 and tqu.TASK_TYPE='3'
+		<if test="taskId != null and taskId!=''">
+			and tqu.TASK_ID =#{taskId,jdbcType=VARCHAR}
+	     </if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and tqu.EACH_QCUSER_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="qcUser != null and qcUser!=''">
+  			and tqu.QC_USER_ID =#{qcUser,jdbcType=VARCHAR}
+         </if>
+	</select>
+	
+	<select id="queryTaskCompleteInfoCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		select
+		count(0)
+		from
+		t_qc_task_qcuser tqu
+		where 1=1 and tqu.TASK_TYPE='3'
+		<if test="taskId != null and taskId!=''">
+			and tqu.TASK_ID =#{taskId,jdbcType=VARCHAR}
+	     </if>
+		<if test="taskStatus != null and taskStatus!=''">
+			and tqu.EACH_QCUSER_STATUS=#{taskStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="qcUser != null and qcUser!=''">
+  			and tqu.QC_USER_ID =#{qcUser,jdbcType=VARCHAR}
+         </if>
+	</select>
+	
+	<!-- 督导查询112工单任务任务完成情况 -->
+    <select id="getChapterFinishDetails" parameterType="java.util.Map" resultMap="taskCompleteInforc" >
+    	select COMPLETE_ID ,CDATE,GET_RECORD_COUNT,COMPLETE_COUNT,EACH_DATE_STATUS,t.TASK_ID,CSR_TOP_D_COUNT
+    	from t_qc_taskqcuser_complete t 
+    	left join t_qc_112xjtask tq on t.TASK_ID=tq.TASK_ID
+    	where 1=1
+    	and t.TASK_TYPE = '3'
+    	and t.TASK_ID=#{taskId,jdbcType=VARCHAR}  
+    	<if test="eachDateStatus !=null and eachDateStatus !='' ">
+			and EACH_DATE_STATUS=#{eachDateStatus,jdbcType=VARCHAR}
+		</if>
+		 <if test="cDate !=null and cDate !='' ">
+			and t.CDATE=#{cDate,jdbcType=VARCHAR}
+		</if>
+		<if test="taskuserId !=null and taskuserId !='' ">
+			and TASKUSER_ID=#{taskuserId,jdbcType=VARCHAR}
+		</if>
+		and t.CDATE &lt; now()
+    </select>
+    <select id="getChapterFinishDetailsCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+    	select count(1)
+    	from t_qc_taskqcuser_complete t where 1=1
+    	and t.TASK_ID=#{taskId,jdbcType=VARCHAR}  
+    	and t.TASK_TYPE = '3'
+    	<if test="eachDateStatus !=null and eachDateStatus !='' ">
+			and EACH_DATE_STATUS=#{eachDateStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="taskuserId !=null and taskuserId !='' ">
+			and TASKUSER_ID=#{taskuserId,jdbcType=VARCHAR}
+		</if>
+		and t.CDATE &lt; now()
+    </select>
+    
+    
+    <update id="release112Chapter" parameterType="java.util.Map">
+		UPDATE t_work_telsum_112 r
+		SET r.ISTASK = '0'
+		WHERE r.AUTO_ID IN
+		(SELECT T.TELNUM_ID
+		FROM T_QC_TASKRECORD T INNER JOIN
+		T_QC_TASK_QCUSER TQ
+		ON T.TASKUSER_ID=TQ.TASKUSER_ID
+		WHERE 1=1
+			and t.ORDER_TYPE = 3
+		<if test="taskId != null and taskId!=''">
+			and T.TASK_ID = #{taskId,jdbcType=VARCHAR}
+  		</if>
+		<if test="qcUser != null and qcUser!=''">
+			and TQ.QC_USER_ID = #{qcUser,jdbcType=VARCHAR}
+  		</if>
+  		<if test="taskuserId !=null and taskuserId !='' ">
+			and TQ.TASKUSER_ID=#{taskuserId,jdbcType=VARCHAR}
+		</if>	 
+		<if test="cDate != null and cDate!=''">
+			and DATE_FORMAT(t.WHICHDATEFORTASK,'%Y-%m-%d') =
+			DATE_FORMAT(#{cDate,jdbcType=VARCHAR},'%Y-%m-%d')
+  			 </if>
+		<if test="isqc != null and isqc!=''">
+			and T.ISQC = #{isqc,jdbcType=VARCHAR}
+  		</if>
+		)
+	</update>
+	
+	<select id="selectRecordForLog" parameterType="java.util.Map" resultType="java.lang.String">
+		select telNum_id FROM T_QC_TASKRECORD
+		WHERE 1=1 
+		and ORDER_TYPE = '3'
+		and TASKUSER_ID=(SELECT
+		TASKUSER_ID FROM T_QC_TASK_QCUSER TQ WHERE TASKUSER_ID=TQ.TASKUSER_ID
+		AND TQ.QC_USER_ID = #{qcUser,jdbcType=VARCHAR} and tq.TASK_ID = #{taskId,jdbcType=VARCHAR})
+		<if test="taskId != null and taskId!=''">
+			and TASK_ID = #{taskId,jdbcType=VARCHAR}
+  			</if>	
+		<if test="cDate != null and cDate!=''">
+			and WHICHDATEFORTASK =
+			DATE_FORMAT(#{cDate,jdbcType=VARCHAR},'%Y-%m-%d')
+  			 </if>
+		<if test="isqc != null and isqc!=''">
+			and ISQC = #{isqc,jdbcType=VARCHAR}
+  		</if> 
+	</select>
+	
+	
+	<select id="selectRecordDateForLog" parameterType="java.util.Map" resultType="java.lang.String">
+    	select telNum_id FROM t_qc_taskrecord  where 1=1 and ISQC='0'
+    	<if test="taskType !=null and taskType !='' ">
+			and ORDER_TYPE=#{taskType,jdbcType=VARCHAR}
+		</if>
+		<if test="taskuserId !=null and taskuserId !='' ">
+			and TASKUSER_ID=#{taskuserId,jdbcType=VARCHAR}
+		</if>
+		<if test="cDate != null and cDate!=''">
+			and DATE_FORMAT(WHICHDATEFORTASK,'%Y-%m-%d') =
+			DATE_FORMAT(#{cDate,jdbcType=VARCHAR},'%Y-%m-%d')
+  		</if>
+    </select>
+	
+	<delete id="releaseRecord" parameterType="java.util.Map">
+		DELETE FROM T_QC_TASKRECORD
+		WHERE 1=1 
+		and ORDER_TYPE = '3'
+		and TASKUSER_ID=(SELECT
+		TASKUSER_ID FROM T_QC_TASK_QCUSER TQ WHERE TASKUSER_ID=TQ.TASKUSER_ID
+		AND TQ.QC_USER_ID = #{qcUser,jdbcType=VARCHAR} and tq.TASK_ID = #{taskId,jdbcType=VARCHAR})
+		<if test="taskId != null and taskId!=''">
+			and TASK_ID = #{taskId,jdbcType=VARCHAR}
+  			</if>	
+		<if test="cDate != null and cDate!=''">
+			and WHICHDATEFORTASK =
+			DATE_FORMAT(#{cDate,jdbcType=VARCHAR},'%Y-%m-%d')
+  			 </if>
+		<if test="isqc != null and isqc!=''">
+			and ISQC = #{isqc,jdbcType=VARCHAR}
+  		</if> 
+	</delete>
+	
+	<select id="gettaskChapterBytelsum" parameterType="java.util.Map" resultMap="XJTASK_MAP">
+    	SELECT
+			t.TASK_ID,
+			t.TASKUSER_ID,
+			t.WHICHDATEFORTASK,
+			tq.CSR_TOP_D_COUNT,
+			tq.TASK_START_TIME,
+			tq.TASK_END_TIME
+		FROM t_qc_taskrecord t
+		LEFT JOIN t_qc_112xjtask tq ON
+		t.TASK_ID = tq.TASK_ID
+		WHERE 1 = 1
+		and t.ORDER_TYPE = 3
+		<if test="telsum !=null and telsum !=''  ">
+		    and t.TELNUM_ID=#{telsum,jdbcType=VARCHAR}
+		</if>
+    </select>
+	
+	<!-- 修改112工单任务主表 -->
+   <update id="update112ChapterTaskInfo" parameterType="java.util.Map">
+	   	update t_qc_112xjtask t 
+	   	<trim prefix="set" suffixOverrides=",">
+	   		<if test="taskStatus != null and taskStatus !=''">
+				t.TASK_STATUS =#{taskStatus,jdbcType=VARCHAR}, 
+	  		</if>
+	  	</trim>
+	   where t.TASK_ID=#{taskId,jdbcType=VARCHAR}
+   </update>
+   
+   <select id="getyl112TelSumtaskidList" parameterType="java.util.Map" resultType="java.lang.String">
+    	SELECT t.TELNUM_ID FROM
+				t_qc_taskrecord t
+			inner JOIN t_qc_task_qcuser tq ON t.TASKUSER_ID = tq.TASKUSER_ID
+			left join t_qc_taskqcuser_complete tqc on tqc.TASKUSER_ID=tq.TASKUSER_ID
+			where  t.TASK_ID=#{taskId,jdbcType=VARCHAR}
+			AND tq.TASK_TYPE = 3
+			 <if test="ctodate !=null and ctodate !='' ">
+			and tqc.CDATE=#{ctodate,jdbcType=VARCHAR}
+		</if>
+    	 <if test="userid !=null and userid !='' ">
+			and tq.QC_USER_ID=#{userid,jdbcType=VARCHAR}
+		 </if>	
+    	 <if test="isqc !=null and isqc !='' ">
+		 	and t.ISQC=#{isqc,jdbcType=VARCHAR}
+		</if>
+    </select>
+    
+</mapper>
